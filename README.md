@@ -1,2 +1,3 @@
 # EWSD_Solution_X_Computing
-Enterprise Web Software Development Coursework Final Year Computing 
+Coursework Repository for Final Year Computing Enterprise Web Software Development
+
