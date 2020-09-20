@@ -96,7 +96,10 @@ table th {
 <table>
   <caption>
     Faculty
-    <button>Create New</button>
+    <a href="{{route('faculty.add')}}">
+       <button>Add New</button>
+    </a>
+ 
   </caption>
   <thead>
     <tr>
@@ -110,13 +113,17 @@ table th {
   <tbody>
     @foreach($faculties as $key => $faculty)
         <tr>
-        <td data-label="Account">{{$key+1}}</td>
-        <td data-label="Due Date">{{$faculty->name}}</td>
-        <td data-label="Amount">{{$faculty->description}}</td>
-        <td data-label="Period">{{$faculty->created_at}}</td>
+        <td>{{$key+1}}</td>
+        <td>{{$faculty->name}}</td>
+        <td>{{$faculty->description}}</td>
+        <td>{{$faculty->created_at}}</td>
         <td>
-            <button>Edit</button>
-            <button>Delete</button>
+            <a href="{{route('faculty.edit',$faculty->id)}}">
+                <button>Edit</button>
+            </a>
+            <a href="{{route('faculty.delete',$faculty->id)}}">
+                <button>Delete</button>
+            </a>
         </td>
         </tr>
     @endforeach
