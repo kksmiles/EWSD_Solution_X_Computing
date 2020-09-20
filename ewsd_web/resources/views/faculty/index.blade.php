@@ -93,6 +93,11 @@ table th {
 }
 </style>
 <body>
+@if ($message = Session::get('success'))
+<div style="margin:0 auto; text-align:center; background:green; color:#fff;">
+        <strong>{{ $message }}</strong>
+</div>
+@endif
 <table>
   <caption>
     Faculty

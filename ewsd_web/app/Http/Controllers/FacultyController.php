@@ -27,8 +27,7 @@ class FacultyController extends Controller
         $faculty->name = $request->name;
         $faculty->description = $request->desc;
         $faculty->save();
-
-        return redirect()->route('faculty');
+        return redirect()->route('faculty')->with('success','Faculty created successfully!');
     }
 
     // Edit Form
@@ -42,18 +41,17 @@ class FacultyController extends Controller
             'name' => 'required',
             'desc' => 'required',
         ]);
-
         $faculty = Faculty::findOrfail($request->id);
         $faculty->name = $request->name;
         $faculty->description = $request->desc;
         $faculty->save();
-        return redirect()->route('faculty');
+        return redirect()->route('faculty')->with('success','Faculty updated successfully!');
     }
 
     // Delete Form
     public function delete($id){
         $faculty = Faculty::findOrfail($id);
         $faculty->delete();
-        return redirect()->route('faculty');
+        return redirect()->route('faculty')->with('success','Faculty deleted successfully!');
     }
 }

@@ -96,7 +96,7 @@
                 <input type="text" id="name" name="name" value="{{$faculty->name}}" placeholder="Name">
                 <label for="message">About Faculty</label>
                 <textarea id="message" name="desc" cols="30" rows="10" placeholder="Message">{{$faculty->description}}</textarea>
-                <input type="submit" value="Add New Faculty">
+                <input type="submit" value="Update Faculty">
             </form>
             <a href="{{route('faculty')}}"><button>Back</button></a>
         </div>

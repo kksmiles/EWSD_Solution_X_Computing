@@ -17,10 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/faculty','FacultyController@index')->name('faculty');
-Route::get('/faculty/add','FacultyController@addView')->name('faculty.add');
-Route::post('/faculty/save','FacultyController@save')->name('faculty.save');
-Route::get('/faculty/edit/{id}','FacultyController@edit')->name('faculty.edit');
-Route::post('/faculty/update','FacultyController@update')->name('faculty.update');
-Route::get('/faculty/delete/{id}','FacultyController@delete')->name('faculty.delete');
+Route::group([ 'prefix' => 'faculty' ], function(){
+    Route::get('/','FacultyController@index')->name('faculty');
+    Route::get('/add','FacultyController@addView')->name('faculty.add');
+    Route::post('/save','FacultyController@save')->name('faculty.save');
+    Route::get('/edit/{id}','FacultyController@edit')->name('faculty.edit');
+    Route::post('/update','FacultyController@update')->name('faculty.update');
+    Route::get('/delete/{id}','FacultyController@delete')->name('faculty.delete');
+});
+
 
