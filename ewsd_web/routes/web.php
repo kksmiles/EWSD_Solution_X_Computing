@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
 Route::group([ 'prefix' => 'faculty' ], function(){
     Route::get('/','FacultyController@index')->name('faculty');
     Route::get('/add','FacultyController@addView')->name('faculty.add');
