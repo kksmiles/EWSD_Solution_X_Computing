@@ -26,4 +26,6 @@ Route::group([ 'prefix' => 'faculty' ], function(){
     Route::get('/delete/{id}','FacultyController@delete')->name('faculty.delete');
 });
 
+Route::resource('/academicyears', 'AcademicYearController');
+
 

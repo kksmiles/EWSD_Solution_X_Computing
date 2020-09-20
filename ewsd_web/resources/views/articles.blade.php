@@ -7,6 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    Hello EWSD
+    @foreach($articles as $article)
+        <li>
+            {{ $article }}            
+        </li>    
+    @endforeach
 </body>
 </html>
