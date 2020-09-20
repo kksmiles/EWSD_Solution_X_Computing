@@ -9,9 +9,9 @@
 <body>
     @foreach($academic_years as $academic_year)
         <li>
-            <a href="/academicyears/{{ $academic_year->id }}">{{ $academic_year->title }}</a>
-            <a href="/academicyears/{{ $academic_year->id }}/edit">Edit</a>
-            <form action="/academicyears/{{ $academic_year->id }}" method="POST">
+            <a href="{{ route('academicyears.show', $academic_year->id) }}">{{ $academic_year->title }}</a>
+            <a href="{{ route('academicyears.edit', $academic_year->id) }}">Edit</a>
+            <form action="{{ route('academicyears.destroy', $academic_year->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit">Delete</button>   
@@ -19,6 +19,10 @@
         </li>    
     @endforeach
     <br>
-    <a href="/academicyears/create">Create</a>
+    <a href="{{ route('academicyears.create') }}">Create</a>
+    <br>
+    @if ($message = Session::get('success'))
+        <strong>{{ $message }}</strong>
+    @endif    
 </body>
 </html>

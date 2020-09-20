@@ -7,7 +7,7 @@
     <title>Academic Year Edit Form</title>
 </head>
 <body>
-    <form action="/academicyears/{{ $academic_year->id }}" method="POST">
+    <form action="{{ route('academicyears.update', $academic_year->id) }}" method="POST">
         @csrf
         @method('PATCH')
         Title : <input type="text" name="title" value="{{ $academic_year->title }}" required>
