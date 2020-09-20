@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/faculty','FacultyController@index')->name('faculty');
+Route::post('/faculty/save','FacultyController@save')->name('faculty.save');
