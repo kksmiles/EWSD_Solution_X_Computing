@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\AcademicYear;
+use Illuminate\Validation\Rule;
 
 class AcademicYearController extends Controller
 {
@@ -21,12 +22,12 @@ class AcademicYearController extends Controller
     public function store() 
     {
         $attributes = request()->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'closure_date' => 'required',
+            'title' => ['required', 'unique:academic_years','max:255'],
+            'description' => ['nullable'],
+            'closure_date' => ['date', 'required'],
         ]);
         AcademicYear::create($attributes);
-        return redirect('/academicyears');
+        return redirect()->route('academicyears.index')->with('success', 'Academic Year created successfully!');
     }
 
     public function show($id) 
@@ -43,25 +44,25 @@ class AcademicYearController extends Controller
 
     public function update($id)
     {
+        $academic_year = AcademicYear::findOrFail($id);
         $attributes = request()->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'closure_date' => 'required',
+            'title' => ['required', Rule::unique('academic_years')->ignore($academic_year->id),'max:255'],
+            'description' => ['nullable'],
+            'closure_date' => ['date', 'required'],
         ]);
 
-        $academic_year = AcademicYear::findOrFail($id);
         $academic_year->title = $attributes['title'];
         $academic_year->description = $attributes['description'];
         $academic_year->closure_date = $attributes['closure_date'];
         $academic_year->save();
 
-        return redirect('/academicyears');
+        return redirect()->route('academicyears.index')->with('success', 'Academic Year updated successfully!');
     }
     
     public function destroy($id)
     {
         $academic_year = AcademicYear::findOrfail($id);
         $academic_year->delete();
-        return redirect('/academicyears');
+        return redirect()->route('academicyears.index')->with('success', 'Academic Year deleted successfully!');
     }
 }
