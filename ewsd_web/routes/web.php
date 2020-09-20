@@ -16,7 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::resource('/academicyears', 'AcademicYearController');
+Route::group([ 'prefix' => 'faculty' ], function(){
+    Route::get('/','FacultyController@index')->name('faculty');
+    Route::get('/add','FacultyController@addView')->name('faculty.add');
+    Route::post('/save','FacultyController@save')->name('faculty.save');
+    Route::get('/edit/{id}','FacultyController@edit')->name('faculty.edit');
+    Route::post('/update','FacultyController@update')->name('faculty.update');
+    Route::get('/delete/{id}','FacultyController@delete')->name('faculty.delete');
+});
 
+Route::resource('/academicyears', 'AcademicYearController');
 
 
