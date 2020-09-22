@@ -27,4 +27,10 @@ Route::group([ 'prefix' => 'faculty' ], function(){
 
 Route::resource('/academicyears', 'AcademicYearController');
 
+Route::resource('/users', 'UserController');
 
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
