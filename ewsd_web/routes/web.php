@@ -29,8 +29,14 @@ Route::resource('/academicyears', 'AcademicYearController');
 
 Route::resource('/users', 'UserController');
 
+Route::resource('/user_roles','UserRolesController');
 
+Route::resource('/user_faculty','UserFacultyController');
+
+Route::resource('/user','UserController');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
