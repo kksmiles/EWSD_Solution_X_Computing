@@ -15,7 +15,7 @@ class CreateAcademicYearsTable extends Migration
     {
         Schema::create('academic_years', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->unique();
             $table->string('description')->nullable();
             $table->date('closure_date');
             $table->timestamps();

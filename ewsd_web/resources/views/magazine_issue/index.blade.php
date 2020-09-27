@@ -7,11 +7,11 @@
     <title>Academic Years List</title>
 </head>
 <body>
-    @foreach($academic_years as $academic_year)
+    @foreach($magazine_issues as $magazine_issue)
         <li>
-            <a href="{{ route('academicyears.show', $academic_year->id) }}">{{ $academic_year->title }}</a>
-            <a href="{{ route('academicyears.edit', $academic_year->id) }}">Edit</a>
-            <form action="{{ route('academicyears.destroy', $academic_year->id) }}" method="POST">
+            <a href="{{ route('magazine-issues.show', $magazine_issue->id) }}">{{ $magazine_issue->title }}</a>
+            <a href="{{ route('magazine-issues.edit', $magazine_issue->id) }}">Edit</a>
+            <form action="{{ route('magazine-issues.destroy', $magazine_issue->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit">Delete</button>   
@@ -19,7 +19,7 @@
         </li>    
     @endforeach
     <br>
-    <a href="{{ route('academicyears.create') }}">Create</a>
+    <a href="{{ route('magazine-issues.create') }}">Create</a>
     <br>
     @if ($message = Session::get('success'))
         <strong>{{ $message }}</strong>
