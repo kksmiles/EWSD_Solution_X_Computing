@@ -5,19 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Gate;
 use App\User;
+use App\UserFaculty;
+use App\Faculty;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct()
     {
+        $this->middleware('auth');
+    }
+    
+    public function index()
+    {   
+        if(Gate::denies('isAdmin')) {
+            return redirect()->route('home')->with('fail','Only Admin can view users');
+        }
         $users = User::all();
-      
         return view('user.index',compact('users'));
     }
 
@@ -60,8 +65,12 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
-    {
-        return view('user.edit',compact('user'));
+    {   
+        if(Gate::allows('isAdmin')|| $this->authorize('update', $user)) {
+            return view('user.edit',compact('user'));
+        } 
+        return redirect()->route('home')->with('fail','Only Admin can edit users');
+        
     }
 
     /**
@@ -72,30 +81,33 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request,User $user)
-    {
-        $validatedData = $request->validate([
-            'username' => ['required', 'string', 'max:255'],
-            'fullname' => ['required', 'string', 'max:255'],
-         ]);
-        
-         if($request['new_image'] == null)
-         {
-            $file_path = $request['old_image'];
-         }
-         else {
-            $profile_image = $request['new_image'];
-            $upload_path = public_path().'/storage/images/'; 
-            $file_name = $profile_image->getClientOriginalName();
-            $profile_image->move($upload_path,$file_name);
-            $file_path = '/storage/images/'.$file_name;   
-         }
-        
-        $user->username = $request['username'];
-        $user->fullname = $request['fullname'];
-        $user->image = $file_path;
-        $user->save();
+    {   
+        if(Gate::allows('isAdmin')|| $this->authorize('update', $user)) {
+            $validatedData = $request->validate([
+                'username' => ['required', 'string', 'max:255'],
+                'fullname' => ['required', 'string', 'max:255'],
+             ]);
+            
+             if($request['new_image'] == null)
+             {
+                $file_path = $request['old_image'];
+             }
+             else {
+                $profile_image = $request['new_image'];
+                $upload_path = public_path().'/storage/images/'; 
+                $file_name = $profile_image->getClientOriginalName();
+                $profile_image->move($upload_path,$file_name);
+                $file_path = '/storage/images/'.$file_name;   
+             }
+            
+            $user->username = $request['username'];
+            $user->fullname = $request['fullname'];
+            $user->image = $file_path;
+            $user->save();
 
-        return redirect()->route('users.index');
+            return redirect()->route('users.index');       
+        } 
+        return redirect()->route('home')->with('fail','Only Admin can edit users');
     }
 
     /**
@@ -105,8 +117,11 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
-    {
-        $user->delete();
-        return back();
+    {   
+        if(Gate::allows('isAdmin')|| $this->authorize('update', $user)) {
+            $user->delete();
+            return back();
+        } 
+        return redirect()->route('home')->with('fail','Only Admin can edit users');
     }
 }
