@@ -14,6 +14,7 @@ class CreateUserFacultyTable extends Migration
     public function up()
     {
         Schema::create('user_faculty', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('faculty_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
@@ -21,6 +22,7 @@ class CreateUserFacultyTable extends Migration
         Schema::table('user_faculty', function (Blueprint $table) {
             $table->foreign('faculty_id')->references('id')->on('faculties');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unique(['faculty_id', 'user_id']);
         });
     }
 

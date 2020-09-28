@@ -3,10 +3,17 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\UserRoles;
-use Faker\Generator as Faker;
 
-$factory->define(UserRoles::class, function (Faker $faker) {
+$factory->define(UserRoles::class, function () {
+    static $roles = [
+        'Admin',
+        'Marketing Manager',
+        'Marketing Coordinator',
+        'Student',
+        'Guest',
+    ];
+    static $i=0;
     return [
-        'roles' => $faker->unique()->title
+        'roles' => $roles[$i++]
     ];
 });
