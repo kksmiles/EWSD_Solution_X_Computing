@@ -7,7 +7,7 @@
     <title>Academic Year Create Form</title>
 </head>
 <body>
-    <form action="{{ route('academicyears.store') }}" method="POST">
+    <form action="{{ route('academic-years.store') }}" method="POST">
         @csrf
         Title : <input type="text" name="title" required>
         <br>
