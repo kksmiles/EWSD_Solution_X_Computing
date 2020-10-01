@@ -11,12 +11,12 @@ class AcademicYearController extends Controller
     public function index() 
     {
         $academic_years = AcademicYear::all();
-        return view('academicyear.index', compact('academic_years'));
+        return view('academic_year.index', compact('academic_years'));
     }
 
     public function create() 
     {
-        return view('academicyear.create');
+        return view('academic_year.create');
     }
 
     public function store() 
@@ -27,19 +27,19 @@ class AcademicYearController extends Controller
             'closure_date' => ['date', 'required'],
         ]);
         AcademicYear::create($attributes);
-        return redirect()->route('academicyears.index')->with('success', 'Academic Year created successfully!');
+        return redirect()->route('academic-years.index')->with('success', 'Academic Year created successfully!');
     }
 
     public function show($id) 
     {
         $academic_year = AcademicYear::findOrfail($id);
-        return view('academicyear.show', compact('academic_year'));
+        return view('academic_year.show', compact('academic_year'));
     }
 
     public function edit($id) 
     {
         $academic_year = AcademicYear::findOrfail($id);
-        return view('academicyear.edit', compact('academic_year'));
+        return view('academic_year.edit', compact('academic_year'));
     }
 
     public function update($id)
@@ -56,13 +56,13 @@ class AcademicYearController extends Controller
         $academic_year->closure_date = $attributes['closure_date'];
         $academic_year->save();
 
-        return redirect()->route('academicyears.index')->with('success', 'Academic Year updated successfully!');
+        return redirect()->route('academic-years.index')->with('success', 'Academic Year updated successfully!');
     }
     
     public function destroy($id)
     {
         $academic_year = AcademicYear::findOrfail($id);
         $academic_year->delete();
-        return redirect()->route('academicyears.index')->with('success', 'Academic Year deleted successfully!');
+        return redirect()->route('academic-years.index')->with('success', 'Academic Year deleted successfully!');
     }
 }

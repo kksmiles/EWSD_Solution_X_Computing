@@ -8,13 +8,19 @@
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
                 <div class="card-body">
-                    @if (session('status'))
+                    @if (session('fail'))
+                    <div class="alert alert-error" role="alert">
+                        {{ session('fail') }}
+                    </div>
+                    @elseif (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
+                            {{ __('You are logged in!') }}
+                        </div>  
+                    @endif  
+                    <div>
+                        EWSD HOME    
+                    </div> 
                 </div>
             </div>
         </div>

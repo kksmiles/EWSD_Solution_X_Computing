@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class AcademicYearSeeder extends Seeder
+class UserFacultySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class AcademicYearSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\AcademicYear::class, 5)->create();
+        factory(App\UserFaculty::class, 80)->create();
     }
 }

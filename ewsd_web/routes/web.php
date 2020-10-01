@@ -25,12 +25,23 @@ Route::group([ 'prefix' => 'faculty' ], function(){
     Route::get('/delete/{id}','FacultyController@delete')->name('faculty.delete');
 });
 
-Route::resource('/academicyears', 'AcademicYearController');
+
+Route::resource('/academic-years', 'AcademicYearController')->middleware('can:isAdmin');
+Route::resource('/magazine-issues', 'MagazineIssueController');
 
 Route::resource('/users', 'UserController');
 
+Route::resource('/user_roles','UserRolesController')->middleware('can:isAdmin');
 
+Route::resource('/user_faculty','UserFacultyController')->middleware('can:isAdmin');
+
+Route::prefix('/user_faculty')->middleware('can:isAdmin')->group(function(){
+    Route::get('/','UserFacultyController@showFaculty')->name('user_faculty.select');
+    Route::get('/add/{f_id}','UserFacultyController@addUsersToFaculty')->name('user_faculty.add');
+});
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
