@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+@extends('template')
+@section('content')
 
-    <link rel="stylesheet" href="{{asset('css/app.css')}}">
-</head>
-<body>
     {{-- @can('isAdmin')
         Admin can only see
     @elsecan('isStudent')
@@ -37,7 +30,20 @@
                 <td scope="col">{{$user->username}}</td>
                 <td> {{$user->fullname}} </td>
                 <td> {{$user->email}}</td>
-                <td> {{$user->role->roles}}</td>
+                <td> 
+                @isset($user->role->roles)    
+                    {{$user->role->roles}}
+                @else
+                   <form action="">
+                    <div class="form-group">
+                        <select name="user_role" id="">
+                            
+                        </select>
+                    </div> 
+                   </form>
+                @endisset
+            
+                </td>
                 <td>
                     <select class="form-control" name="role_id" id="">
                         @foreach ($user->faculties as $faculty)
@@ -49,7 +55,7 @@
                     <form action="{{ route('users.destroy',$user->id)}}" method="post">
                         @csrf
                         @method('DELETE')
-                            <button class="btn btn-danger btn-sm" onclick="confirm('Are you Sure?')">Delete</button>
+                            <button class="btn btn-danger btn-sm" onclick="return confirm('Are you Sure?')">Delete</button>
                     </form>
                 </td>
                 <td>
@@ -57,9 +63,7 @@
                 </td>
             </tr>
             @endforeach
-        </tbody>
-    </table>
-    </div>
+
+@endsection
     
-</body>
-</html>
+        

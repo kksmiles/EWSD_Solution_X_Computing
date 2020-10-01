@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Gate;
 use App\User;
 use App\UserFaculty;
+use App\UserRoles;
 use App\Faculty;
 
 class UserController extends Controller
@@ -22,6 +23,7 @@ class UserController extends Controller
         if(Gate::denies('isAdmin')) {
             return redirect()->route('home')->with('fail','Only Admin can view users');
         }
+        $user_roles = UserRoles::all();
         $users = User::all();
         return view('user.index',compact('users'));
     }
