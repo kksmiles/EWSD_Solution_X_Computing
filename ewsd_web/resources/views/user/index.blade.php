@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <link rel="stylesheet" href="{{asset('css/app.css')}}">
-</head>
-<body>
-    <div class="container p-3">
-    <h4 class="col-12">User List</h4>
+@extends('template')
+@section('content')
         @foreach($users as $user)
             <div class="border row p-3 m-1">
                 <div class="col-2">
@@ -43,7 +33,4 @@
                 </div>
             </div>
         @endforeach
-    </div>
-    
-</body>
-</html>
+@endsection
