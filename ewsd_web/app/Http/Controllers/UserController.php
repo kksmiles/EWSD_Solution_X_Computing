@@ -160,7 +160,6 @@ class UserController extends Controller
         $user = User::find($request->user_id);
         $user->role_id = $request->role_id;
         $user->update();
-
         return back()->with('success', 'Assigned user role successfully!');
     }
 
