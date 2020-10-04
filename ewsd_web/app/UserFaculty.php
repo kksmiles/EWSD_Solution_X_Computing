@@ -14,4 +14,10 @@ class UserFaculty extends Model
     public function faculty(){
         return $this->belongsTo('App\Faculty');
     }
+    
+    // ! eloquents
+    public function getAuthUserFaculties($authId){
+        $faculties = \App\UserFaculty::where('user_id',$authId)->select('faculty_id')->get();
+        return $faculties;
+    }
 }

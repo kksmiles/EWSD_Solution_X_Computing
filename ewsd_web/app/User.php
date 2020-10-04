@@ -49,4 +49,8 @@ class User extends Authenticatable
     public function magazine_issues() {
         return $this->hasMany('App\MagazineIssue', 'staff_id', 'id');
     }
+
+    public function contributions() {
+        return $this->hasMany('App\Contributions', 'student_id', 'id');
+    }
 }

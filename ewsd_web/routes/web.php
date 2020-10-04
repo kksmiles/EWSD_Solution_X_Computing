@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// ! Faculty
 Route::group([ 'prefix' => 'faculty' ], function(){
     Route::get('/','FacultyController@index')->name('faculty');
     Route::get('/add','FacultyController@addView')->name('faculty.add');
@@ -25,14 +27,23 @@ Route::group([ 'prefix' => 'faculty' ], function(){
     Route::get('/delete/{id}','FacultyController@delete')->name('faculty.delete');
 });
 
+// ! Contributions
+Route::group([ 'prefix' => 'contributions' ], function(){
+    // @ Marketing Coordinatior Contributions Access
+    Route::get('/','ContributionController@index')->name('contribution');
+    
+    // @ Student Contributions
+    Route::group([ 'middleware' => 'can:isStudent' ], function(){
+        Route::get('/student/upload','ContributionController@upload')->name('contribution.upload');
+        Route::post('/student/upload/store','ContributionController@store')->name('contribution.store');
+        Route::get('/student','ContributionController@studentAllContribution')->name('contribution.student.all');
+    });
+});
 
 Route::resource('/academic-years', 'AcademicYearController')->middleware('can:isAdmin');
 Route::resource('/magazine-issues', 'MagazineIssueController');
-
 Route::resource('/users', 'UserController');
-
 Route::resource('/user_roles','UserRolesController')->middleware('can:isAdmin');
-
 Route::resource('/user_faculty','UserFacultyController')->middleware('can:isAdmin');
 
 Route::prefix('/user_faculty')->middleware('can:isAdmin')->group(function(){

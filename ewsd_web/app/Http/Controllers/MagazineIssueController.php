@@ -67,7 +67,6 @@ class MagazineIssueController extends Controller
         }
         MagazineIssue::create($attributes);
         return redirect()->route('magazine-issues.index')->with('success', 'Magazine created successfully!');
-    
     }
 
     /**
