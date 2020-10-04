@@ -122,9 +122,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {   
         if(Gate::allows('isAdmin')|| $this->authorize('update', $user)) {
+            $user = User::find($id);
+            $user->faculties()->detach();
             $user->delete();
             return back();
         } 
