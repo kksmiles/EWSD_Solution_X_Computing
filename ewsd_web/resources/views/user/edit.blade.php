@@ -93,7 +93,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     Edit
                                 </button>
-                                <a href="{{route('users.index')}}" class="btn btn-warning">
+                                <a href="{{route('users.show',$user->id)}}" class="btn btn-warning">
                                     Cancel
                                 </a>
                             </div>

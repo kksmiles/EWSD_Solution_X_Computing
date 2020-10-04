@@ -43,6 +43,10 @@ Route::group([ 'prefix' => 'contributions' ], function(){
 Route::resource('/academic-years', 'AcademicYearController')->middleware('can:isAdmin');
 Route::resource('/magazine-issues', 'MagazineIssueController');
 Route::resource('/users', 'UserController');
+Route::post('/user/assign/faculty','UserController@assignUserFaculty')->name('user_faculty.assign');
+Route::post('/user/unassign/faculty','UserController@unassignUserFaculty')->name('user_faculty.unassign');
+Route::post('/user/role/faculty','UserController@assignUserRole')->name('user_role.assign');
+
 Route::resource('/user_roles','UserRolesController')->middleware('can:isAdmin');
 Route::resource('/user_faculty','UserFacultyController')->middleware('can:isAdmin');
 
