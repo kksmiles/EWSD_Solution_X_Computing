@@ -31,7 +31,7 @@ Route::group([ 'prefix' => 'faculty' ], function(){
 Route::group([ 'prefix' => 'contributions' ], function(){
     // @ Marketing Coordinatior Contributions Access
     Route::get('/','ContributionController@index')->name('contribution');
-    
+
     // @ Student Contributions
     Route::group([ 'middleware' => 'can:isStudent' ], function(){
         Route::get('/student/upload','ContributionController@upload')->name('contribution.upload');

@@ -42,9 +42,21 @@
         <br>
         File : <input type="file" name="file"> <br>
         <br>
+        <input type="checkbox" id="checkTerm"> Agree terms and conditions of this issue
         <br>
-        <button type="submit">Upload Contributions</button>
+        <button type="submit" id="submitBtn" disabled>Upload Contributions</button>
     </form>
 
+<script>
+    const checkTerm = document.getElementById("checkTerm");
+    const submitBtn = document.querySelector("#submitBtn");
+    checkTerm.addEventListener('click',() => {
+        if(checkTerm.checked){
+            submitBtn.removeAttribute('disabled');
+        }else{
+            submitBtn.setAttribute('disabled','');
+        }
+    });
+</script>
 </body>
 </html>

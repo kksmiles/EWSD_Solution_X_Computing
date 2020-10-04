@@ -73,7 +73,7 @@ class ContributionController extends Controller
         $newContribution->is_published = '0';
         $newContribution->file = $fileName;
         $newContribution->save();
-        return redirect()->route('contributions.student.index')->with('success', 'Student Contribution uploaded successfully!');
+        return redirect()->route('contribution.upload')->with('success', 'Student Contribution uploaded successfully!');
     }
 
 }
