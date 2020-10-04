@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Gate;
 use App\User;
 use App\UserFaculty;
+use App\UserRoles;
 use App\Faculty;
 
 class UserController extends Controller
@@ -22,6 +23,8 @@ class UserController extends Controller
         if(Gate::denies('isAdmin')) {
             return redirect()->route('home')->with('fail','Only Admin can view users');
         }
+        
+        $user_roles = UserRoles::all();
         $users = User::all();
         return view('user.index',compact('users'));
     }
@@ -53,9 +56,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        $current_user_f_id = $user->faculties->pluck('id')->toArray();
+        $faculties = Faculty::all();
+        $roles = UserRoles::all();
+        return view('user.detail',compact('user','faculties','current_user_f_id','roles'));
     }
 
     /**
@@ -116,12 +122,49 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {   
         if(Gate::allows('isAdmin')|| $this->authorize('update', $user)) {
+            $user = User::find($id);
+            $user->faculties()->detach();
             $user->delete();
             return back();
         } 
         return redirect()->route('home')->with('fail','Only Admin can edit users');
     }
+
+    //Assign User From User Detail
+    public function assignUserFaculty(Request $request)
+    {
+         $attributes = request()->validate([
+            'faculty_id' => ['required', 'integer'],
+            'user_id' => ['required', 'integer']
+        ]);
+        
+        UserFaculty::create($attributes);
+
+        return back()->with('success', 'User Faculty created successfully!');
+    }
+
+     //Assign User From User Detail
+    public function unassignUserFaculty(Request $request)
+    {
+        $faculty = UserFaculty::where('user_id',$request->user_id)->where('faculty_id',$request->faculty_id)->delete();
+        
+        
+        return back()->with('success', 'User Faculty deleted successfully!');
+    }
+
+     //Assign User Role
+    public function assignUserRole(Request $request)
+    {
+       
+        $user = User::find($request->user_id);
+        $user->role_id = $request->role_id;
+        $user->update();
+        return back()->with('success', 'Assigned user role successfully!');
+    }
+
+
+    
 }
