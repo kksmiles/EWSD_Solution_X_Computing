@@ -39,9 +39,35 @@
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
         <a class="nav-link" href="{{route('users.index')}}">
+          <i class="fas fa-fw fa-users"></i>
+          <span>Users</span></a>
+      </li> 
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{{route('user_roles.index')}}">
+         <i class="fas fa-user-secret"></i>
+          <span>User Roles</span></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{{route('user_faculty.select')}}">
           <i class="fas fa-fw fa-user"></i>
-          <span>Index</span></a>
-      </li>   
+          <span>Faculty</span></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{{route('magazine-issues.index')}}">
+          <i class="fas fa-fw fa-sticky-note"></i>
+          <span>Magazine Issue</span></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{{route('academic-years.index')}}">
+          <i class="fa fa-graduation-cap"></i>
+          <span>Academic Years</span></a>
+      </li>
+
+      
 
       
       <!-- Sidebar Toggler (Sidebar) -->

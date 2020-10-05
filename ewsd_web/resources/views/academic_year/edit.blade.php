@@ -1,21 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Academic Year Edit Form</title>
-</head>
-<body>
+@extends('template')
+@section('content')
+ <section class='container'>
     <form action="{{ route('academic-years.update', $academic_year->id) }}" method="POST">
         @csrf
         @method('PATCH')
-        Title : <input type="text" name="title" value="{{ $academic_year->title }}" required>
+        Title : <input type="text" name="title" value="{{ $academic_year->title }}" class='form-control' required>
         <br>
-        Description : <input type="text" name="description" value="{{ $academic_year->description }}" required>
+        Description : <input type="text" name="description" value="{{ $academic_year->description }}" class='form-control' required>
         <br>
-        Closure Date : <input type="date" name="closure_date" value="{{ $academic_year->closure_date }}" required>
-        <button type="submit">Save</button>
+        Closure Date : <input type="date" name="closure_date" value="{{ $academic_year->closure_date }}" class='form-control' required>
+        <button type="submit" class='btn btn-primary mt-3'>Save</button>
     </form>
 
     @if ($errors->any())
@@ -27,5 +21,5 @@
     </ul>
 
     @endif
-</body>
-</html>
+ </section>
+@endsection
