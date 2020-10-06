@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $academic_year->title }}'s Details</title>
-</head>
-<body>
+@extends('template')
+@section('content')
+ <section class='container'>
     <h1>Academic Year : {{ $academic_year->title }}</h1>
     <p>Description : {{ $academic_year->description }}</p>
     <p>Closure Date : {{ $academic_year->closure_date }}</p>
-</body>
-</html>
+
+    <a href='{{ route('academic-years.index') }}' class='btn btn-warning'>Back</a>
+</section>
+@endsection

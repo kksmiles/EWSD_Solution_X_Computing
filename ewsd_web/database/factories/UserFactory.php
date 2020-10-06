@@ -7,8 +7,11 @@ use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
+    
     static $used_roles = [];
+    
     $role = $faker->numberBetween($min=1, $max =5);
+
     while(($role ==1 && in_array('1', $used_roles))|| ($role ==2 && in_array('2', $used_roles))){
         $role = $faker->numberBetween($min=1 ,$max=5);
     }
