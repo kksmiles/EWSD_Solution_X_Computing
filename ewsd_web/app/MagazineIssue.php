@@ -21,4 +21,7 @@ class MagazineIssue extends Model
     {
         return $this->belongsTo('App\User', 'staff_id', 'id');
     }
+    public function contributions() {
+        return $this->hasMany('App\Contributions', 'issue_id', 'id');
+    }
 }
