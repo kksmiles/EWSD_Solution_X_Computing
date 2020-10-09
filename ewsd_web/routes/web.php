@@ -29,9 +29,6 @@ Route::group([ 'prefix' => 'faculty' ], function(){
 
 // ! Contributions
 Route::group([ 'prefix' => 'contributions' ], function(){
-    // @ Marketing Coordinatior Contributions Access
-    Route::get('/','ContributionController@index')->name('contribution');
-
     // @ Student Contributions
     Route::group([ 'middleware' => 'can:isStudent' ], function(){
         Route::get('/student/upload','ContributionController@upload')->name('contribution.upload');
@@ -41,8 +38,13 @@ Route::group([ 'prefix' => 'contributions' ], function(){
         Route::post('/student/updated','ContributionController@update')->name('contribution.update');
     });
 
-    // @ Coordinator Contributions
-    
+   // @ Marketing Coordinatior Contributions Access
+    Route::group([ 'middleware' => 'can:isMarketingCoordinator' ], function(){
+        Route::get('/coordinator','CoordinatorContributionController@index')->name('contribution.coordinator.index');
+        Route::get('/coordinator/{id}','CoordinatorContributionController@show')->name('contribution.coordinator.show');
+        Route::post('/coordinator/{con_id}/publish','CoordinatorContributionController@publishContribution')->name('contribution.coordinator.publish');
+        Route::post('/coordinator/{con_id}/reject','CoordinatorContributionController@rejectContribution')->name('contribution.coordinator.reject');
+    });
 });
 
 Route::resource('/academic-years', 'AcademicYearController')->middleware('can:isAdmin');

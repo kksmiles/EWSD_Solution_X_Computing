@@ -7,10 +7,6 @@ use App\Contributions;
 
 class ContributionController extends Controller
 {
-    public function index(){
-        return view('contributions.index');
-    }
-
     // ! Student  Contribution
     // show all contributions of auth student
     public function studentAllContribution(){
