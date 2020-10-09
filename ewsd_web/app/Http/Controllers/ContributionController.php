@@ -16,6 +16,7 @@ class ContributionController extends Controller
     public function studentAllContribution(){
         $cModel = new Contributions;
         $getOnlyAuthContributions = $cModel->getOnlyAuthContributions();
+       
         if(!count($getOnlyAuthContributions) > 0)
         return redirect()->route('contribution.upload')->with('success', 'Your Contributions does not exist. Please upload now'); 
         $datas = [];
@@ -23,6 +24,7 @@ class ContributionController extends Controller
             $datas[] = [
                 'id' => $contribution->id,
                 'contribution_name' => $contribution->title,
+                'file' => $contribution->file,
                 'issue_name' => $contribution->magazineIssue()->first()->title,
                 'faculty_name' => $contribution->magazineIssue()->first()->faculty()->first()->name,
                 'acedemic_year' => $contribution->magazineIssue()->first()->academic_year()->first()->title,
@@ -52,7 +54,9 @@ class ContributionController extends Controller
             $file = $request['file'];
             $fileName =$file->getClientOriginalName();
             $fileExtension = $file->getClientOriginalExtension();
-            $file->storeAs('public/contributions/',$fileName);
+            $upload_path = public_path().'/storage/contributions/';
+            $file->move($upload_path,$fileName);
+            // $file->storeAs('public/contributions/',$fileName);
         }
         $newContribution = new Contributions;
         $newContribution->student_id = \Auth::user()->id;

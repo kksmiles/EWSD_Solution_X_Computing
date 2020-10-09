@@ -37,18 +37,24 @@
         Choose Magazines Issues
         <select name="issueId">
             @foreach($availableMagazineIssuesWithFaculty as $issue)
-                <option value="{{ $issue->id }}" <?php echo $contributions->issue_id == $issue->id ? 'selected' : 'sfd' ?> >{{ $issue->title }}</option>
+                <option value="{{ $issue->id }}" <?php echo $contributions->issue_id == $issue->id ? 'selected' : '' ?> >{{ $issue->title }}</option>
             @endforeach
         </select>
         <br>
         Student name => <span style="color: blue; font-size: 20px;">{{\Auth::user()->fullname}}</span>
-       <br>
+        <br>
+        
         Title : <input type="text" name="title" value="{{$contributions->title}}" >
         <br>
         Description : <input type="text" name="description" value="{{$contributions->description}}">
         <br>
+      
+        <a href="{{asset('storage/contributions/'.$contributions->file)}}" download="{{$contributions->file}}">
+            Download Current File
+        </a>
         <br>
-        File : <input type="file" name="file"> <br>
+        <br>
+         Upload New File : <input type="file" name="file"> <br>
         <br>
         <input type="checkbox" id="checkTerm"> <label for="checkTerm">Agree terms and conditions of this issue</label> 
         <br>

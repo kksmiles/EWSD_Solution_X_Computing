@@ -17,7 +17,7 @@ body {
 table {
   border: 1px solid #ccc;
   border-collapse: collapse;
-  width: 800px;
+  width: 100%;
   margin: 50px auto;
   table-layout: fixed;
 }
@@ -117,6 +117,7 @@ table th {
       <th scope="col">Acedemic Year</th>
       <th scope="col">Status</th>
       <th scope="col">Uploaded At</th>
+      <th>File</th>
       <th>Action</th>
     </tr>
   </thead>
@@ -130,6 +131,11 @@ table th {
         <td>{{$data['acedemic_year']}}</td>
         <td>{{$data['is_published'] == '0' ? 'Pending' : 'Published'}}</td>
         <td>{{$data['uploaded_at']}}</td>
+        <td>
+            <a href="{{asset('storage/contributions/'.$data['file'])}}" download="{{$data['file']}}">
+              <button>Download Files</button>
+            </a>
+        </td>
         <td>
             <a href="{{route('contribution.student.edit',$data['id'])}}">
               <button>Update Contribution</button>
