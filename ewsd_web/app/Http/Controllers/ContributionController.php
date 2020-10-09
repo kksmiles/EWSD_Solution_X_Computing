@@ -22,6 +22,7 @@ class ContributionController extends Controller
         foreach($getOnlyAuthContributions as $contribution){
             $datas[] = [
                 'id' => $contribution->id,
+                'contribution_name' => $contribution->title,
                 'issue_name' => $contribution->magazineIssue()->first()->title,
                 'faculty_name' => $contribution->magazineIssue()->first()->faculty()->first()->name,
                 'acedemic_year' => $contribution->magazineIssue()->first()->academic_year()->first()->title,
@@ -33,21 +34,8 @@ class ContributionController extends Controller
     }
 
     public function upload(){
-        $authUser = \Auth::user();
         $ufModel = new \App\UserFaculty;
-        $getAuthUserFaculties = $ufModel->getAuthUserFaculties($authUser->id);
-        $getIssuesFaculites = \App\MagazineIssue::all();
-        $availableMagazineIssuesWithFaculty = [];
-        if(count($getAuthUserFaculties) > 0){
-            // @ get magazine issues with same faculty (Auth User's faculty is included in Magazine Issue Faculty)
-            foreach($getIssuesFaculites as $issue_faculty){
-                foreach($getAuthUserFaculties as $au_faculty){
-                    if($issue_faculty->faculty_id === $au_faculty->faculty_id){
-                        $availableMagazineIssuesWithFaculty[] = $issue_faculty;
-                    }
-                }
-            }
-        }
+        $availableMagazineIssuesWithFaculty = $ufModel->getMagazines();
         return view('contributions.student.upload',compact('availableMagazineIssuesWithFaculty'));
     }
     // users -> user_faculty => faculty // magzines_issue_faculty -> select('magazine_issue')
@@ -85,6 +73,7 @@ class ContributionController extends Controller
             'student_name'  => \Auth::user()->fullname,
             'student_gmail' => \Auth::user()->email,
             'title' => $request['title'],
+            'status' => 'new'
         ];
 
         // @ Call sendMailToContributor mail function
@@ -97,6 +86,52 @@ class ContributionController extends Controller
         return redirect()->route('contribution.upload')->with('success', 'Student Contribution uploaded successfully!');
     }
 
+    public function update(Request $request){
+        $request->validate([
+            'issueId' => 'required',
+            'title' => 'required',
+            'description' => 'required',
+            'file' => ['required', 'mimes:jpeg,png,gif,pdf,doc,ppt,zip'],
+        ]);
+        if($request->hasFile('file')){
+            $file = $request['file'];
+            $fileName =$file->getClientOriginalName();
+            $fileExtension = $file->getClientOriginalExtension();
+            $file->storeAs('public/contributions/',$fileName);
+        }
+        $updateContribution = \App\Contributions::find($request->id);
+        $updateContribution->issue_id = $request['issueId'];
+        $updateContribution->title = $request['title'];
+        $updateContribution->description = $request['description'];
+        $updateContribution->is_published = '0';
+        $updateContribution->file = $fileName;
+        $updateContribution->save();
+
+        // send mail to respective contributor
+        $contributor = \App\MagazineIssue::findOrFail($request['issueId'])->staff()->first();
+        $contributorName = $contributor->fullname;
+        $contributorMail = $contributor->email;
+        $mailData = [
+            'contributor_name' => $contributorName,
+            'contributor_mail' => $contributorMail,
+            'student_name'  => \Auth::user()->fullname,
+            'student_gmail' => \Auth::user()->email,
+            'title' => $request['title'],
+            'status' => 'updated'
+        ];
+
+        // @ Call sendMailToContributor mail function
+        $sendMailToContributor = $this->sendMailToContributor($mailData);
+        $getResult = $sendMailToContributor->getOriginalContent();
+        if($getResult["message"] != "success"){
+            return redirect()->route('contribution.student.edit',$request->id)->with('fail', 'Mail Failed, Try again!');
+        }
+
+        return redirect()->route('contribution.student.edit',$request->id)->with('success', 'Student Contribution uploaded successfully!');
+    }
+
+    // ! Send Mail To Contributor 
+    // @ this global function
     public function sendMailToContributor($data){
         $to_name =  $data['contributor_name'];
         $to_email = $data['contributor_mail'];
@@ -105,7 +140,7 @@ class ContributionController extends Controller
             'student_name' => $data['student_name'],
             'email' => $data['student_gmail'],
             'msg_inbox' => $data['title'],
-            'title' => 'Student Contribution Request'
+            'title' => $data['status'] == 'new' ? 'Student Contribution Request' : 'Student Contribution [Updated]'
         ];
         \Mail::send('mails.send', $user_data, function($message) use ($to_name, $to_email) {
             $message->to($to_email, $to_name)->subject("Student Contribution Request");
@@ -116,6 +151,14 @@ class ContributionController extends Controller
             return response()->json(['message' => 'failed']);
         }
         return response()->json(['message' => 'success']);
+    }
+
+    // @ student edit
+    public function studentContributionEdit($id){
+        $contributions = \App\Contributions::findOrfail($id);
+        $ufModel = new \App\UserFaculty;
+        $availableMagazineIssuesWithFaculty = $ufModel->getMagazines();
+        return view('contributions.student.edit',compact('contributions','availableMagazineIssuesWithFaculty'));
     }
 
 

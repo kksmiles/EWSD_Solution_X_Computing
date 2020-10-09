@@ -37,6 +37,8 @@ Route::group([ 'prefix' => 'contributions' ], function(){
         Route::get('/student/upload','ContributionController@upload')->name('contribution.upload');
         Route::post('/student/upload/store','ContributionController@store')->name('contribution.store');
         Route::get('/student','ContributionController@studentAllContribution')->name('contribution.student.all');
+        Route::get('/student/{id}','ContributionController@studentContributionEdit')->name('contribution.student.edit');
+        Route::post('/student/updated','ContributionController@update')->name('contribution.update');
     // });
 });
 

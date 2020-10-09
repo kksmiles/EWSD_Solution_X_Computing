@@ -111,22 +111,30 @@ table th {
   <thead>
     <tr>
       <th scope="col">No.</th>
+      <th>Title</th>
       <th scope="col">Issue Name</th>
       <th scope="col">Faculty Name</th>
       <th scope="col">Acedemic Year</th>
       <th scope="col">Status</th>
       <th scope="col">Uploaded At</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
     @foreach($datas as $key => $data)
         <tr>
         <td>{{$key+1}}</td>
+        <td>{{$data['contribution_name']}}</td>
         <td>{{$data['issue_name']}}</td>
         <td>{{$data['faculty_name']}}</td>
         <td>{{$data['acedemic_year']}}</td>
         <td>{{$data['is_published'] == '0' ? 'Pending' : 'Published'}}</td>
         <td>{{$data['uploaded_at']}}</td>
+        <td>
+            <a href="{{route('contribution.student.edit',$data['id'])}}">
+              <button>Update Contribution</button>
+            </a>
+        </td>
         </tr>
     @endforeach
   </tbody>
