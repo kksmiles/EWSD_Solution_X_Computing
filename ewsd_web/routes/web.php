@@ -33,11 +33,11 @@ Route::group([ 'prefix' => 'contributions' ], function(){
     Route::get('/','ContributionController@index')->name('contribution');
 
     // @ Student Contributions
-    Route::group([ 'middleware' => 'can:isStudent' ], function(){
+    // Route::group([ 'middleware' => 'can:isStudent' ], function(){
         Route::get('/student/upload','ContributionController@upload')->name('contribution.upload');
         Route::post('/student/upload/store','ContributionController@store')->name('contribution.store');
         Route::get('/student','ContributionController@studentAllContribution')->name('contribution.student.all');
-    });
+    // });
 });
 
 Route::resource('/academic-years', 'AcademicYearController')->middleware('can:isAdmin');

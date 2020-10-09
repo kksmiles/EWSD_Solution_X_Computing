@@ -23,7 +23,13 @@
         <div style="margin:0 auto; text-align:center; background:green; color:#fff;">
                 <strong>{{ $message }}</strong>
         </div>
-    @endif
+    @endif 
+    @if ($message = Session::get('fail'))
+        <div style="margin:0 auto; text-align:center; background:red; color:#fff;">
+                <strong>{{ $message }}</strong>
+        </div>
+    @endif 
+
     <form action="{{ route('contribution.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         Choose Magazines Issues of Your Faculties:
@@ -42,7 +48,7 @@
         <br>
         File : <input type="file" name="file"> <br>
         <br>
-        <input type="checkbox" id="checkTerm"> Agree terms and conditions of this issue
+        <input type="checkbox" id="checkTerm"> <label for="checkTerm">Agree terms and conditions of this issue</label> 
         <br>
         <button type="submit" id="submitBtn" disabled>Upload Contributions</button>
     </form>

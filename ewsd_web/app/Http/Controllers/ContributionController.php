@@ -50,6 +50,7 @@ class ContributionController extends Controller
         }
         return view('contributions.student.upload',compact('availableMagazineIssuesWithFaculty'));
     }
+    // users -> user_faculty => faculty // magzines_issue_faculty -> select('magazine_issue')
 
     // store
     public function store(Request $request){
@@ -73,7 +74,50 @@ class ContributionController extends Controller
         $newContribution->is_published = '0';
         $newContribution->file = $fileName;
         $newContribution->save();
+
+        // send mail to respective contributor
+        $contributor = \App\MagazineIssue::findOrFail($request['issueId'])->staff()->first();
+        $contributorName = $contributor->fullname;
+        $contributorMail = $contributor->email;
+        $mailData = [
+            'contributor_name' => $contributorName,
+            'contributor_mail' => $contributorMail,
+            'student_name'  => \Auth::user()->fullname,
+            'student_gmail' => \Auth::user()->email,
+            'title' => $request['title'],
+        ];
+
+        // @ Call sendMailToContributor mail function
+        $sendMailToContributor = $this->sendMailToContributor($mailData);
+        $getResult = $sendMailToContributor->getOriginalContent();
+        if($getResult["message"] != "success"){
+            return redirect()->route('contribution.upload')->with('fail', 'Mail Failed, Try again!');
+        }
+
         return redirect()->route('contribution.upload')->with('success', 'Student Contribution uploaded successfully!');
     }
+
+    public function sendMailToContributor($data){
+        $to_name =  $data['contributor_name'];
+        $to_email = $data['contributor_mail'];
+        $user_data = [
+            'contributor_name' => $data['contributor_name'],
+            'student_name' => $data['student_name'],
+            'email' => $data['student_gmail'],
+            'msg_inbox' => $data['title'],
+            'title' => 'Student Contribution Request'
+        ];
+        \Mail::send('mails.send', $user_data, function($message) use ($to_name, $to_email) {
+            $message->to($to_email, $to_name)->subject("Student Contribution Request");
+            $message->from('thuchangetheworld03@gmail.com','no-reply');
+        });
+        // @ check for failures
+        if (\Mail::failures()) {
+            return response()->json(['message' => 'failed']);
+        }
+        return response()->json(['message' => 'success']);
+    }
+
+
 
 }
