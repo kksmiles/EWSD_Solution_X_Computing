@@ -160,6 +160,12 @@ class ContributionController extends Controller
         $availableMagazineIssuesWithFaculty = $ufModel->getMagazines();
         return view('contributions.student.edit',compact('contributions','availableMagazineIssuesWithFaculty'));
     }
+    // Show contribution Details
+    public function show($id) 
+    {
+        $contribution = \App\Contributions::findOrFail($id);
+        return view('contributions.show', compact('contribution'));
+    }
 
 
 
