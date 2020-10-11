@@ -54,16 +54,35 @@
             @endif
         </li>
     @endforeach
+    @if($contribution->allowComment())
+        <form action="{{ route('contribution.comment.store', $contribution->id) }}" method="POST">
+            @csrf
+            <textarea name="comment" cols="50" rows="5"></textarea>
+            <button type="submit">Add comment</button>
+        </form>
+    @endif
 
-    <form action="{{ route('contribution.comment.store', $contribution->id) }}" method="POST">
-        @csrf
-        <textarea name="comment" cols="50" rows="5"></textarea>
-        <button type="submit">Add comment</button>
-    </form>
-
+    @if(session()->has('comment_not_allowed'))
+        {{ session('comment_not_allowed') }}
+    @endif
+    
     @if ($message = Session::get('success'))
         <strong>{{ $message }}</strong>
     @endif 
+
+    @if(!($contribution->isOpen()))
+        <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+            <div class="card-body">
+            <h5 class="card-title">
+                The contributions is closed because 
+                @if(session()->has('closed'))
+                    {{ session('closed') }}
+                @endif
+            </h5>
+            <p class="card-text"></p>
+            </div>
+        </div>
+    @endif
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

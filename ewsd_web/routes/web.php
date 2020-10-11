@@ -63,6 +63,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //Comment Routes
+
 Route::get('/contributions/{contribution_id}', 'ContributionController@show')->name('contribution.show');
 Route::post('/contributions/{contribution_id}/comments', 'CommentController@store')->name('contribution.comment.store');
 Route::patch('/comments/{comment}', 'CommentController@update')->name('comment.update');
