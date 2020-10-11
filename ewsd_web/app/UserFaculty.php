@@ -16,8 +16,20 @@ class UserFaculty extends Model
     }
     
     // ! eloquents
-    public function getAuthUserFaculties($authId){
-        $faculties = \App\UserFaculty::where('user_id',$authId)->select('faculty_id')->get();
-        return $faculties;
+    public function getMagazines(){
+        $getAuthUserFaculties = \App\UserFaculty::where('user_id',\Auth::user()->id)->select('faculty_id')->get();
+        $getIssuesFaculites = \App\MagazineIssue::all();
+        $availableMagazineIssuesWithFaculty = [];
+        if(count($getAuthUserFaculties) > 0){
+            // @ get magazine issues with same faculty (Auth User's faculty is included in Magazine Issue Faculty)
+            foreach($getIssuesFaculites as $issue_faculty){
+                foreach($getAuthUserFaculties as $au_faculty){
+                    if($issue_faculty->faculty_id === $au_faculty->faculty_id){
+                        $availableMagazineIssuesWithFaculty[] = $issue_faculty;
+                    }
+                }
+            }
+        }
+        return $availableMagazineIssuesWithFaculty;
     }
 }

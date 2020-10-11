@@ -29,14 +29,21 @@ Route::group([ 'prefix' => 'faculty' ], function(){
 
 // ! Contributions
 Route::group([ 'prefix' => 'contributions' ], function(){
-    // @ Marketing Coordinatior Contributions Access
-    Route::get('/','ContributionController@index')->name('contribution');
-
     // @ Student Contributions
     Route::group([ 'middleware' => 'can:isStudent' ], function(){
         Route::get('/student/upload','ContributionController@upload')->name('contribution.upload');
         Route::post('/student/upload/store','ContributionController@store')->name('contribution.store');
         Route::get('/student','ContributionController@studentAllContribution')->name('contribution.student.all');
+        Route::get('/student/{id}','ContributionController@studentContributionEdit')->name('contribution.student.edit');
+        Route::post('/student/updated','ContributionController@update')->name('contribution.update');
+    });
+
+   // @ Marketing Coordinatior Contributions Access
+    Route::group([ 'middleware' => 'can:isMarketingCoordinator' ], function(){
+        Route::get('/coordinator','CoordinatorContributionController@index')->name('contribution.coordinator.index');
+        Route::get('/coordinator/{id}','CoordinatorContributionController@show')->name('contribution.coordinator.show');
+        Route::post('/coordinator/{con_id}/publish','CoordinatorContributionController@publishContribution')->name('contribution.coordinator.publish');
+        Route::post('/coordinator/{con_id}/reject','CoordinatorContributionController@rejectContribution')->name('contribution.coordinator.reject');
     });
 });
 
