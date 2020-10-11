@@ -23,4 +23,9 @@ class Contributions extends Model
         $getContributions = \App\Contributions::where('student_id',\Auth::user()->id)->get();
         return $getContributions;
     }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment', 'contribution_id', 'id');
+    }
 }

@@ -14,7 +14,7 @@ class CoordinatorContributionController extends Controller
         return view('contributions.coordinator.index');
     }
 
-    public function show($id){
+    public function show($id) {
         $getContributions = \App\Contributions::where('issue_id',$id)->get();
         $issue = \App\MagazineIssue::findOrfail($id);
         if(count($getContributions) > 0){
