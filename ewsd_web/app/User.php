@@ -53,4 +53,9 @@ class User extends Authenticatable
     public function contributions() {
         return $this->hasMany('App\Contributions', 'student_id', 'id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment', 'user_id', 'id');
+    }
 }

@@ -21,7 +21,7 @@ class CreateContributionsTable extends Migration
             $table->foreign('issue_id')->references('id')->on('magazine_issues');
             $table->string('title');
             $table->text('description');
-            $table->enum('is_published', [ '0', '1' ])->default('0');
+            $table->enum('is_published', [ '0', '1', '2' ])->default('0');
             $table->string('file')->nullable();
             $table->timestamps();
         });

@@ -7,9 +7,10 @@
 
 </head>
 <body>
-    <h1>Student Upload Contributions 
+    <h1>
+        Updated of {{$contributions->title}}
         <a href="{{route('contribution.student.all')}}">
-            <button>Show My Contributions</button>
+            <button>back</button>
         </a>
     </h1>
     @if ($errors->any())
@@ -30,27 +31,34 @@
         </div>
     @endif 
 
-    <form action="{{ route('contribution.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('contribution.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        Choose Magazines Issues of Your Faculties:
+        <input type="hidden" value="{{$contributions->id}}" name="id">
+        Choose Magazines Issues
         <select name="issueId">
             @foreach($availableMagazineIssuesWithFaculty as $issue)
-                <option value="{{ $issue->id }}">{{ $issue->title }}</option>
+                <option value="{{ $issue->id }}" <?php echo $contributions->issue_id == $issue->id ? 'selected' : '' ?> >{{ $issue->title }}</option>
             @endforeach
         </select>
         <br>
         Student name => <span style="color: blue; font-size: 20px;">{{\Auth::user()->fullname}}</span>
-       <br>
-        Title : <input type="text" name="title" >
         <br>
-        Description : <input type="text" name="description" >
+        
+        Title : <input type="text" name="title" value="{{$contributions->title}}" >
+        <br>
+        Description : <input type="text" name="description" value="{{$contributions->description}}">
+        <br>
+      
+        <a href="{{asset('storage/contributions/'.$contributions->file)}}" download="{{$contributions->file}}">
+            Download Current File
+        </a>
         <br>
         <br>
-        File : <input type="file" name="file"> <br>
+         Upload New File : <input type="file" name="file"> <br>
         <br>
         <input type="checkbox" id="checkTerm"> <label for="checkTerm">Agree terms and conditions of this issue</label> 
         <br>
-        <button type="submit" id="submitBtn" disabled>Upload Contributions</button>
+        <button type="submit" id="submitBtn" disabled>Update</button>
     </form>
 
 <script>
