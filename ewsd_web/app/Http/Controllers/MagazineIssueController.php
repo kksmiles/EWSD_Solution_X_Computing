@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\MagazineIssue;
+use App\AcademicYear;
+use App\User;
+use App\Faculty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class MagazineIssueController extends Controller
 {
@@ -13,10 +18,16 @@ class MagazineIssueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+   
     public function index()
     {
-        $magazine_issues = MagazineIssue::all();
-        return view('magazine_issue.index', compact('magazine_issues'));
+        if(Gate::allows('isMarketingCoordinator')) {
+            return redirect()->route('magazine_issue.staff.show',Auth::id());
+        } elseif(Gate::allows('isSupervisor')) {
+            $faculties = Faculty::all();
+            $magazine_issues = MagazineIssue::all();
+            return view('magazine_issue.index', compact('magazine_issues','faculties'));
+        } 
     }
 
     /**
@@ -153,5 +164,16 @@ class MagazineIssueController extends Controller
     {
         $magazine_issue->delete();
         return redirect()->route('magazine-issues.index')->with('success', 'Magazine Issue Deleted Successfully');
+    }
+
+    public function getStaffIssues($user_id) {
+        $magazine_issues = MagazineIssue::where('staff_id',$user_id)->get();
+        if(Gate::authorize('view',$magazine_issues[0])){
+            return view('magazine_issue.index',compact('magazine_issues'));
+        } elseif(Gate::allows('isSupervisor')){
+            dd("potato");
+        } else {
+           return redirect()->route('home')->with('error','You can only view magazine issues of your faculty.');
+        }
     }
 }

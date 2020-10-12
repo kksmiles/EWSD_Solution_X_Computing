@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Faculty;
+use App\UserFaculty;
 
 class FacultyController extends Controller
 {
@@ -16,7 +17,9 @@ class FacultyController extends Controller
     public function addView(){
         return view('faculty.add');
     }
-
+    public function show($f_id = 1){
+        return redirect()->route('faculty.users.show',$f_id);
+    }
     // Save
     public function save(Request $request){
         $request->validate([

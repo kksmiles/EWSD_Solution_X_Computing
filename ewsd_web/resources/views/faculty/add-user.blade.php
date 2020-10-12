@@ -32,7 +32,7 @@
                     <td> {{$user->email}}</td>
                     <td> {{$user->role->roles}}</td>
                     <td>
-                        <form action="{{ route('user_faculty.store')}}" method="post">
+                        <form action="{{ route('user-faculty.store')}}" method="post">
                             @csrf
                             <input type="hidden" name="faculty_id" value="{{$f_id}}">
                             <input type="hidden" name="user_id" value="{{$user->id}}">

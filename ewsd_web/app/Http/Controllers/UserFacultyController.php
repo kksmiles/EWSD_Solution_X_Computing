@@ -13,14 +13,14 @@ class UserFacultyController extends Controller
 
     public function index()
     {
-        //
+        return redirect()->route('faculty.show',1);
     }
 
     public function create()
     {
         $user = User::all();
         $faculty = Faculty::all();
-        return view('user_faculty.create',compact('user','faculty'));
+        return view('user-faculty.create',compact('user','faculty'));
     }
 
     public function store(Request $request)
@@ -30,23 +30,23 @@ class UserFacultyController extends Controller
             'user_id' => ['required', 'integer']
         ]);
         UserFaculty::create($attributes);
-        return redirect()->route('user_faculty.show',$request->faculty_id)->with('success', 'User Faculty created successfully!');
+        return redirect()->route('faculty.show',$request->faculty_id)->with('success', 'User Faculty created successfully!');
     }
 
-    public function show($f_id)
+    public function show($id)
     {   
-        $user_faculties = UserFaculty::all();
-        $faculties = Faculty::all();
-        $users_in_faculty = UserFaculty::where('faculty_id',$f_id)->get();
-
-        return view('user_faculty.show', compact('users_in_faculty','faculties','f_id'));
+        $user_in_faculty = UserFaculty::where('id',$id)->get()->first();
+        if(!$user_in_faculty) {
+            return abort(404);
+        } 
+        return redirect()->route('faculty.show',$user_in_faculty->faculty_id);
     }
 
     public function edit(UserFaculty $user_faculty)
     {   
         $user = User::all();
         $faculty = Faculty::all();
-        return view('user_faculty.edit', compact('user_faculty', 'user', 'faculty'));
+        return view('user-faculty.edit', compact('user_faculty', 'user', 'faculty'));
     }
 
     public function update(Request $request, UserFaculty $user_faculty)
@@ -56,15 +56,18 @@ class UserFacultyController extends Controller
 
     public function destroy(UserFaculty $user_faculty)
     {   
+        $f_id = $user_faculty->faculty_id;
         $user_faculty->delete();
-        return redirect()->route('user_faculty.index')->with('success', 'User Faculty deleted successfully!'); 
+        return redirect()->route('faculty.show',$f_id); 
     }
 
-    public function showFaculty(Request $request) 
-    {   
-        $faculty_id = $request->faculty_id;
-        if($request->faculty_id == null) {$faculty_id = 1;} 
-        return redirect()->route('user_faculty.show',$faculty_id);
+    public function showFacultyUsers($f_id = 1) 
+    {       
+        $user_faculties = UserFaculty::all();
+        $faculties = Faculty::all();
+        $users_in_faculty = UserFaculty::where('faculty_id',$f_id)->get();
+
+        return view('faculty.show', compact('users_in_faculty','faculties','f_id'));
     }
     
     public function addUsersToFaculty($f_id) {
@@ -73,6 +76,13 @@ class UserFacultyController extends Controller
         foreach($users_in_faculty as $user_in_faculty){
             $users_in[] = $user_in_faculty->user->id;
         }
-        return view('user_faculty.create',compact('users','users_in','f_id'));
+        return view('faculty.add-user',compact('users','users_in','f_id'));
+    }
+    public function userFaucltyRouteHelper(Request $request) {
+        $f_id = $request->faculty_id;
+        if(!$f_id) {
+            $f_id = 1;
+        }
+        return redirect()->route('faculty.users.show',$f_id);
     }
 }
