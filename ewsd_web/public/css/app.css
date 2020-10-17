@@ -581,6 +581,8 @@ pre code {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
+  margin-top: 40px;
+  color: #000;
   margin-right: auto;
   margin-left: auto;
 }
@@ -1827,23 +1829,23 @@ pre code {
 .table-primary,
 .table-primary > th,
 .table-primary > td {
-  background-color: #c6e0f5;
+  background-color: #01A9DB;
 }
 
 .table-primary th,
 .table-primary td,
 .table-primary thead th,
 .table-primary tbody + tbody {
-  border-color: #95c5ed;
+  border-color: #01A9DB;
 }
 
 .table-hover .table-primary:hover {
-  background-color: #b0d4f1;
+  background-color: #01A9DB;
 }
 
 .table-hover .table-primary:hover > td,
 .table-hover .table-primary:hover > th {
-  background-color: #b0d4f1;
+  background-color: #4E89BF;
 }
 
 .table-secondary,
@@ -2263,6 +2265,7 @@ textarea.form-control {
 
 .form-group {
   margin-bottom: 1rem;
+  font-family: Montserrat;
 }
 
 .form-text {
@@ -6954,6 +6957,14 @@ a.close.disabled {
   background-color: #3490dc !important;
 }
 
+.bg-gray {
+  background-color: #f4f4f4 !important;
+}
+
+.bg-dark-primary {
+  background-color: #4E89BF !important;
+}
+
 a.bg-primary:hover,
 a.bg-primary:focus,
 button.bg-primary:hover,
@@ -7151,7 +7162,7 @@ button.bg-dark:focus {
 }
 
 .rounded-lg {
-  border-radius: 0.3rem !important;
+  border-radius: 0.5rem !important;
 }
 
 .rounded-circle {
@@ -10870,6 +10881,7 @@ a.text-dark:focus {
 
   .table {
     border-collapse: collapse !important;
+
   }
 
   .table td,
@@ -10899,3 +10911,25 @@ a.text-dark:focus {
   }
 }
 
+.form-group{
+  color:black;
+  text-align:left;
+  font-weight:bold;
+}
+
+.box{
+  width:"50%" ;
+}
+
+/*arrowwwwwwwwwwwwwwwwwwwwwwwwww*/
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}

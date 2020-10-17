@@ -11,13 +11,17 @@
 @section('content')
 
 <section class='container'>
-    <div class="card">
+
+    <div class="card border-left-primary">
+    
         <div class='card-header'>
-            <img src="{{ asset($user->image) }}" alt="" class="img-thumbnail rounded-circle profile offset-5">
+            <img src="{{ asset($user->image) }}" alt="" class="img-thumbnail rounded-circle profile offset-md-5 offset-3">
         </div>
+
+
         <div class="card-body row col-12">
-            <div class="col-6">
-                <ul class='list-group offset-3 border-left-primary mt-3'>
+            <div class="col-md-6 col-12">
+                <ul class='list-group offset-md-3 shadow mt-3'>
                 <div class="list-group-item bg-primary p-0">
                     <span class='font-weight-bold text-white'>&nbsp;{{ $user->fullname }}'s Personal Info </span>
                     <a href="{{ route('users.edit',$user->id) }}" class='btn btn-primary float-right btn-sm'>
@@ -35,7 +39,7 @@
                      @endisset
                      </li>
                 </ul>
-                <div class='list-group-item offset-3 mt-3 rounded'>
+                <div class='list-group-item offset-md-3 mt-3 rounded shdow'>
              
                     <form action="{{ route('user_role.assign') }}" method="POST" class='row'>
 
@@ -57,10 +61,10 @@
                 </div>
 
             </div>
-            <div class="col-6">
-                <div class="row col-8 p-2">
-                    <span class='col-12 p-1 font-weight-bold text-dark'>{{ $user->fullname }}'s Faculty List</span>
-                    <ul class='list-group col-12'>
+            <div class="col-md-6 col-12">
+                <div class="row col-md-8 col-12 ml-1 ml-md-0 p-md-2">
+                    <span class='col-12 p-1 font-weight-bold bg-primary text-white'>{{ $user->fullname }}'s Faculty List</span>
+                    <ul class='list-group rounded-0 col-12 shadow p-0 '>
                         @foreach($user->faculties as $faculty)
                             <li class='list-group-item small text-dark font-weight-bold'>
                                 <span class='float-left'>{{ $faculty->name }}</span>
@@ -86,7 +90,7 @@
                                         @endif  
                                     @endforeach
                                 </select>
-                                <button class='btn btn-primary col-3 mx-2 btn-sm'>
+                                <button class='btn btn-primary col-md-3 col-4 m-ml-0 m-1 mx-2 btn-sm'>
                                     Assign
                                 </button>
                             </form>
@@ -110,6 +114,11 @@
         </button>
         </div>
     @endif
+
+
+
+
 </section>
 
 @endsection
+

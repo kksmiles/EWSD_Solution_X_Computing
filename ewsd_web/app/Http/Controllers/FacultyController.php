@@ -54,4 +54,6 @@ class FacultyController extends Controller
         $faculty->delete();
         return redirect()->route('faculty')->with('success','Faculty deleted successfully!');
     }
+
+   
 }

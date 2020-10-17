@@ -22,6 +22,8 @@
             @foreach($staffs as $staff)
                 <option value="{{ $staff->id }}">{{ $staff->fullname }}</option>
             @endforeach
+
+            
         </select>
         <br>
         Title : <input type="text" name="title" class='form-control' required>
