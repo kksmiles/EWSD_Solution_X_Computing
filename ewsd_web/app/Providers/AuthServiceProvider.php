@@ -4,7 +4,9 @@ namespace App\Providers;
 use App\User;
 use App\Policies\UserPolicy;
 use App\UserRoles;
-use App\UserRolesPolicy;
+use App\Policies\UserRolesPolicy;
+use App\MagazineIssue;
+use App\Policies\MagazineIssuesPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -17,8 +19,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Model' => 'App\Policies\ModelPolicy',
-        User::class => UserPolicy::class,
+        // User::class => UserPolicy::class,
         UserRoles::class  => UserRolesPolicy::class,
+        MagazineIssue::class => MagazineIssuesPolicy::class,
     ];
 
     /**
@@ -48,6 +51,11 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('isGuest', function ($user) {
             return $user->role_id == 5;
+        });
+
+        //Admin or MarketingManager or Marketing Coordinator 
+        Gate::define('isSupervisor',function ($user) {
+            return ($user->role_id == 1 || 2 );
         });
     }
 }

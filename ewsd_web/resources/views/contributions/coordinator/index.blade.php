@@ -100,50 +100,36 @@ table th {
         <strong>{{ $message }}</strong>
 </div>
 @endif
+
+@if(isset($getIssues))
 <table>
   <caption>
-  <h1>My Contributions (student)
-    <a href="{{route('contribution.upload')}}">
-            <button>Upload New Contribution</button>
-    </a>
+  <h1>My Magazine Issues (Coordinator)
   </h1>
   </caption>
   <thead>
     <tr>
       <th scope="col">No.</th>
-      <th>Title</th>
       <th scope="col">Issue Name</th>
-      <th scope="col">Faculty Name</th>
-      <th scope="col">Acedemic Year</th>
-      <th scope="col">Status</th>
-      <th scope="col">Uploaded At</th>
-      <th>File</th>
-      <th>Action</th>
+      <th>Submission Closure Date</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
-    @foreach($datas as $key => $data)
+    @foreach($getIssues as $key => $issue)
         <tr>
         <td>{{$key+1}}</td>
-        <td>{{$data['contribution_name']}}</td>
-        <td>{{$data['issue_name']}}</td>
-        <td>{{$data['faculty_name']}}</td>
-        <td>{{$data['acedemic_year']}}</td>
-        <td>{{$data['is_published'] == '0' ? 'Pending' : 'Published'}}</td>
-        <td>{{$data['uploaded_at']}}</td>
+        <td>{{$issue->title}}</td>
+        <td>{{$issue->submission_closure_date}}</td>
         <td>
-            <a href="{{asset('storage/contributions/'.$data['file'])}}" download="{{$data['file']}}">
-              <button>Download Files</button>
-            </a>
-        </td>
-        <td>
-            <a href="{{route('contribution.student.edit',$data['id'])}}">
-              <button>Update Contribution</button>
-            </a>
+          <a href="{{route('contribution.coordinator.show',$issue->id)}}">
+              <button>View Issue's contributions</button>
+          </a>
         </td>
         </tr>
     @endforeach
   </tbody>
 </table>
+@endif
 </body>
 </html> 

@@ -50,7 +50,7 @@
       </li>
 
       <li class="nav-item active">
-        <a class="nav-link" href="{{route('user_faculty.select')}}">
+        <a class="nav-link" href="{{route('faculty.show',1)}}">
           <i class="fas fa-fw fa-user"></i>
           <span>Faculty</span></a>
       </li>
