@@ -17,6 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// ! Chart
+// Route::get('/chart', 'ChartController@index');
+// Route::post('chart/fetch_data', 'ChartController@fetch_data');
+Route::group([ 'prefix' => 'charts' ], function(){
+    Route::get('/{year?}', 'ReportController@index')->name('charts.contribute');
+// Route::get('/laravel_google_chart/{year?}', 'ReportController@index')->name('charts.contribute');
+});
 // ! Contributions
 Route::group([ 'prefix' => 'contributions' ], function(){
     // @ Student Contributions
