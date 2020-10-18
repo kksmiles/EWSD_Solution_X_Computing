@@ -22,6 +22,7 @@ Route::get('/', function () {
 Route::group([ 'prefix' => 'report' ], function(){
     Route::get('/charts/{year?}', 'ReportController@index')->name('charts.contribute');
     Route::any('/contributions','ReportController@contributions')->name('report.contribute');
+    Route::any('/exception-report','ReportController@exceptionReport')->name('report.exception');
 });
 // ! Contributions
 Route::group([ 'prefix' => 'contributions' ], function(){

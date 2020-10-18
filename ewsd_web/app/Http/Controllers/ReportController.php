@@ -205,6 +205,7 @@ class ReportController extends Controller
         return view('reports.report_contribution',compact('contributions','academics_years','status','acedemicYear'));
     }
 
+    // @ call back function for require query
     public function getContributionReportQuery($status,$acedemicYear,$type){
         $data =  DB::table('contributions')
                 ->join('magazine_issues', 'magazine_issues.id', '=', 'contributions.issue_id')
@@ -233,7 +234,45 @@ class ReportController extends Controller
             else{
                 $query = $data->where('contributions.is_published',$status)->where('academic_years.id',$acedemicYear)->get();
             }
-           
+        }
+        return $query;
+    }
+
+    public function exceptionReport(Request $request){
+        if (\Request::isMethod('POST')){
+            $acedemicYear = $request->academic_year;
+            $contributions = $this->getExceptionQuery($acedemicYear,'post');
+        }else{
+            $acedemicYear = '1';
+            $contributions = $this->getExceptionQuery($acedemicYear,'get');
+        }
+        $academics_years = \App\AcademicYear::all();
+        return view('reports.report_exception',compact('contributions','academics_years','acedemicYear'));
+    }
+
+    // @ call back (exception report query)
+    public function getExceptionQuery($acedemicYear,$type){
+        $data =  DB::table('contributions')
+                            ->join('comments', 'comments.contribution_id', '!=', 'contributions.id')
+                            ->join('magazine_issues', 'magazine_issues.id', '=', 'contributions.issue_id')
+                            ->join('academic_years', 'academic_years.id', '=', 'magazine_issues.academic_year_id')
+                            ->select(
+                                'contributions.id as contribution_id',
+                                'contributions.title as contribution_title',
+                                'contributions.is_published as contribution_status',
+                                'contributions.file as contribution_download_file',
+                                'magazine_issues.title as magazine_issues_title',
+                                'academic_years.title as academic_year_title',
+                            );
+
+        if($type != 'post') {
+            $query = $data->get();
+        } else {
+            if($acedemicYear == 'all'){
+                $query = $data->get();
+            }else{
+                $query = $data->where('academic_years.id',$acedemicYear)->get();
+            }
         }
         return $query;
     }
