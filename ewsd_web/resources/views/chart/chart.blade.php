@@ -21,6 +21,7 @@
    google.charts.setOnLoadCallback(drawChart);
    google.charts.setOnLoadCallback(drawChartUsers);
    google.charts.setOnLoadCallback(drawChartConFaculty);
+   google.charts.setOnLoadCallback(drawChartConMonthAndYearly);
 
    function drawChart()
    {
@@ -45,11 +46,24 @@
    function drawChartConFaculty()
    {
     var data = google.visualization.arrayToDataTable(<?php echo $datas['contributions_faculty']; ?>);
+
     var options = {
      title : 'Percentage of Selected Contributions of each Faculty',
      is3D: true,
     };
-    var chart = new google.visualization.AreaChart(document.getElementById('contri_faculty_chart'));
+    var chart = new google.visualization.BarChart(document.getElementById('contri_faculty_chart'));
+    chart.draw(data, options);
+   }
+
+   function drawChartConMonthAndYearly()
+   {
+    var data = google.visualization.arrayToDataTable(<?php echo $datas['contributions_month&yearly']; ?>);
+
+    var options = {
+     title : 'Percentage of Contributions Months And Yearly Graph',
+     is3D: true,
+    };
+    var chart = new google.visualization.ColumnChart(document.getElementById('contri_month_year'));
     chart.draw(data, options);
    }
   </script>
@@ -111,14 +125,28 @@
             </div>
         </div>
     </div>
-
-  <div class="panel panel-default" align="center">
-        <div class="panel-heading">
-            <h3 class="panel-title">Percentage of Selected Contributions of each Faculty</h3>
-            <div id="contri_faculty_chart" style="width:750px; height:500px;">
+    <div class="row">
+        <div class="column" style="background-color:#aaa;">
+            <div class="panel panel-default" align="center">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Percentage of Selected Contributions of each Faculty</h3>
+                        <div id="contri_faculty_chart" style="width:550px; height:400px;">
+                        </div>
+                    </div>
             </div>
         </div>
-  </div>
+        <div class="column" style="background-color:#bbb;">
+            <div class="panel panel-default" align="center">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Percentage of Contributions Months And Yearly Graph</h3>
+                    <div id="contri_month_year" style="width:550px; height:400px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
  </body>
 </html>
