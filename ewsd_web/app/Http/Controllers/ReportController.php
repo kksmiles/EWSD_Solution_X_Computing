@@ -223,7 +223,17 @@ class ReportController extends Controller
         if($type != 'post') {
             $query = $data->get();
         } else {
-            $query = $data->where('contributions.is_published',$status)->where('academic_years.id',$acedemicYear)->get();
+            if($status == 'all' && $acedemicYear != 'all'){
+                $query = $data->where('academic_years.id',$acedemicYear)->get();
+            }else if($acedemicYear == 'all' && $status != 'all'){
+                $query = $data->where('contributions.is_published',$status)->get();
+            }else if($status == 'all' && $acedemicYear == 'all'){
+                $query = $data->get();
+            }
+            else{
+                $query = $data->where('contributions.is_published',$status)->where('academic_years.id',$acedemicYear)->get();
+            }
+           
         }
         return $query;
     }
