@@ -95,7 +95,7 @@
   </div>
     <form action="" method="POST">
     @csrf
-        <div style="margin:0 auto; text-align:center; width: 600px; display:flex;">
+        <div style="margin:0 auto; text-align:center; width: 900px; display:flex;">
             <div style="margin: 5px;">
                 Acedemic Years:
                 <select name="academic_year">
@@ -105,6 +105,19 @@
                     @foreach($academics_years as $key => $academics)
                         <option value="{{$academics->id}}" {{ $acedemicYear == $academics->id ? "selected" : '' }}> 
                             {{$academics->title}}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div style="margin: 5px;">
+                Faculty:
+                <select name="faculty">
+                    <option value="all" {{ $facultyId == 'all' ? "selected" : '' }}> 
+                            All
+                    </option>
+                    @foreach($faculties as $key => $faculty)
+                        <option value="{{$faculty->id}}" {{ $facultyId == $faculty->id ? "selected" : '' }}> 
+                            {{$faculty->name}}
                         </option>
                     @endforeach
                 </select>
@@ -147,9 +160,17 @@
             <td>{{$contribution->faculty_name}}</td>
             <td>{{$contribution->contribution_status == '0' ? 'Pending' : $contribution->contribution_status == '1' ? 'Published' : 'Rejected'}}</td>
             <td>
-                <a href="{{asset('storage/contributions/'.$contribution->contribution_download_file)}}" download="{{$contribution->contribution_download_file}}">
-                    <button>Download Files</button>
-                </a>
+                @if($contribution->contribution_status == '1')
+                    <a href="{{asset('storage/contributions/'.$contribution->contribution_download_file)}}" download="{{$contribution->contribution_download_file}}">
+                        <button style="color:green;">Download Files</button>
+                    </a>
+                @else
+                    @if($contribution->contribution_status == '0')
+                        <span style="color: black;">Pending File</span>
+                    @else
+                        <span style="color: red;">Rejected File</span>
+                    @endif
+                @endif
             </td>
             </tr>
         @endforeach

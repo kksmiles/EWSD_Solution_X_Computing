@@ -134,9 +134,17 @@
             <td>{{$contribution->academic_year_title}}</td>
             <td>{{$contribution->contribution_status == '0' ? 'Pending' : $contribution->contribution_status == '1' ? 'Published' : 'Rejected'}}</td>
             <td>
-                <a href="{{asset('storage/contributions/'.$contribution->contribution_download_file)}}" download="{{$contribution->contribution_download_file}}">
-                    <button>Download Files</button>
-                </a>
+                @if($contribution->contribution_status == '1')
+                    <a href="{{asset('storage/contributions/'.$contribution->contribution_download_file)}}" download="{{$contribution->contribution_download_file}}">
+                        <button style="color:green;">Download Files</button>
+                    </a>
+                @else
+                    @if($contribution->contribution_status == '0')
+                        <span style="color: black;">Pending File</span>
+                    @else
+                        <span style="color: red;">Rejected File</span>
+                    @endif
+                @endif
             </td>
             </tr>
         @endforeach

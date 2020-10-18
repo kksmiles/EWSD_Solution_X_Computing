@@ -195,18 +195,21 @@ class ReportController extends Controller
         if (\Request::isMethod('POST')){
             $status = $request->status;
             $acedemicYear = $request->academic_year;
-            $contributions = $this->getContributionReportQuery($status,$acedemicYear,'post');
+            $facultyId = $request->faculty;
+            $contributions = $this->getContributionReportQuery($status,$acedemicYear,$facultyId,'post');
         }else{
             $status = '1';
             $acedemicYear = '1';
-            $contributions = $this->getContributionReportQuery($status,$acedemicYear,'get');
+            $facultyId = '1';
+            $contributions = $this->getContributionReportQuery($status,$acedemicYear,$facultyId,'get');
         }
         $academics_years = \App\AcademicYear::all();
-        return view('reports.report_contribution',compact('contributions','academics_years','status','acedemicYear'));
+        $faculties = \App\Faculty::all();
+        return view('reports.report_contribution',compact('contributions','academics_years','status','acedemicYear','faculties','facultyId'));
     }
 
     // @ call back function for require query
-    public function getContributionReportQuery($status,$acedemicYear,$type){
+    public function getContributionReportQuery($status,$acedemicYear,$faculty,$type){
         $data =  DB::table('contributions')
                 ->join('magazine_issues', 'magazine_issues.id', '=', 'contributions.issue_id')
                 ->join('faculties', 'faculties.id', '=', 'magazine_issues.faculty_id')
@@ -224,15 +227,29 @@ class ReportController extends Controller
         if($type != 'post') {
             $query = $data->get();
         } else {
-            if($status == 'all' && $acedemicYear != 'all'){
-                $query = $data->where('academic_years.id',$acedemicYear)->get();
-            }else if($acedemicYear == 'all' && $status != 'all'){
+            if($status == 'all' && $acedemicYear != 'all' && $faculty != 'all'){
+                $query = $data->where('academic_years.id',$acedemicYear)->where('faculties.id',$faculty)->get();
+            }
+            else if($acedemicYear == 'all' && $status != 'all' && $faculty != 'all'){
+                $query = $data->where('contributions.is_published',$status)->where('faculties.id',$faculty)->get();
+            }
+            else if($faculty == 'all' && $status != 'all' && $acedemicYear != 'all'){
+                $query = $data->where('contributions.is_published',$status)->where('academic_years.id',$acedemicYear)->get();
+            }
+            else if($faculty != 'all' && $status == 'all' && $acedemicYear == 'all'){
+                $query = $data->where('faculties.id',$faculty)->get();
+            }
+            else if($status != 'all' && $acedemicYear == 'all' && $faculty == 'all'){
                 $query = $data->where('contributions.is_published',$status)->get();
-            }else if($status == 'all' && $acedemicYear == 'all'){
+            }
+            else if($acedemicYear != 'all' && $status == 'all' && $faculty == 'all'){
+                $query = $data->where('academic_years.id',$acedemicYear)->get();
+            }
+            else if($status == 'all' && $acedemicYear == 'all' && $faculty == 'all'){
                 $query = $data->get();
             }
             else{
-                $query = $data->where('contributions.is_published',$status)->where('academic_years.id',$acedemicYear)->get();
+                $query = $data->where('contributions.is_published',$status)->where('academic_years.id',$acedemicYear)->where('faculties.id',$faculty)->get();
             }
         }
         return $query;
