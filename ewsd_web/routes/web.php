@@ -19,8 +19,9 @@ Route::get('/', function () {
 
 // ! Chart
 // This has to be covered => 'middleware'=>'can:isMarketingManager'
-Route::group([ 'prefix' => 'charts' ], function(){
-    Route::get('/{year?}', 'ReportController@index')->name('charts.contribute');
+Route::group([ 'prefix' => 'report' ], function(){
+    Route::get('/charts/{year?}', 'ReportController@index')->name('charts.contribute');
+    Route::any('/contributions','ReportController@contributions')->name('report.contribute');
 });
 // ! Contributions
 Route::group([ 'prefix' => 'contributions' ], function(){

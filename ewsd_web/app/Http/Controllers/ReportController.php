@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input; 
 use DB;
 
 class ReportController extends Controller
 {
-    function index($year = '2020')
-    {
-
+    function index($year = '2020'){
     // ! Numbers of published and unpublished Contributions    
     $data = DB::table('contributions')
     ->select(
@@ -147,7 +146,7 @@ class ReportController extends Controller
         'contributors' => json_encode($arrayContributors)
     ];
 
-     return view('chart.chart',compact('datas'));
+     return view('reports.chart',compact('datas'));
     }
 
     public function calculateMonth($month){
@@ -190,6 +189,43 @@ class ReportController extends Controller
             break;
 
         }
+    }
+
+    public function contributions(Request $request){
+        if (\Request::isMethod('POST')){
+            $status = $request->status;
+            $acedemicYear = $request->academic_year;
+            $contributions = $this->getContributionReportQuery($status,$acedemicYear,'post');
+        }else{
+            $status = '1';
+            $acedemicYear = '1';
+            $contributions = $this->getContributionReportQuery($status,$acedemicYear,'get');
+        }
+        $academics_years = \App\AcademicYear::all();
+        return view('reports.report_contribution',compact('contributions','academics_years','status','acedemicYear'));
+    }
+
+    public function getContributionReportQuery($status,$acedemicYear,$type){
+        $data =  DB::table('contributions')
+                ->join('magazine_issues', 'magazine_issues.id', '=', 'contributions.issue_id')
+                ->join('faculties', 'faculties.id', '=', 'magazine_issues.faculty_id')
+                ->join('academic_years', 'academic_years.id', '=', 'magazine_issues.academic_year_id')
+                ->select(
+                    'contributions.id as contribution_id',
+                    'contributions.title as contribution_title',
+                    'contributions.is_published as contribution_status',
+                    'contributions.file as contribution_download_file',
+                    'magazine_issues.title as magazine_issues_title',
+                    'faculties.name as faculty_name',
+                    'academic_years.title as academic_year_title',
+                );
+
+        if($type != 'post') {
+            $query = $data->get();
+        } else {
+            $query = $data->where('contributions.is_published',$status)->where('academic_years.id',$acedemicYear)->get();
+        }
+        return $query;
     }
 
 }
