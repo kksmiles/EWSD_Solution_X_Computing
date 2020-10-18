@@ -9,13 +9,15 @@ class ReportController extends Controller
 {
     function index($year = '2020')
     {
-        $data = DB::table('contributions')
-        ->select(
-            DB::raw('is_published as is_published'),
-            DB::raw('count(*) as number'))
-            ->whereYear('created_at', '=', $year)
-        ->groupBy('is_published')
-        ->get();
+
+    // ! Numbers of published and unpublished Contributions    
+    $data = DB::table('contributions')
+    ->select(
+        DB::raw('is_published as is_published'),
+        DB::raw('count(*) as number'))
+        ->whereYear('created_at', '=', $year)
+    ->groupBy('is_published')
+    ->get();
         
 
      $array[] = ['Status', 'Number'];
@@ -33,7 +35,8 @@ class ReportController extends Controller
             $value->number
         ];
      }
-
+    
+    // ! Numbers of Applications Users 
      $users = DB::table('users')
      ->join('user_roles','user_roles.id','=','users.role_id')
     ->select(
@@ -50,6 +53,8 @@ class ReportController extends Controller
             $value->number
         ];
      }
+
+     // ! Selected Contributions of each Faculty
      $contributionsOfFaculty =  DB::table('contributions')
                                 ->join('magazine_issues', 'magazine_issues.id', '=', 'contributions.issue_id')
                                 ->join('faculties', 'faculties.id', '=', 'magazine_issues.faculty_id')
@@ -69,7 +74,8 @@ class ReportController extends Controller
             $value->number
             ];
         }
-
+    
+    // ! Contributions of each Faculty Per Monthly Yearly
      $contributionsMonthYearly =  DB::table('contributions')
                                 ->join('magazine_issues', 'magazine_issues.id', '=', 'contributions.issue_id')
                                 ->join('faculties', 'faculties.id', '=', 'magazine_issues.faculty_id')
@@ -91,13 +97,54 @@ class ReportController extends Controller
         ];
     }
 
+    // ! Number of students within each Faculty
+    $students =  DB::table('users')
+                    ->join('user_faculty', 'user_faculty.user_id', '=', 'users.id')
+                    ->join('faculties', 'faculties.id', '=', 'user_faculty.faculty_id')
+                    ->where('users.role_id','4')
+                    ->select(
+                        DB::raw('faculties.name as name'),
+                        DB::raw('count(*) as students'))
+                        ->groupBy('name')
+                    ->get();
+    $arrayStudents[] = ['Faculty', 'Students'];
+        foreach($students as $key => $value)
+        {
+            $arrayStudents[++$key] = [
+                $value->name,
+                $value->students
+            ];
+        }
 
+    // ! Number of contributors within each Faculty
+    $contributors =  DB::table('contributions')
+                    ->join('users', 'users.id', '=', 'contributions.student_id')
+                    ->join('magazine_issues', 'magazine_issues.id', '=', 'contributions.issue_id')
+                    ->join('faculties', 'faculties.id', '=', 'magazine_issues.faculty_id')
+                    ->where('users.role_id','4')
+                    ->whereYear('contributions.created_at', '=', $year)
+                    ->select(
+                        DB::raw('faculties.name as name'),
+                        DB::raw('count(*) as contributors'))
+                    ->groupBy('name')
+                    ->get();
+
+    $arrayContributors[] = ['Faculty', 'Contributors'];
+    foreach($contributors as $key => $value)
+        {
+            $arrayContributors[++$key] = [
+                $value->name,
+                $value->contributors
+            ];
+        }
     // ! Final Data Send To Chart
     $datas = [
         'contributions' => json_encode($array),
         'users' => json_encode($arrayUsers),
         'contributions_faculty' => json_encode($arrayContributionOfFaculty), 
-        'contributions_month&yearly' => json_encode($arraycontributionsMonthYearly)
+        'contributions_month&yearly' => json_encode($arraycontributionsMonthYearly),
+        'students' => json_encode($arrayStudents),
+        'contributors' => json_encode($arrayContributors)
     ];
 
      return view('chart.chart',compact('datas'));

@@ -22,6 +22,8 @@
    google.charts.setOnLoadCallback(drawChartUsers);
    google.charts.setOnLoadCallback(drawChartConFaculty);
    google.charts.setOnLoadCallback(drawChartConMonthAndYearly);
+   google.charts.setOnLoadCallback(drawChartNumbersOfStudents);
+   google.charts.setOnLoadCallback(drawChartNumbersOfContributors);
 
    function drawChart()
    {
@@ -64,6 +66,30 @@
      is3D: true,
     };
     var chart = new google.visualization.ColumnChart(document.getElementById('contri_month_year'));
+    chart.draw(data, options);
+   }
+
+   function drawChartNumbersOfStudents()
+   {
+    var data = google.visualization.arrayToDataTable(<?php echo $datas['students']; ?>);
+
+    var options = {
+     title : 'Number of Students within each Faculty',
+     is3D: true,
+    };
+    var chart = new google.visualization.ColumnChart(document.getElementById('num_students'));
+    chart.draw(data, options);
+   }
+
+   function drawChartNumbersOfContributors()
+   {
+    var data = google.visualization.arrayToDataTable(<?php echo $datas['contributors']; ?>);
+
+    var options = {
+     title : 'Number of Contributors within each Faculty',
+     is3D: true,
+    };
+    var chart = new google.visualization.ColumnChart(document.getElementById('num_contributors'));
     chart.draw(data, options);
    }
   </script>
@@ -146,6 +172,21 @@
         </div>
     </div>
 
+        <div class="panel panel-default" align="center">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Number of students within each Faculty</h3>
+                        <div id="num_students" style="width:750px; height:400px;">
+                        </div>
+                    </div>
+        </div>
+
+        <div class="panel panel-default" align="center">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Number of Contributors within each Faculty</h3>
+                        <div id="num_contributors" style="width:750px; height:400px;">
+                        </div>
+                    </div>
+        </div>
 
 
  </body>
