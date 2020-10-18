@@ -5,11 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Faculty;
 use App\UserFaculty;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class FacultyController extends Controller
 {
     public function index(){
         $faculties = Faculty::all();
+        if(Gate::allows('isStudent')){
+            $faculties = Auth::user()->faculties;
+            return view('faculty.index',compact('faculties'));
+        } else if (Gate::allows('isMarketingCoordinator')) {
+            $faculty = Auth::user()->faculties->first();
+            return redirect()->route('coordinator.faculty.show',($faculty->id));
+        }
         return view('faculty.index',compact('faculties'));
     }
 
@@ -17,8 +26,8 @@ class FacultyController extends Controller
     public function addView(){
         return view('faculty.add');
     }
-    public function show($f_id = 1){
-        return redirect()->route('faculty.users.show',$f_id);
+    public function show(Faculty $faculty){
+        return view('faculty.show',compact('faculty'));
     }
     // Save
     public function save(Request $request){

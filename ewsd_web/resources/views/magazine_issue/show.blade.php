@@ -10,5 +10,12 @@
         <img src="{{ $magazine_issue->image }}" alt="">
         <p>Submission Closure Date : {{ $magazine_issue->submission_closure_date }}</p>
         <p>Modification Closure Date : {{ $magazine_issue->modification_closure_date }}</p>
+        @if(Gate::allows('isStudent'))
+            <h5><a href="{{ route('student.magazine-issues.contributions', $magazine_issue->id) }}">Your Contributions </a></h5>
+        @elseif(Gate::allows('isMarketingCoordinator'))
+            <h5><a href="{{ route('coordinator.magazine-issues.contributions.show', $magazine_issue->id) }}">Check Contributions </a></h5>
+        @elseif(Gate::allows('isMarketingManager'))
+            <h5><a href="{{ route('manager.magazine-issues.contributions', $magazine_issue->id) }}">Check Contributions </a></h5>
+        @endif
     </section>
 @endsection

@@ -15,4 +15,8 @@ class Faculty extends Model
     public function magazine_issues() {
         return $this->hasMany('App\MagazineIssue', 'faculty_id', 'id');
     }
+    public function contributions() {
+        return $this->hasManyThrough('App\Contributions','App\MagazineIssue','faculty_id','issue_id');
+    }
 }
+

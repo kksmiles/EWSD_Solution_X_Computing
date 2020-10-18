@@ -37,7 +37,7 @@ Route::group([ 'prefix' => 'contributions' ], function(){
     });
 });
 
-Route::resource('/magazine-issues', 'MagazineIssueController')->middleware('can:isSupervisor');
+Route::resource('/magazine-issues', 'MagazineIssueController');
 
 Route::group(['prefix'=>'staff/magazine-issues','middleware'=>'can:isMarketingCoordinator'], function() {
     Route::get('','MagazineIssueController@index');
@@ -60,7 +60,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 //! ADMIN ROUTES !//
 Route::group(['prefix' => 'admin','middleware'=>'can:isAdmin'], function(){
     //dashboard route for admin
-    Route::get('/', 'HomeController@index')->name('admin.dashboard');
+    Route::get('/', 'HomeController@index')->name('admin.home');
     Route::get('/dashboard','HomeController@index')->name('admin.dashboard');
 
     //user account routes for admin
@@ -74,7 +74,7 @@ Route::group(['prefix' => 'admin','middleware'=>'can:isAdmin'], function(){
 
     //faculty and users in faculty routes for admin
     Route::prefix('faculty')->group(function(){ 
-        Route::get('/','FacultyController@index')->name('faculty');
+        Route::get('/','FacultyController@index')->name('faculty.index');
         Route::get('/add','FacultyController@addView')->name('faculty.add');
         Route::post('/save','FacultyController@save')->name('faculty.save');
         Route::get('/edit/{id}','FacultyController@edit')->name('faculty.edit');
@@ -82,7 +82,7 @@ Route::group(['prefix' => 'admin','middleware'=>'can:isAdmin'], function(){
         Route::get('/delete/{id}','FacultyController@delete')->name('faculty.delete');
         
         Route::get('/{id}/users/add','UserFacultyController@addUsersToFaculty')->name('faculty.users.add');
-        Route::get('/{id}','FacultyController@show')->name('faculty.show');
+        Route::get('/{faculty}','FacultyController@show')->name('faculty.show');
         Route::get('/{id}/users','UserFacultyController@showFacultyUsers')->name('faculty.users.show');
         Route::post('faculty/users/url','UserFacultyController@userFaucltyRouteHelper')->name('faculty.url');
     });
@@ -94,34 +94,100 @@ Route::group(['prefix' => 'admin','middleware'=>'can:isAdmin'], function(){
 });
 //! ADMIN ROUTES !//
 
-// Route::group(['prefix' => 'marketing-manager'],['middleware'=>'can:isMarketingManager'],function(){
+Route::group(['prefix' => 'manager','middleware'=>'can:isMarketingManager'],function(){
+    Route::get('/','HomeController@index')->name('manager.home');
+    Route::get('/dashboard','HomeController@index')->name('manager.dashboard');
     
-// });
-// Route::group(['prefix' => 'marketing-coordinator'],['middleware'=>'can:isMarketingCoordinator'],function(){
+    Route::group(['prefix'=>'faculty'],function(){
+        Route::get('/','FacultyController@index')->name('manager.faculty.index');
+        Route::get('/{faculty}','FacultyController@show')->name('manager.faculty.show');
+        Route::get('/{faculty}/users','UserFacultyController@showFacultyUsers')->name('manager.faculty.users.show');
+    });
+
+    Route::group(['prefix'=>'users'],function(){
+        Route::get('/','UserController@index')->name('manager.users.index');
+        Route::get('/{id}','UserController@show')->name('manager.users.show');
+    });
+
+    Route::group(['prefix'=> 'magazine-issues'],function(){
+        
+    });
+});
+//!ADMIN ROUTES !//
+
+//! MARKETING COORDINATOR ROUTES
+Route::group(['prefix' => 'coordinator','middleware'=>'can:isMarketingCoordinator'],function(){
+    //dashboard route
+    Route::get('/','HomeController@index')->name('coordinator.home');
+    Route::get('/dashboard','HomeController@index')->name('coordinator.dashboard');
+
+    //faculty routes for coordinator
+    Route::group(['prefix'=>'faculty'],function(){
+        Route::get('/','FacultyController@index')->name('coordinator.faculty.index');
+        Route::get('/{faculty}','FacultyController@show')->name('coordinator.faculty.show');
+        Route::get('/{id}/users','UserFacultyController@showFacultyUsers')->name('coordinator.faculty.users.show');
+    });
     
-// });
+    Route::get('magazine-issues/{id}/contributions','CoordinatorContributionController@show')->name('coordinator.magazine-issues.contributions.show');
+    Route::post('magazine-issues/url-helper','CoordinatorContributionController@urlHelper')->name('coordinator.magazine-issues.contributions.url');
+
+    Route::resource('magazine-issues','MagazineIssueController',[
+        'names' => [
+            'index' =>  'coordinator.magazine-issues.index',
+            'create'=>  'coordinator.magazine-issues.create',
+            'show'  =>  'coordinator.magazine-issues.show',
+            'store' =>  'coordinator.magazine-issues.store',
+            'edit'  =>  'coordinator.magazine-issues.edit',
+            'update'=>  'coordinator.magazine-issues.update',
+            'destroy'=> 'coordinator.magazine-issues.destroy'
+        ]
+    ]);
+    
+    Route::group(['prefix'=>'contributions'],function(){
+        
+        Route::get('/','CoordinatorContributionController@index')->name('coordinator.contributions.index');
+        // Route::get('/{id}','CoordinatorContributionController@show')->name('coordinator.magazine-issues.contributions.show');
+        Route::get('/{contribution}','ContributionController@show')->name('coordinator.contributions.show');
+        Route::post('/{con_id}/publish','CoordinatorContributionController@publishContribution')->name('coordinator.contributions.publish');
+        Route::post('/{con_id}/reject','CoordinatorContributionController@rejectContribution')->name('coordinator.contributions.reject');
+        Route::post('/{contribution_id}/comments', 'CommentController@store')->name('contribution.comment.store');
+        Route::patch('/comments/{comment}', 'CommentController@update')->name('comment.update');
+        Route::delete('/comments/{comment}', 'CommentController@destroy')->name('comment.delete');
+    });
+
+});
+//! MARKETING COORDINATOR ROUTES
 
 // ! STUDENT ROUTES !//
 Route::group(['prefix' => 'student','middleware' => 'can:isStudent'],function(){
     Route::get('/dashboard','HomeController@index')->name('student.dashboard');
+    
+    //! Student Faculties 
+    Route::group(['prefix'=>'faculty'],function(){
+        Route::get('/','FacultyController@index')->name('student.faculty');
+        Route::get('/{id}/magazine-issues','MagazineIssueController@getIssuesInFaculty')->name('student.faculties.magazineissues');
+    });
 
+    //! Student Magazine Issues
+    Route::group(['prefix'=>'magazine-issues'],function(){
+        Route::get('/','MagazineIssueController@getStudentIssues')->name('student.magazine-issues');
+        Route::get('/{magazine_issue}','MagazineIssueController@show')->name('student.magazine-issues.show');
+        Route::get('/{magazine_issue}/contributions','MagazineIssueController@getStudentContributionsOfIssue')->name('student.magazine-issues.contributions');
+    });
     // ! Contributions
     Route::group([ 'prefix' => 'contributions' ], function(){
-         // @ Marketing Coordinatior Contributions Access
-        Route::get('/','ContributionController@index')->name('contribution');
 
         // @ Student Contributions
-        Route::group([ 'middleware' => 'can:isStudent' ], function(){
-            Route::get('/student/upload','ContributionController@upload')->name('contribution.upload');
-            Route::post('/student/upload/store','ContributionController@store')->name('contribution.store');
-            Route::get('/student','ContributionController@studentAllContribution')->name('contribution.student.all');
-        });
-    }); 
-    // /student/contributions (Show auth all contributions)
-    // /students/magazine-issue/1/contributions/create (Contribution submit form)
-    // /students/magazine-issue/1/contributions/1/edit (Contribution edit form)
-    // /students/magazine-issue/1/contributions/1 (Contribution detailed page & its comments & state)
-
+        Route::get('/upload','ContributionController@upload')->name('contribution.upload');
+        Route::post('/upload/store','ContributionController@store')->name('contribution.store');
+        Route::get('/','ContributionController@studentAllContribution')->name('contribution.student.all');
+        Route::get('/{contribution}','ContributionController@show')->name('contribution.student.show');
+        Route::get('/{id}/edit','ContributionController@studentContributionEdit')->name('contribution.student.edit');
+        Route::post('/updated','ContributionController@update')->name('contribution.update');
+        Route::post('/{contribution}/comments', 'CommentController@store')->name('contribution.comment.student.store');
+        Route::patch('/comments/{comment}', 'CommentController@update')->name('comment.student.update');
+        Route::delete('/comments/{comment}', 'CommentController@destroy')->name('comment.delete');
+    });
 });
 // ! STUDENT ROUTES !//
 
@@ -130,10 +196,18 @@ Route::group(['prefix' => 'student','middleware' => 'can:isStudent'],function(){
 // });
 //Comment Routes
 
-Route::get('/contributions/{contribution_id}', 'ContributionController@show')->name('contribution.show');
+Route::get('/contributions/{contribution}', 'ContributionController@show')->name('contribution.show');
 Route::post('/contributions/{contribution_id}/comments', 'CommentController@store')->name('contribution.comment.store');
 Route::patch('/comments/{comment}', 'CommentController@update')->name('comment.update');
 Route::delete('/comments/{comment}', 'CommentController@destroy')->name('comment.delete');
 
-
-
+// Route::group([ 'prefix' => 'contributions' ], function(){
+//     // @ Student Contributions
+//    // @ Marketing Coordinatior Contributions Access
+//     Route::group([ 'middleware' => 'can:isMarketingCoordinator' ], function(){
+//         Route::get('/coordinator','CoordinatorContributionController@index')->name('contribution.coordinator.index');
+//         Route::get('/coordinator/{id}','CoordinatorContributionController@show')->name('contribution.coordinator.show');
+//         Route::post('/coordinator/{con_id}/publish','CoordinatorContributionController@publishContribution')->name('contribution.coordinator.publish');
+//         Route::post('/coordinator/{con_id}/reject','CoordinatorContributionController@rejectContribution')->name('contribution.coordinator.reject');
+//     });
+// });

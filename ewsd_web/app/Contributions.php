@@ -15,7 +15,10 @@ class Contributions extends Model
     {
         return $this->belongsTo('App\User', 'student_id', 'id');
     }
-
+    public function faculty()
+    {
+        return $this->magazineIssue->faculty;
+    }
     public function magazineIssue()
     {
         return $this->belongsTo('App\MagazineIssue', 'issue_id', 'id');

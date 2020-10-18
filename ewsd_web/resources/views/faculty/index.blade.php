@@ -119,6 +119,9 @@
           <td>{{$faculty->description}}</td>
           <td>{{$faculty->created_at}}</td>
           <td>
+              <a href="{{route('faculty.show',$faculty->id)}}">
+                <button>View</button>
+              </a>
               <a href="{{route('faculty.edit',$faculty->id)}}">
                   <button>Edit</button>
               </a>

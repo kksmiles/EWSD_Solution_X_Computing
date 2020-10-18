@@ -1,13 +1,11 @@
 @extends('template')
 @section('content')
 <section class='container'>
-    <form action="{{ route('magazine-issues.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('coordinator.magazine-issues.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         Associated Faculty : 
-        <select name="faculty_id" class='form-control'>
-            @foreach($faculties as $faculty)
+        <select name="faculty_id" class='form-control'>         
                 <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
-            @endforeach
         </select>
         <br>
         Academic year : 
@@ -17,11 +15,9 @@
             @endforeach
         </select>
         <br>
-        Staff in charge : 
+        Marketing Coordinator in charge : 
         <select name="staff_id" class='form-control'>
-            @foreach($staffs as $staff)
-                <option value="{{ $staff->id }}">{{ $staff->fullname }}</option>
-            @endforeach
+            <option value="{{ $user->id }}">{{ $user->fullname }}</option>
         </select>
         <br>
         Title : <input type="text" name="title" class='form-control' required>

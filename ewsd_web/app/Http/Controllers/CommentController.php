@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -24,7 +25,11 @@ class CommentController extends Controller
         $attributes['user_id']=auth()->id();
         $attributes['contribution_id']=$contribution_id;
         Comment::create($attributes);
-        return redirect()->route('contribution.show', $contribution_id)->with('success', 'Comment has been added.');
+        if(Gate::allows('isStudent')) {
+            return redirect()->route('contribution.student.show', $contribution_id)->with('success', 'Comment has been added.');
+        } else if(Gate::allows('isMarketingCoordinator')) {
+            return redirect()->route('contribution.show', $contribution_id)->with('success', 'Comment has been added.');    
+        }
     }
 
     /**
@@ -41,7 +46,11 @@ class CommentController extends Controller
         ]);
         $comment->comment= $attributes['comment'];
         $comment->save();
-        return redirect()->route('contribution.show', $comment->contribution_id)->with('success', 'Comment has been updated.');
+        if(Gate::allows('isStudent')) {
+            return redirect()->route('contribution.student.show', $comment->contribution_id)->with('success', 'Comment has been updated.');
+        } else if(Gate::allows('isMarketingCoordinator')) {
+            return redirect()->route('contribution.show', $comment->contribution_id)->with('success', 'Comment has been updated.');
+        }
     }
 
     /**
@@ -53,6 +62,10 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         $comment->delete();
-        return redirect()->route('contribution.show', $comment->contribution_id)->with('success', 'Comment has been deleted.');
+        if(Gate::allows('isStudent')) {
+            return redirect()->route('contribution.student.show', $comment->contribution_id)->with('success', 'Comment has been deleted.');
+        } else if(Gate::allows('isMarketingCoordinator')) {
+            return redirect()->route('contribution.show', $comment->contribution_id)->with('success', 'Comment has been deleted.');
+        }
     }
 }

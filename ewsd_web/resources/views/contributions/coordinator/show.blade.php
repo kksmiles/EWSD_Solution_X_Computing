@@ -104,15 +104,27 @@ table th {
 @if(isset($getContributions))
 <div style="margin:10px auto; text-align:center">
     <h1>
-        {{$issue->title}}
-        <a href="{{route('contribution.coordinator.index')}}">
-            <button>Back to issues</button>
-        </a>
+      <form action="{{route('coordinator.magazine-issues.contributions.url')}}" method="POST">
+        @csrf
+      <select name="issue_id" onchange="this.form.submit()">
+        @foreach($issues as $issue)
+          @if($issue->id == $id)
+            <option value="{{$issue->id}}" selected="true" >{{$issue->title}}</option>
+          @else
+            <option value="{{$issue->id}}">{{$issue->title}}</option>
+          @endif
+        @endforeach
+      </select>
+    </form>
+       
     </h1>
     <p>
         {{$issue->description}}
     </p>
     <hr>
+     <a href="{{route('coordinator.magazine-issues.index')}}">
+        <button>Back to issues</button>
+      </a>
 </div>
 <table>
   <thead>
@@ -142,11 +154,11 @@ table th {
             </td>
             <td style="display:flex">
                 @if($contribution->is_published == '0')
-                <form action="{{ route('contribution.coordinator.publish',$contribution->id) }}" method="POST">
+                <form action="{{ route('coordinator.contributions.publish',$contribution->id) }}" method="POST">
                     @csrf
                     <button>Publish</button>
                 </form>
-                <form action="{{ route('contribution.coordinator.reject',$contribution->id) }}" method="POST">
+                <form action="{{ route('coordinator.contributions.reject',$contribution->id) }}" method="POST">
                     @csrf
                     <button style="margin-left:10px;">Reject</button>
                 </form>
@@ -159,7 +171,9 @@ table th {
                 @endif
             </td>
             <td>
-                <button style=""> Give Comment</button>
+                {{-- <a href="{{route('')}}"> --}}
+                  <button style=""> Give Comment</button>
+                </a>
             </td>
         </tr>
     @endforeach
@@ -168,7 +182,7 @@ table th {
 @else
     <div style="margin:10px auto; text-align:center">
         There is no contributions in this issue
-        <a href="{{route('contribution.coordinator.index')}}">
+        <a href="{{route('coordinator.magazine-issues.index')}}">
             <button>Back to issues</button>
         </a>
     </div>

@@ -22,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
         // User::class => UserPolicy::class,
         UserRoles::class  => UserRolesPolicy::class,
         MagazineIssue::class => MagazineIssuesPolicy::class,
+        Contributions::class => ContributionsPolicy::class,
     ];
 
     /**
