@@ -58,6 +58,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 //new routes
 
 //! ADMIN ROUTES !//
+
 Route::group(['prefix' => 'admin','middleware'=>'can:isAdmin'], function(){
     //dashboard route for admin
     Route::get('/', 'HomeController@index')->name('admin.home');
@@ -102,6 +103,8 @@ Route::group(['prefix' => 'manager','middleware'=>'can:isMarketingManager'],func
         Route::get('/','FacultyController@index')->name('manager.faculty.index');
         Route::get('/{faculty}','FacultyController@show')->name('manager.faculty.show');
         Route::get('/{faculty}/users','UserFacultyController@showFacultyUsers')->name('manager.faculty.users.show');
+        Route::get('/{faculty}/magazine-issues','MagazineIssueController@getIssuesInFaculty')->name('manager.faculty.issues.index');
+        Route::get('/{faculty}/contributions','ContributionController@index')->name('manager.faculty.contributions.index');
     });
 
     Route::group(['prefix'=>'users'],function(){
@@ -110,8 +113,10 @@ Route::group(['prefix' => 'manager','middleware'=>'can:isMarketingManager'],func
     });
 
     Route::group(['prefix'=> 'magazine-issues'],function(){
-        
+        Route::get('/','MagazineIssueController@index')->name('manager.magazine-issues.index');
+        Route::get('/{id}','MagazineIssueController@show')->name('manager.magazine-issues.show');
     });
+    Route::get('/selected-contributions','ContributionController@indexSelectedContributions')->name('manager.selected-contributions.index');
 });
 //!ADMIN ROUTES !//
 
@@ -154,6 +159,9 @@ Route::group(['prefix' => 'coordinator','middleware'=>'can:isMarketingCoordinato
         Route::patch('/comments/{comment}', 'CommentController@update')->name('comment.update');
         Route::delete('/comments/{comment}', 'CommentController@destroy')->name('comment.delete');
     });
+
+    Route::get('/selected-contributions','ContributionController@indexSelectedContributions')->name('manager.selected-contributions.index');
+
 
 });
 //! MARKETING COORDINATOR ROUTES
