@@ -3,29 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\MagazineIssue;
+use App\Contributions;
+use Illuminate\Support\Facades\Auth;
 
 class CoordinatorContributionController extends Controller
 {
     public function index(){
-        $getIssues = \App\MagazineIssue::where('staff_id',\Auth::user()->id)->get();
-        if(count($getIssues) > 0){
-            return view('contributions.coordinator.index',compact('getIssues'));
+        $contributions = Contributions::all();
+        foreach($contributions as $contribution) {
+            if($contribution->magazineIssue->faculty->id == Auth::user()->faculties->first()->id)
+            $coordinatorContributions[] = $contribution;
+        }
+        if(isset($coordinatorContributions)) {
+            return view('contributions.coordinator.index',compact('coordinatorContributions'));
         }
         return view('contributions.coordinator.index');
     }
 
     public function show($id) {
-        $getContributions = \App\Contributions::where('issue_id',$id)->get();
-        $issue = \App\MagazineIssue::findOrfail($id);
+        $issues = Auth::user()->magazine_issues;
+        $getContributions =  Contributions::where('issue_id',$id)->get();
         if(count($getContributions) > 0){
-            return view('contributions.coordinator.show',compact('getContributions','issue'));
+            return view('contributions.coordinator.show',compact('getContributions','issues','id'));
         }
         return view('contributions.coordinator.show');
     }
 
     // @ publish contribution
     public function publishContribution($con_id){
-        $contribution = \App\Contributions::findOrfail($con_id);
+        $contribution =  Contributions::findOrfail($con_id);
         $contribution->is_published = '1';
         $contribution->save();
         return redirect()->back()->with('success', 'Contribution ('.$contribution->title.') is successfully published now');
@@ -33,9 +40,12 @@ class CoordinatorContributionController extends Controller
 
     // @ reject contribution
     public function rejectContribution($con_id){
-        $contribution = \App\Contributions::findOrfail($con_id);
+        $contribution =  Contributions::findOrfail($con_id);
         $contribution->is_published = '2';
         $contribution->save();
         return redirect()->back()->with('success', 'Contribution ('.$contribution->title.') is successfully rejected now');
+    }
+    public function urlHelper(Request $request){
+        return redirect()->route('coordinator.magazine-issues.contributions.show',$request->issue_id);
     }
 }

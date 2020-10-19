@@ -118,30 +118,38 @@ table th {
       <th scope="col">Status</th>
       <th scope="col">Uploaded At</th>
       <th>File</th>
-      <th>Action</th>
+      <th colspan="2">Action</th>
     </tr>
   </thead>
   <tbody>
-    @foreach($datas as $key => $data)
-        <tr>
-        <td>{{$key+1}}</td>
-        <td>{{$data['contribution_name']}}</td>
-        <td>{{$data['issue_name']}}</td>
-        <td>{{$data['faculty_name']}}</td>
-        <td>{{$data['acedemic_year']}}</td>
-        <td>{{$data['is_published'] == '0' ? 'Pending' : 'Published'}}</td>
-        <td>{{$data['uploaded_at']}}</td>
+    @php $count=0 @endphp
+    @foreach($contributions as $contribution)
+        @php $count++ @endphp
+      <tr>
+      
+        <td>{{$count}}</td>
+        <td>{{$contribution->title}}</td>
+        <td>{{$contribution->magazineIssueTitle}}</td>
+        <td>{{$contribution->facultyName}}</td>
+        <td>{{$contribution->academicYear}}</td>
+        <td>{{$contribution->is_published == '0' ? 'Pending' : 'Published'}}</td>
+        <td>{{$contribution->created_at}}</td>
         <td>
-            <a href="{{asset('storage/contributions/'.$data['file'])}}" download="{{$data['file']}}">
+            <a href="{{asset('storage/contributions/'.$contribution->file)}}" download="{{$contribution->file}}">
               <button>Download Files</button>
             </a>
         </td>
         <td>
-            <a href="{{route('contribution.student.edit',$data['id'])}}">
+            <a href="{{route('contribution.student.edit',$contribution->id)}}">
               <button>Update Contribution</button>
             </a>
         </td>
-        </tr>
+        <td>
+          <a href="{{route('contribution.student.show',$contribution->id)}}">
+            <button>View Contribution</button>
+           </a>
+        </td>
+      </tr>
     @endforeach
   </tbody>
 </table>

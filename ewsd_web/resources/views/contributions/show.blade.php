@@ -23,10 +23,14 @@
             {{ $comment->user->fullname }} :
             {{ $comment->comment }}
             @if($comment->user_id == Auth::id())
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            {{-- Calls the modal --}}
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{$comment->id}}">
                     Edit
                 </button>
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            {{-- Calls the modal --}}
+
+            {{-- The modal --}}
+                <div class="modal fade" id="Modal{{$comment->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -48,6 +52,7 @@
                         </div>
                     </div>
                 </div>
+            {{-- The modal --}}
                 <form style="display: inline;" action="{{ route('comment.delete', $comment->id) }}" method="POST">
                     @csrf @method('DELETE') <button type="submit">Delete</button>
                 </form>
@@ -82,6 +87,23 @@
             <p class="card-text"></p>
             </div>
         </div>
+    @elseif((Gate::allows('isMarketingCoordinator')))
+        @if($contribution->is_published == '0')
+            <form action="{{ route('coordinator.contributions.publish',$contribution->id) }}" method="POST">
+                @csrf
+                <button>Publish</button>
+            </form>
+            <form action="{{ route('coordinator.contributions.reject',$contribution->id) }}" method="POST">
+                @csrf
+                <button style="margin-left:10px;">Reject</button>
+            </form>
+            @else
+                @if( $contribution->is_published == '1')
+                    <span style="background: green; color: #fff;">Published</span>
+                @else
+                    <span style="background: red; color: #fff;">Rejected Manually</span>
+                @endif
+            @endif
     @endif
 
     <!-- Optional JavaScript -->

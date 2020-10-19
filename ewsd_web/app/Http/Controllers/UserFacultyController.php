@@ -13,7 +13,7 @@ class UserFacultyController extends Controller
 
     public function index()
     {
-        return redirect()->route('faculty.show',1);
+        return redirect()->route('faculty.users.show',1);
     }
 
     public function create()
@@ -30,7 +30,7 @@ class UserFacultyController extends Controller
             'user_id' => ['required', 'integer']
         ]);
         UserFaculty::create($attributes);
-        return redirect()->route('faculty.show',$request->faculty_id)->with('success', 'User Faculty created successfully!');
+        return redirect()->route('faculty.users.show',$request->faculty_id)->with('success', 'User Faculty created successfully!');
     }
 
     public function show($id)
@@ -39,7 +39,7 @@ class UserFacultyController extends Controller
         if(!$user_in_faculty) {
             return abort(404);
         } 
-        return redirect()->route('faculty.show',$user_in_faculty->faculty_id);
+        return redirect()->route('faculty.users.show',$user_in_faculty->faculty_id);
     }
 
     public function edit(UserFaculty $user_faculty)
@@ -58,7 +58,7 @@ class UserFacultyController extends Controller
     {   
         $f_id = $user_faculty->faculty_id;
         $user_faculty->delete();
-        return redirect()->route('faculty.show',$f_id); 
+        return redirect()->route('faculty.users.show',$f_id); 
     }
 
     public function showFacultyUsers($f_id = 1) 
@@ -67,7 +67,7 @@ class UserFacultyController extends Controller
         $faculties = Faculty::all();
         $users_in_faculty = UserFaculty::where('faculty_id',$f_id)->get();
 
-        return view('faculty.show', compact('users_in_faculty','faculties','f_id'));
+        return view('faculty.show-users', compact('users_in_faculty','faculties','f_id'));
     }
     
     public function addUsersToFaculty($f_id) {

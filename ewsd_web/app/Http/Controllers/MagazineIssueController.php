@@ -22,12 +22,17 @@ class MagazineIssueController extends Controller
     public function index()
     {
         if(Gate::allows('isMarketingCoordinator')) {
-            return redirect()->route('magazine_issue.staff.show',Auth::id());
+
+            $magazine_issues = Auth::user()->magazine_issues;
+            return view('magazine_issue.index', compact('magazine_issues'));
+
         } elseif(Gate::allows('isSupervisor')) {
+
             $faculties = Faculty::all();
             $magazine_issues = MagazineIssue::all();
             return view('magazine_issue.index', compact('magazine_issues','faculties'));
-        } 
+
+        }
     }
 
     /**
@@ -37,10 +42,11 @@ class MagazineIssueController extends Controller
      */
     public function create()
     {
-        $staffs = \App\User::where('role_id', 3)->get();
-        $faculties = \App\Faculty::all();
-        $academic_years = \App\AcademicYear::all();
-        return view('magazine_issue.create', compact('staffs', 'faculties', 'academic_years'));
+        // $staffs = User::where('role_id', 3)->get();
+        $user = Auth::user();
+        $faculty = $user->faculties->first();
+        $academic_years = AcademicYear::all();
+        return view('magazine_issue.create', compact('user', 'faculty', 'academic_years'));
     }
 
     /**
@@ -88,7 +94,11 @@ class MagazineIssueController extends Controller
      */
     public function show(MagazineIssue $magazine_issue)
     {
-        return view('magazine_issue.show', compact('magazine_issue'));
+        if(Gate::allows('isMarketingCoordinator') && Gate::authorize('view',$magazine_issue)){
+            return view('magazine_issue.show', compact('magazine_issue'));
+        } elseif (Gate::allows('isStudent') && Gate::authorize('inStudentFaculty',$magazine_issue)){
+            return view('magazine_issue.show', compact('magazine_issue'));
+        }
     }
 
     /**
@@ -166,14 +176,44 @@ class MagazineIssueController extends Controller
         return redirect()->route('magazine-issues.index')->with('success', 'Magazine Issue Deleted Successfully');
     }
 
-    public function getStaffIssues($user_id) {
+    public function checkStaffIssues($user_id) {
         $magazine_issues = MagazineIssue::where('staff_id',$user_id)->get();
         if(Gate::authorize('view',$magazine_issues[0])){
             return view('magazine_issue.index',compact('magazine_issues'));
-        } elseif(Gate::allows('isSupervisor')){
-            dd("potato");
-        } else {
-           return redirect()->route('home')->with('error','You can only view magazine issues of your faculty.');
         }
+        return redirect()->route('home')->with('error','You can only view magazine issues of your faculty.');
+    }
+
+    public function getIssuesInFaculty($id) {
+       
+       if (Gate::allows('isStudent')) {
+            $magazine_issues = Faculty::find($id)->magazine_issues;
+           if(count($magazine_issues)>0 && Gate::authorize('inStudentFaculty',$magazine_issues[0])) {
+            return view('magazine_issue.index', compact('magazine_issues'));
+           }
+        } 
+        
+    }
+
+    public function getStudentIssues() {
+        $faculties = Auth::user()->faculties;
+        foreach($faculties as $faculty) {
+            if(count($faculty->magazine_issues) > 0) {
+                foreach($faculty->magazine_issues as $magazine_issue) {
+                    $magazine_issues [] = $magazine_issue;
+                }
+            }
+        }
+        return view('magazine_issue.index',compact('magazine_issues'));
+    }
+
+    public function getStudentContributionsOfIssue(MagazineIssue $magazine_issue) {
+        $contributions = $magazine_issue->contributions->where('student_id',Auth::id());
+        foreach($contributions as $contribution) {
+            $contribution->magazineIssueTitle = $contribution->magazineIssue->title;
+            $contribution->facultyName = $contribution->faculty()->name;
+            $contribution->academicYear = $contribution->magazineIssue->academic_year->title;
+        }
+        return view('contributions.student.index',compact('contributions'));
     }
 }
