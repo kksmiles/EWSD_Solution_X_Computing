@@ -108,9 +108,7 @@ EWSD Project
                     @endforeach     
                   </select>
                 </div>
-
-                {{-- <button type="submit" class="btn btn-primary">Confirm</button> --}}
-              
+    
               </form>
           </div>
           <!-- Filter Box -->
