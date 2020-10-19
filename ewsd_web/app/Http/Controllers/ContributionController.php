@@ -21,8 +21,6 @@ class ContributionController extends Controller
             $contribution->facultyName = $contribution->faculty()->name;
             $contribution->academicYear = $contribution->magazineIssue->academic_year->title;
         }
-
-        // dd($contributions);
         return view('contributions.student.index',compact('contributions'));
     }
 

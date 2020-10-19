@@ -52,9 +52,6 @@
                 @endif
             </div>
         @endforeach
-
-
-
         @if(Gate::allows('isMarketingCoordinator'))
         <br>
             <a href="{{ route('coordinator.magazine-issues.create') }}" class='btn btn-primary'>Create</a>

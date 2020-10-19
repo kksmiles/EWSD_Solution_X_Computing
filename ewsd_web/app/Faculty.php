@@ -16,7 +16,6 @@ class Faculty extends Model
         return $this->hasMany('App\MagazineIssue', 'faculty_id', 'id');
     }
 
-
     public function users()
     {
     	return $this->hasMany('App\User','user_id','faculty_id');
@@ -37,5 +36,10 @@ class Faculty extends Model
         }
 
         return $short_name;
+
+    public function contributions() {
+        return $this->hasManyThrough('App\Contributions','App\MagazineIssue','faculty_id','issue_id');
+
     }
 }
+

@@ -15,8 +15,6 @@
         </a>
 
       </caption>
-
-
       <div class="card border-left-primary p-3 mt-md-2">
         <div class="card-body">
           <table class="table table-responsive d-md-table d-md-table">

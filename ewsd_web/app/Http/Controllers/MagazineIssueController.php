@@ -215,7 +215,13 @@ class MagazineIssueController extends Controller
                 }
             }
         }else{
-            $magazine_issues = [];
+        $magazine_issues = [];
+        foreach($faculties as $faculty) {
+            if(count($faculty->magazine_issues) > 0) {
+                foreach($faculty->magazine_issues as $magazine_issue) {
+                    $magazine_issues [] = $magazine_issue;
+                }
+            }
         }
         return view('magazine_issue.index',compact('magazine_issues'));
     }
