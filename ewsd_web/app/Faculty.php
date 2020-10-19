@@ -36,7 +36,7 @@ class Faculty extends Model
         }
 
         return $short_name;
-
+    }
     public function contributions() {
         return $this->hasManyThrough('App\Contributions','App\MagazineIssue','faculty_id','issue_id');
 
