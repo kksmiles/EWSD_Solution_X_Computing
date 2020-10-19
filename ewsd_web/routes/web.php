@@ -35,6 +35,7 @@ Route::group([ 'prefix' => 'contributions' ], function(){
         Route::post('/coordinator/{con_id}/publish','CoordinatorContributionController@publishContribution')->name('contribution.coordinator.publish');
         Route::post('/coordinator/{con_id}/reject','CoordinatorContributionController@rejectContribution')->name('contribution.coordinator.reject');
     });
+    
 });
 
 Route::resource('/magazine-issues', 'MagazineIssueController')->middleware('can:isSupervisor');

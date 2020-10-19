@@ -9,8 +9,8 @@
 
   <title>SB Admin 2 - Dashboard</title>
 
-  <link href="{{ asset('css/app.css')}}" rel="stylesheet">
-  <link href="{{ asset('css/sb-admin-2.min.css')}}" rel="stylesheet">
+  <!-- <link href="{{ asset('css/app.css')}}" rel="stylesheet"> -->
+  <link href="{{ asset('css/sb-admin-2.css')}}" rel="stylesheet">
   <link href="{{ URL::asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css')}}" rel="stylesheet">
 
   @yield('style')

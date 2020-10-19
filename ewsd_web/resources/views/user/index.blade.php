@@ -5,7 +5,7 @@
 
 <div class='card container shadow border-left-primary'>
     <h4 class="my-3">User List</h4>
-        <table class="table table-responsive rounded-lg ">
+        <table class="table table-responsive d-md-table rounded-lg ">
             <thead class=" text-white font-weight-light bg-dark-primary">
                 <tr>
                     <th scope='col'>NO</th>
@@ -16,7 +16,7 @@
                     <th scope='col'>Faculty</th>
                     <th scope='col' >Action</th>
                 </tr>
-            </thead>
+            </thead> 
             <tbody >
                 
                 @foreach($users as $user)
@@ -25,12 +25,26 @@
                         <td class="text-dark font-weight-bold">{{$user->username}}</td>
                         <td> {{$user->fullname}} </td>
                         <td > {{$user->email}}</td>
-                        <td> {{$user->role->roles}}</td>
+                        <td>
+
+                        @if(isset($user->role->roles))
+                            {{$user->role->roles}}
+                        @else 
+                            <span class="text-danger small">Not Assign yet!</span>
+                        @endif  
+
+                        </td>
                         <td>
                             <div class="row col-8 p-0 d-inline-block">
-                                @foreach($user->faculties as $faculty)
-                                    <span class="badge d-inline-block badge-info">{{ $faculty->shortname }}</span>
-                                @endforeach
+                                @if(count($user->faculties) != 0)
+                                    @foreach($user->faculties as $faculty)
+                                        <span class="badge d-inline-block badge-info">{{ $faculty->shortname }}</span>
+                                    @endforeach
+                                @else
+
+                                      <span class="text-danger small">Not Assign yet!</span>
+
+                                @endif
                             </div>
                         </td>
                         <td>

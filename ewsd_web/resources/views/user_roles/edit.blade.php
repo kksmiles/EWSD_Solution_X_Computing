@@ -7,7 +7,7 @@
 @section('content')
 <section class='container p-1 m-md-0 row '>
    
-    <div class="card shadow col-md-6 border-left-primary col-12 p-0 offset-md-2 "> 
+    <div class="card shadow col-md-6 border-left-primary col-12 p-0 offset-md-1 "> 
 
         <table class='table table-striped rounded-lg'>
         <caption class='p-3'>
@@ -44,23 +44,6 @@
             @endif
           @endforeach
 
-
-        
-              <tr>
-                <form action="{{ route('user_roles.update',$user_role->id) }}" method="POST">
-                   @csrf
-                    @method('PATCH')
-                  <td colspan="2 float-right">
-                     <input type="text" class='form-control' placeholder="Enter User Role Name" name="roles" value="{{ $user_role->roles }}" required>
-                  </td>
-                  <td colspan="2">
-                    <button type="submit" class='btn btn-toolbar btn-primary float-left'>
-                        Update Role
-                    </button>  
-                  </td>
-               </form>
-              </tr>
-
         </tbody>
 
           @if ($errors->any())
@@ -84,7 +67,7 @@
 
     </div>
 
-    <div class="col-md-4 col-12 card h-25 pl-3">
+    <div class="col-md-4 col-12 card h-25 offset-1 border-left-primary pt-2">
          <form action="{{route('user_roles.update',$user_role->id)}}" method="POST">
             @csrf
             @method('PATCH')
@@ -94,6 +77,9 @@
                 <input type="text" class='form-control' id="roles" name="roles" value="{{$user_role->roles}}" placeholder="Role">
             </div>
                 <input type="submit" value="Update Role" class='btn btn-primary float-right'>
+                <a href="{{ route('user_roles.index')}} " class="btn btn-link text-warning">
+                    <i class="fas fa-arrow"></i>Return Back
+                </a>
         </form>
     </div>
 
