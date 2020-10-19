@@ -27,14 +27,7 @@
                 </select>
               </div>
 
-              <div class="form-group">
-                <label for="" class='form-check-label font-weight-normal'>Staff in charge : </label>
-                <select name="staff_id" class="form-control border-dark rounded-lg">
-                    @foreach($staffs as $staff)
-                        <option value="{{ $staff->id }}">{{ $staff->fullname }}</option>
-                    @endforeach 
-                </select>
-              </div>
+              <input type="hidden" value="{{ Auth::user()->id }}" name="staff_id">
 
               <div class="form-group">
                 <label for="" class='form-check-label font-weight-normal'>Title :</label>
@@ -79,6 +72,7 @@
          
         </form>
       </div>
+
 
     @if ($errors->any())
         @foreach ($errors->all() as $error)

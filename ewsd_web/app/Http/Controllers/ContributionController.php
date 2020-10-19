@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use App\Contributions;
 
 class ContributionController extends Controller
@@ -10,25 +12,18 @@ class ContributionController extends Controller
     // ! Student  Contribution
     // show all contributions of auth student
     public function studentAllContribution(){
-        $cModel = new Contributions;
-        $getOnlyAuthContributions = $cModel->getOnlyAuthContributions();
-       
-        if(!count($getOnlyAuthContributions) > 0)
-        return redirect()->route('contribution.upload')->with('success', 'Your Contributions does not exist. Please upload now'); 
-        $datas = [];
-        foreach($getOnlyAuthContributions as $contribution){
-            $datas[] = [
-                'id' => $contribution->id,
-                'contribution_name' => $contribution->title,
-                'file' => $contribution->file,
-                'issue_name' => $contribution->magazineIssue()->first()->title,
-                'faculty_name' => $contribution->magazineIssue()->first()->faculty()->first()->name,
-                'acedemic_year' => $contribution->magazineIssue()->first()->academic_year()->first()->title,
-                'is_published' => $contribution->is_published,
-                'uploaded_at' => $contribution->created_at
-            ];
+        $contributions = Auth::user()->contributions;
+        if(!isset($contributions)) {
+            return redirect()->route('contribution.upload')->with('success', 'Your Contributions does not exist. Please upload now'); 
         }
-        return view('contributions.student.index',compact('datas'));
+        foreach($contributions as $contribution) {
+            $contribution->magazineIssueTitle = $contribution->magazineIssue->title;
+            $contribution->facultyName = $contribution->faculty()->name;
+            $contribution->academicYear = $contribution->magazineIssue->academic_year->title;
+        }
+
+        // dd($contributions);
+        return view('contributions.student.index',compact('contributions'));
     }
 
     public function upload(){
@@ -161,10 +156,47 @@ class ContributionController extends Controller
         return view('contributions.student.edit',compact('contributions','availableMagazineIssuesWithFaculty'));
     }
     // Show contribution Details
-    public function show($id) 
+    public function show(Contributions $contribution) 
     {
-        $contribution = \App\Contributions::findOrFail($id);
-        return view('contributions.show', compact('contribution'));
+        if(Gate::allows('isStudent')) {
+            $this->authorize('view',$contribution);
+            return view('contributions.show', compact('contribution'));
+        } else if(Gate::allows('isMarketingCoordinator')) {
+            $this->authorize('viewAsCoordinator',$contribution);
+            return view('contributions.show', compact('contribution'));
+        }
+    }
+    public function facultyIndexSelectedContributions()
+    {
+        $faculties = Auth::user()->faculties;
+        
+        $selected_contributions = new Collection();
+        foreach($faculties as $faculty)
+        {
+            foreach($faculty->magazine_issues as $magazine_issue)
+            {
+                $selected_contributions->push($magazine_issue->contributions->where('is_published', 1));
+            }
+        }
+        return $selected_contributions;
+    }
+    // This is for marketing coordinator specific magazine issues -> contributions
+    public function coordinatorIndexSelectedContributions()
+    {
+        $magazine_issues = Auth::user()->magazine_issues;
+        
+        $selected_contributions = new Collection();
+        foreach($magazine_issues as $magazine_issue)
+        {
+            $selected_contributions->push($magazine_issue->contributions->where('is_published', 1));
+        }
+        return $selected_contributions;
+    }
+    //  This is to index all the selected contributions for guest.
+    public function indexSelectedContributions()
+    {
+        $selected_contributions = Contributions::all()->where('is_published', 1);
+        return $selected_contributions;
     }
 
 

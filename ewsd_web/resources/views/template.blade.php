@@ -37,35 +37,118 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="{{route('users.index')}}">
-          <i class="fas fa-fw fa-users"></i>
-          <span>Users</span></a>
-      </li> 
+      @if(Auth::user()->role_id == 1)
+        <li class="nav-item active">
+          <a class="nav-link" href="{{route('users.index')}}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Users</span></a>
+        </li> 
 
-      <li class="nav-item active">
-        <a class="nav-link" href="{{route('user_roles.index')}}">
-         <i class="fas fa-user-secret"></i>
-          <span>User Roles</span></a>
-      </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{route('user_roles.index')}}">
+           <i class="fas fa-user-secret"></i>
+            <span>User Roles</span></a>
+        </li>
 
-      <li class="nav-item active">
-        <a class="nav-link" href="{{route('faculty.show',1)}}">
-          <i class="fas fa-fw fa-user"></i>
-          <span>Faculty</span></a>
-      </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{route('faculty.index')}}">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Faculty</span></a>
+        </li>
+    
+        <li class="nav-item active">
+          <a class="nav-link" href="{{route('academic-years.index')}}">
+            <i class="fa fa-graduation-cap"></i>
+            <span>Academic Years</span></a>
+        </li>
+      @endif
 
-      <li class="nav-item active">
-        <a class="nav-link" href="{{route('magazine-issues.index')}}">
-          <i class="fas fa-fw fa-sticky-note"></i>
-          <span>Magazine Issue</span></a>
-      </li>
+      @if(Auth::user()->role_id==4)
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ route('student.dashboard') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ route('student.faculty') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Faculties</span>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ route('student.magazine-issues') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Magazine Issues</span>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ route('contribution.student.all') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Contributions</span>
+          </a>
+        </li>
+      @endif
 
-      <li class="nav-item active">
-        <a class="nav-link" href="{{route('academic-years.index')}}">
-          <i class="fa fa-graduation-cap"></i>
-          <span>Academic Years</span></a>
-      </li>
+           @if(Auth::user()->role_id==3)
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('coordinator.dashboard') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Dashboard</span>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('coordinator.faculty.index') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Faculties</span>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('coordinator.magazine-issues.index') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Magazine Issues</span>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('coordinator.contributions.index') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Contributions</span>
+                </a>
+            </li>
+            @endif
+
+            @if(Gate::allows('isMarketingManager'))
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('manager.dashboard') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Dashboard</span>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('manager.faculty.index') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Faculties</span>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('manager.users.index') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Users</span>
+                </a>
+              <li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('manager.magazine-issues.index') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Magazine Issues</span>
+                </a>
+              </li>
+             
+           
+
+            @endif
+
+
+
 
       
 

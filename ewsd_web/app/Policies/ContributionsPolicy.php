@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\MagazineIssue;
+use App\Contributions;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class MagazineIssuesPolicy
+class ContributionsPolicy
 {
     use HandlesAuthorization;
 
@@ -25,14 +25,18 @@ class MagazineIssuesPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\MagazineIssue  $magazineIssue
+     * @param  \App\Contributions  $contributions
      * @return mixed
      */
-    public function view(User $user,MagazineIssue $magazineIssue)
-    {   
-        return $user->id == $magazineIssue->staff_id;
+    public function view(User $user, Contributions $contribution)
+    {
+        return $user->id == $contribution->student_id;
     }
-
+    
+    public function viewAsCoordinator(User $user, Contributions $contribution) 
+    {
+        return $user->faculties->first()->id == $contribution->faculty()->id;
+    }
     /**
      * Determine whether the user can create models.
      *
@@ -48,10 +52,10 @@ class MagazineIssuesPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\MagazineIssue  $magazineIssue
+     * @param  \App\Contributions  $contributions
      * @return mixed
      */
-    public function update(User $user, MagazineIssue $magazineIssue)
+    public function update(User $user, Contributions $contributions)
     {
         //
     }
@@ -60,10 +64,10 @@ class MagazineIssuesPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\MagazineIssue  $magazineIssue
+     * @param  \App\Contributions  $contributions
      * @return mixed
      */
-    public function delete(User $user, MagazineIssue $magazineIssue)
+    public function delete(User $user, Contributions $contributions)
     {
         //
     }
@@ -72,10 +76,10 @@ class MagazineIssuesPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\MagazineIssue  $magazineIssue
+     * @param  \App\Contributions  $contributions
      * @return mixed
      */
-    public function restore(User $user, MagazineIssue $magazineIssue)
+    public function restore(User $user, Contributions $contributions)
     {
         //
     }
@@ -84,20 +88,11 @@ class MagazineIssuesPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\MagazineIssue  $magazineIssue
+     * @param  \App\Contributions  $contributions
      * @return mixed
      */
-    public function forceDelete(User $user, MagazineIssue $magazineIssue)
+    public function forceDelete(User $user, Contributions $contributions)
     {
         //
-    }
-    // public function viewStaffIssues($user_id, $magazine_issue_id) {
-    //     return $user_id == $magazine_issue_id;
-    // }
-
-    public function inStudentFaculty(User $user,MagazineIssue $magazineIssue)
-    {
-        $userFaculties = $user->faculties->pluck('id')->toArray();
-        return (in_array($magazineIssue->faculty_id,$userFaculties));
     }
 }

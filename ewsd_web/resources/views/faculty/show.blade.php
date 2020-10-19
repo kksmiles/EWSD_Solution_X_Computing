@@ -1,5 +1,6 @@
 @extends('template')
 @section('content')
+<<<<<<< HEAD
 <section class="container">
   @if ($message = Session::get('success'))
   <div style="margin:0 auto; text-align:center; background:green; color:#fff;">
@@ -85,4 +86,13 @@
 <script>
 
 </script>
+=======
+    <section class='container'>
+        <h3>{{$faculty->name}}</h3>
+        <p>{{$faculty->description}}</p>
+        <button><a href="{{route('coordinator.faculty.users.show',$faculty->id)}}">Check Students</a></button>
+        <button><a href="{{ route('coordinator.magazine-issues.index') }}">Check Issues </a></button>
+        <button><a href="{{ route('coordinator.contributions.index') }}">Check Contributions </a></button>
+    </section>
+>>>>>>> a56cc453f498da7774ac14e1239f90def0fa6df8
 @endsection

@@ -101,31 +101,40 @@ table th {
 </div>
 @endif
 
-@if(isset($getIssues))
+@if(isset($coordinatorContributions))
 <table>
   <caption>
-  <h1>My Magazine Issues (Coordinator)
+  <h1>All Contribtutions
   </h1>
   </caption>
   <thead>
     <tr>
       <th scope="col">No.</th>
-      <th scope="col">Issue Name</th>
-      <th>Submission Closure Date</th>
-      <th></th>
+      <th scope="col">Title</th>
+      <th scope="col">Description</th>
+      <th scope="col">Student Name</th>
+      <th scope="col">Issue Title</th>
+      <th colspan="2">Actions</th>
     </tr>
   </thead>
   <tbody>
-    @foreach($getIssues as $key => $issue)
+    @foreach($coordinatorContributions as $key => $contribution)
         <tr>
         <td>{{$key+1}}</td>
-        <td>{{$issue->title}}</td>
-        <td>{{$issue->submission_closure_date}}</td>
-        <td>
-          <a href="{{route('contribution.coordinator.show',$issue->id)}}">
-              <button>View Issue's contributions</button>
-          </a>
-        </td>
+        <td>{{$contribution->title}}</td>
+        <td>{{$contribution->description}}</td>
+        <td>{{$contribution->student->fullname}}</td>
+        <td>{{$contribution->magazineIssue->title}}</td>
+          <td>
+            <a href="{{route('coordinator.contributions.show',$contribution->id)}}">
+                <button>View Contribution</button>
+            </a>
+          </td>
+          <td>
+            <a href="{{asset('storage/contributions/'.$contribution->file)}}" download="{{$contribution->file}}">
+              <button>Download Files</button>
+            </a>
+          </td>
         </tr>
     @endforeach
   </tbody>
