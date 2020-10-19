@@ -206,12 +206,16 @@ class MagazineIssueController extends Controller
 
     public function getStudentIssues() {
         $faculties = Auth::user()->faculties;
-        foreach($faculties as $faculty) {
-            if(count($faculty->magazine_issues) > 0) {
-                foreach($faculty->magazine_issues as $magazine_issue) {
-                    $magazine_issues [] = $magazine_issue;
+        if(count($faculties) > 0){
+            foreach($faculties as $faculty) {
+                if(count($faculty->magazine_issues) > 0) {
+                    foreach($faculty->magazine_issues as $magazine_issue) {
+                        $magazine_issues [] = $magazine_issue;
+                    }
                 }
             }
+        }else{
+            $magazine_issues = [];
         }
         return view('magazine_issue.index',compact('magazine_issues'));
     }
