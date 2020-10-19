@@ -1,68 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+@extends('template')
+@section('content')
 
-</head>
-<body>
-    <h1>Student Upload Contributions 
-        <a href="{{route('contribution.student.all')}}">
-            <button>Show My Contributions</button>
-        </a>
-    </h1>
-    @if ($errors->any())
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li style="color:red;">{{ $error }}</li>
-            @endforeach
-        </ul>
-    @endif
-    @if ($message = Session::get('success'))
-        <div style="margin:0 auto; text-align:center; background:green; color:#fff;">
-                <strong>{{ $message }}</strong>
-        </div>
-    @endif 
-    @if ($message = Session::get('fail'))
-        <div style="margin:0 auto; text-align:center; background:red; color:#fff;">
-                <strong>{{ $message }}</strong>
-        </div>
-    @endif 
+<section class="container">
+        
+       <div class="p-2">
+            <a href="{{route('contribution.student.all')}}" class="btn btn-outline-primary">
+                Show My Contributions
+            </a>
+       </div> 
 
-    <form action="{{ route('contribution.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        Choose Magazines Issues of Your Faculties:
-        <select name="issueId">
-            @foreach($availableMagazineIssuesWithFaculty as $issue)
-                <option value="{{ $issue->id }}">{{ $issue->title }}</option>
-            @endforeach
-        </select>
-        <br>
-        Student name => <span style="color: blue; font-size: 20px;">{{\Auth::user()->fullname}}</span>
-       <br>
-        Title : <input type="text" name="title" >
-        <br>
-        Description : <input type="text" name="description" >
-        <br>
-        <br>
-        File : <input type="file" name="file"> <br>
-        <br>
-        <input type="checkbox" id="checkTerm"> <label for="checkTerm">Agree terms and conditions of this issue</label> 
-        <br>
-        <button type="submit" id="submitBtn" disabled>Upload Contributions</button>
-    </form>
 
-<script>
-    const checkTerm = document.getElementById("checkTerm");
-    const submitBtn = document.querySelector("#submitBtn");
-    checkTerm.addEventListener('click',() => {
-        if(checkTerm.checked){
-            submitBtn.removeAttribute('disabled');
-        }else{
-            submitBtn.setAttribute('disabled','');
-        }
-    });
-</script>
-</body>
-</html>
+    <div class="card border-left-primary p-3">
+        
+        @if ($errors->any())
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li style="color:red;">{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
+        @if ($message = Session::get('success'))
+            <div style="margin:0 auto; text-align:center; background:green; color:#fff;">
+                    <strong>{{ $message }}</strong>
+            </div>
+        @endif 
+        @if ($message = Session::get('fail'))
+            <div style="margin:0 auto; text-align:center; background:red; color:#fff;">
+                    <strong>{{ $message }}</strong>
+            </div>
+        @endif 
+
+        <form action="{{ route('contribution.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <span class="form-control-label">Choose Magazines Issues of Your Faculties:</span>
+                <select name="issueId" class="form-control">
+                    @foreach($availableMagazineIssuesWithFaculty as $issue)
+                        <option value="{{ $issue->id }}">{{ $issue->title }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group">
+                Student name - <span class="text-dark font-weight-bold">{{\Auth::user()->fullname}}</span>
+            </div>
+
+            <div class="form-group">
+                <span class="form-group">Title</span>
+                <input type="text" class="form-control" name="title" >
+            </div>
+
+            <div class="form-group">
+                <span class="form-group">Description</span>
+                <textarea class="form-control" name="description"></textarea>     
+            </div>
+
+            <div class="form-group">
+                <span class="form-group">File</span>
+                <input type="file" class="form-control" name="file" >
+            </div>
+
+
+            <input type="checkbox" id="checkTerm"> <label for="checkTerm">Agree terms and conditions of this issue</label> 
+            <br>
+            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Upload Contributions</button>
+        </form>
+    </div>
+</section> 
+
+@endsection
+   
+@section('script')
+    <script>
+        const checkTerm = document.getElementById("checkTerm");
+        const submitBtn = document.querySelector("#submitBtn");
+        checkTerm.addEventListener('click',() => {
+            if(checkTerm.checked){
+                submitBtn.removeAttribute('disabled');
+            }else{
+                submitBtn.setAttribute('disabled','');
+            }
+        });
+    </script>
+@endsection

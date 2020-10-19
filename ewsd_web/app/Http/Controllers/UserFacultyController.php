@@ -72,11 +72,17 @@ class UserFacultyController extends Controller
     
     public function addUsersToFaculty($f_id) {
         $users = User::all();
+        
+        $faculty = Faculty::find($f_id);
+        
         $users_in_faculty = UserFaculty::where('faculty_id',$f_id)->get();
-        foreach($users_in_faculty as $user_in_faculty){
+
+        foreach($users_in_faculty as $user_in_faculty)
+        {
             $users_in[] = $user_in_faculty->user->id;
         }
-        return view('faculty.add-user',compact('users','users_in','f_id'));
+        
+        return view('faculty.add-user',compact('users','users_in','f_id','faculty'));
     }
     public function userFaucltyRouteHelper(Request $request) {
         $f_id = $request->faculty_id;

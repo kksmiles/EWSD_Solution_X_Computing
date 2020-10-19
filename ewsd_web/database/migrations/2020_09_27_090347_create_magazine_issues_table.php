@@ -22,8 +22,8 @@ class CreateMagazineIssuesTable extends Migration
             $table->string('description')->nullable();
             $table->string('image')->nullable();
             $table->string('file')->nullable();
-            $table->dateTime('submission_closure_date');
-            $table->dateTime('modification_closure_date');
+            $table->date('submission_closure_date');
+            $table->date('modification_closure_date');
             $table->timestamps();
         });
     }

@@ -9,8 +9,8 @@
 
   <title>SB Admin 2 - Dashboard</title>
 
-  <link href="{{ asset('css/app.css')}}" rel="stylesheet">
-  <link href="{{ asset('css/sb-admin-2.min.css')}}" rel="stylesheet">
+  <!-- <link href="{{ asset('css/app.css')}}" rel="stylesheet"> -->
+  <link href="{{ asset('css/sb-admin-2.css')}}" rel="stylesheet">
   <link href="{{ URL::asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css')}}" rel="stylesheet">
 
   @yield('style')
@@ -37,39 +37,115 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="{{route('users.index')}}">
-          <i class="fas fa-fw fa-users"></i>
-          <span>Users</span></a>
-      </li> 
 
-      <li class="nav-item active">
-        <a class="nav-link" href="{{route('user_roles.index')}}">
-         <i class="fas fa-user-secret"></i>
-          <span>User Roles</span></a>
-      </li>
+      @if(Auth::user()->role_id == 1)
+        <li class="nav-item active">
+          <a class="nav-link" href="{{route('users.index')}}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Users</span></a>
+        </li> 
 
-      <li class="nav-item active">
-        <a class="nav-link" href="{{route('faculty.index')}}">
-          <i class="fas fa-fw fa-user"></i>
-          <span>Faculty</span></a>
-      </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{route('user_roles.index')}}">
+           <i class="fas fa-user-secret"></i>
+            <span>User Roles</span></a>
+        </li>
 
-      <li class="nav-item active">
-        <a class="nav-link" href="{{route('magazine-issues.index')}}">
-          <i class="fas fa-fw fa-sticky-note"></i>
-          <span>Magazine Issue</span></a>
-      </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{route('faculty.index')}}">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Faculty</span></a>
+        </li>
+    
+        <li class="nav-item active">
+          <a class="nav-link" href="{{route('academic-years.index')}}">
+            <i class="fa fa-graduation-cap"></i>
+            <span>Academic Years</span></a>
+        </li>
+      @endif
 
-      <li class="nav-item active">
-        <a class="nav-link" href="{{route('academic-years.index')}}">
-          <i class="fa fa-graduation-cap"></i>
-          <span>Academic Years</span></a>
-      </li>
+      @if(Auth::user()->role_id==4)
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ route('student.dashboard') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ route('student.faculty') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Faculties</span>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ route('student.magazine-issues') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Magazine Issues</span>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ route('contribution.student.all') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Contributions</span>
+          </a>
+        </li>
+      @endif
 
-      
+           @if(Auth::user()->role_id==3)
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('coordinator.dashboard') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Dashboard</span>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('coordinator.faculty.index') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Faculties</span>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('coordinator.magazine-issues.index') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Magazine Issues</span>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('coordinator.contributions.index') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Contributions</span>
+                </a>
+            </li>
+            @endif
 
-      
+            @if(Gate::allows('isMarketingManager'))
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('manager.dashboard') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Dashboard</span>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('manager.faculty.index') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Faculties</span>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('manager.users.index') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Users</span>
+                </a>
+              <li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('manager.magazine-issues.index') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Magazine Issues</span>
+                </a>
+              </li>
+             
+           @endif
+ 
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -92,17 +168,7 @@
             <i class="fa fa-bars"></i>
           </button>
 
-          <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
-            </div>
-          </form>
+        
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -134,23 +200,15 @@
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->username }}</span>
         
-                <img class="img rounded-circle" src="" width="40px" height="40px">
+                <img class="img rounded-circle" src="{{ Auth::user()->image }}" width="40px" height="40px">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="">
+                <a class="dropdown-item" href="{{ route('users.show',Auth::user()->id)}}">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -193,17 +251,26 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
+          <a class="btn btn-primary" href="{{ route('logout') }}"
+             onclick="event.preventDefault();
+                           document.getElementById('logout-form').submit();">
+              {{ __('Logout') }}
+          </a>
         </div>
       </div>
     </div>
   </div>
 
+   <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
+
   <script src="{{ asset('js/app.js')}}"></script>
+  <script src="{{ asset('js/jquery.min.js')}}"></script>
   <script src="{{ asset('js/sb-admin-2.min.js')}}"></script>
 
+  @yield('script')
 
-@yield('script')
 
   
 </body>

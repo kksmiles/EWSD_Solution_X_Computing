@@ -36,7 +36,8 @@ class UserRolesController extends Controller
 
     public function edit(UserRoles $user_role)
     {
-        return view('user_roles.edit', compact('user_role'));
+        $user_roles = UserRoles::all();
+        return view('user_roles.edit', compact('user_role','user_roles'));
     }
 
    

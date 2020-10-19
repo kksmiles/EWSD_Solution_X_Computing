@@ -71,4 +71,4 @@ class Contributions extends Model
             return false; // Doesn't allow comment if the contribution is closed.
         }
     }
-}
+    }

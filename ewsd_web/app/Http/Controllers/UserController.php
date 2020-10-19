@@ -25,7 +25,7 @@ class UserController extends Controller
         }
         
         $user_roles = UserRoles::all();
-        $users = User::all();
+        $users = User::paginate(5);
         return view('user.index',compact('users'));
     }
 
@@ -70,8 +70,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($id)
     {   
+        $user = User::find($id);
+        // dd($user);
         if(Gate::allows('isAdmin')|| $this->authorize('update', $user)) {
             return view('user.edit',compact('user'));
         } 
