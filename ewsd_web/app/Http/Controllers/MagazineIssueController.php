@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use DB;
 
 class MagazineIssueController extends Controller
 {
@@ -46,7 +47,13 @@ class MagazineIssueController extends Controller
         // $staffs = User::where('role_id', 3)->get();
         $user = Auth::user();
         $faculty = $user->faculties->first();
-        $faculties = Faculty::all();
+        // $faculties = Faculty::all();
+        $faculties=  DB::table('faculties')
+                    ->select('faculties.name','faculties.id')
+                    ->join('user_faculty','user_faculty.faculty_id','=','faculties.id')
+                    ->where('user_faculty.user_id',Auth::user()->id)
+                    ->orderBy('user_faculty.created_at')
+                    ->get();
         $staffs = User::all();
         $academic_years = AcademicYear::all();
         return view('magazine_issue.create', compact('user', 'faculty', 'academic_years','faculties','staffs'));
@@ -117,7 +124,12 @@ class MagazineIssueController extends Controller
     public function edit(MagazineIssue $magazine_issue)
     {
         $staffs = \App\User::where('role_id', 3)->get();
-        $faculties = \App\Faculty::all();
+        $faculties=  DB::table('faculties')
+                    ->select('faculties.name','faculties.id')
+                    ->join('user_faculty','user_faculty.faculty_id','=','faculties.id')
+                    ->where('user_faculty.user_id',Auth::user()->id)
+                    ->orderBy('user_faculty.created_at')
+                    ->get();
         $academic_years = \App\AcademicYear::all();
         return view('magazine_issue.edit', compact('magazine_issue','staffs', 'faculties', 'academic_years'));
     }
@@ -223,7 +235,8 @@ class MagazineIssueController extends Controller
                 }
             }
         }
-        return view('magazine_issue.index',compact('magazine_issues'));
+            return view('magazine_issue.index',compact('magazine_issues'));
+        }
     }
 
     public function getStudentContributionsOfIssue(MagazineIssue $magazine_issue) {

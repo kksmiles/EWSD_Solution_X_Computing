@@ -27,6 +27,10 @@ class FacultyController extends Controller
         return view('faculty.add');
     }
     public function show(Faculty $faculty){
+        $facultyCheck = Auth::user()->faculties->first();
+        if($faculty->id != $facultyCheck->id ){
+            return redirect()->route('coordinator.dashboard');
+        }
         return view('faculty.show',compact('faculty'));
     }
     // Save
