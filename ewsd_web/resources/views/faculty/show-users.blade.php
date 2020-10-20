@@ -14,7 +14,6 @@
     </h5>
 
     <div class="card border-left-primary p-2">
-   
       <!-- filter row -->
       @if(Gate::allows('isMarketingManager') || Gate::allows('isAdmin'))
       <div class="row col-12 p-1">
@@ -55,7 +54,9 @@
                     <th scope="col">User name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Role</th>
-                    <th colspan="3"> Actions</th>
+                    @if(Gate::allows('isAdmin'))
+                      <th colspan="3"> Actions</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -65,6 +66,7 @@
                     <td scope="col">{{$user_in_faculty->user->fullname}}</td>
                     <td> {{$user_in_faculty->user->email}}</td>
                     <td> {{$user_in_faculty->user->role->roles}}</td>
+                    @if(Gate::allows('isAdmin'))
                     <td>
                       <form action="{{ route('user-faculty.destroy',[$user_in_faculty->id])}}" method="post">
                         @csrf
@@ -72,6 +74,7 @@
                             <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you Sure?')">Remove</button>
                       </form>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
