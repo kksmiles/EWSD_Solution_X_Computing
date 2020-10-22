@@ -9,11 +9,20 @@
         </button>
   </div>
   @endif
+  @can('isAdmin')
   <div class="container p-3">
     <div class="justify-content-between row px-3 py-2">
       <h4 class="font-weight-bold text-primary d-inline-block">{{$faculties[$f_id-1]->name}}</h4>
       <a href="{{ route('faculty.show',$f_id) }}" class="btn btn-sm btn-warning">Back</a>
     </div>
+    @endcan
+    @can('isMarketingCoordinator')
+    <div class="container p-3">
+    <div class="justify-content-between row px-3 py-2">
+      <h4 class="font-weight-bold text-primary d-inline-block">{{$faculties[$f_id-1]->name}}</h4>
+      <a href="{{ route('coordinator.faculty.index') }}" class="btn btn-sm btn-warning">Back</a>
+    </div>
+    @endcan
 
     <div class="card p-3 border-left-primary">
       @if(Gate::allows('isMarketingManager') || Gate::allows('isAdmin'))
@@ -55,7 +64,11 @@
                   <th scope="col">User name</th>
                   <th scope="col">Email</th>
                   <th scope="col">Role</th>
+                  @can('isAdmin')
+
                   <th colspan="3"> Actions</th>
+
+                  @endcan
               </tr>
           </thead>
           <tbody>
@@ -65,6 +78,8 @@
                   <td scope="col">{{$user_in_faculty->user->fullname}}</td>
                   <td> {{$user_in_faculty->user->email}}</td>
                   <td> {{$user_in_faculty->user->role->roles}}</td>
+                  @can('isAdmin')
+
                   <td>
                     <form action="{{ route('user-faculty.destroy',[$user_in_faculty->id])}}" method="post">
                       @csrf
@@ -72,6 +87,8 @@
                           <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you Sure?')">Remove</button>
                     </form>
                   </td>
+
+                  @endcan
               </tr>
               @endforeach
           </tbody>

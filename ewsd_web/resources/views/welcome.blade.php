@@ -41,7 +41,7 @@
             <div class="container">
                 <div class="masthead-subheading">Welcome To Our School</div>
                 <div class="masthead-heading text-uppercase">You can view Student's Magazines</div>
-                <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Log In</a>
+                <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="{{ route('login')}}">Log In</a>
             </div>
         </header>
 

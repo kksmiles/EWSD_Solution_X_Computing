@@ -28,10 +28,19 @@ class FacultyController extends Controller
     }
     public function show(Faculty $faculty){
         $facultyCheck = Auth::user()->faculties->first();
-        if($faculty->id != $facultyCheck->id ){
-            return redirect()->route('coordinator.dashboard');
+        if (Gate::allows('isMarketingCoordinator')) {
+            if($faculty->id != $facultyCheck->id ){
+                return redirect()->route('coordinator.dashboard');
+            }
+
         }
-        return view('faculty.show',compact('faculty'));
+        else if (Gate::allows('isAdmin')) {
+            return view('faculty.show',compact('faculty'));
+            
+        }
+
+            return view('faculty.show',compact('faculty'));
+
     }
     // Save
     public function save(Request $request){

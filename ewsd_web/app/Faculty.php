@@ -39,7 +39,7 @@ class Faculty extends Model
     }
 
 
-	}
+	
     public function contributions() {
         return $this->hasManyThrough('App\Contributions','App\MagazineIssue','faculty_id','issue_id');
 

@@ -232,6 +232,8 @@ class MagazineIssueController extends Controller
 
     public function getStudentIssues() {
         $faculties = Auth::user()->faculties;
+        $all_magazine_issues = [];
+        
         if(count($faculties) > 0){
             foreach($faculties as $faculty) {
                 if(count($faculty->magazine_issues) > 0) {
@@ -252,6 +254,8 @@ class MagazineIssueController extends Controller
         }
         //Show only magazine issues from active academic year
         $magazine_issues = new Collection();
+
+
         foreach($all_magazine_issues as $magazine_issue)
         {
             if($magazine_issue->academic_year->isCurrentAcademicYear())
@@ -259,12 +263,12 @@ class MagazineIssueController extends Controller
                 $magazine_issues->push($magazine_issue);
             }
         }
-        session()->flush();
+        session()->forget('header');
         return view('student.magazine-issue.index',compact('magazine_issues'));
 
     }
 
-}
+
 
     public function getStudentContributionsOfIssue(MagazineIssue $magazine_issue)
     {
