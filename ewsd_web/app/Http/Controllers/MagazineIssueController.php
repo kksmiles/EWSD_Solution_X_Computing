@@ -226,7 +226,10 @@ class MagazineIssueController extends Controller
         return view('magazine_issue.index',compact('magazine_issues'));
     }
 
-    public function getStudentContributionsOfIssue(MagazineIssue $magazine_issue) {
+}
+
+    public function getStudentContributionsOfIssue(MagazineIssue $magazine_issue)
+    {
         $contributions = $magazine_issue->contributions->where('student_id',Auth::id());
         foreach($contributions as $contribution) {
             $contribution->magazineIssueTitle = $contribution->magazineIssue->title;
@@ -235,4 +238,5 @@ class MagazineIssueController extends Controller
         }
         return view('contributions.student.index',compact('contributions'));
     }
+
 }
