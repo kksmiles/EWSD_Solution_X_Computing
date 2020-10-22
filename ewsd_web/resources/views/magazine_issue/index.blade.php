@@ -1,21 +1,6 @@
 @extends('template')
 @section('content')
     <section class='container'>
-        {{-- <h4>{{$user_faculties[0]->name}}</h4> --}}
-        {{-- <form class="form-inline" action="{{route('user_faculty.select')}}">
-          <div class="form-group mb-2">
-            <label for="faculty_name">Select Faculty : </label>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <select class="form-control" name="faculty_id">
-              @foreach ($user_faculties as $faculty)
-              <option value="{{$faculty->id}}">{{$faculty->name}}</option>
-              @endforeach     
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary mb-2">Confirm</button>
-        </form> --}}
-
 
         @if(Gate::allows('isMarketingCoordinator'))
         <h5 class="font-weight-bold p-2 text-dark">
@@ -23,8 +8,6 @@
         <a href="{{ route('coordinator.magazine-issues.create') }}" class='btn btn-primary button float-md-right'>Create</a>
         </h5>
         @endif
-
-       <div class="row">
         @if ($message = Session::get('success'))
             <div class="alert alert-success alert-dismissible fade show m-2" role="alert">
                 <strong>{{ $message }}</strong> 
@@ -33,7 +16,7 @@
                 </button>
             </div>
         @endif    
-    
+       <div class="row">
         @foreach($magazine_issues as $magazine_issue)
          <!-- Card -->
          <div class="col-md-3 col-12 p-2">

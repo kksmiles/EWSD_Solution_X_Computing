@@ -43,7 +43,6 @@
         </div>
     @endif
 
-
   <!-- Main Content -->
   <div id="content">
         <div class="bg-1 container">
