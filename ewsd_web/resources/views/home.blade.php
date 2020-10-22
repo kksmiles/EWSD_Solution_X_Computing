@@ -2,8 +2,11 @@
 
 @section('content')
     @can('isStudent')
+    
     <div class="container-fluid">
-        <div class="row">
+        @if(isset($datas))
+    
+    <div class="row">
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
@@ -84,10 +87,13 @@
               </div>
             </div>
           </div>
+          @endif
         </div>
     @endcan
     @can('isMarketingCoordinator')
         <div class="container-fluid">
+        
+        @if(isset($datas))
         <div class="row">
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
@@ -166,6 +172,7 @@
               </div>
             </div>
           </div>
+          @endif
         </div>
     @endcan
 @endsection
