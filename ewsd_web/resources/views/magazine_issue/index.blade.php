@@ -16,7 +16,11 @@
                 </button>
             </div>
         @endif    
+   
+       
+
        <div class="row">
+         
         @foreach($magazine_issues as $magazine_issue)
          <!-- Card -->
          <div class="col-md-3 col-12 p-2">
@@ -64,6 +68,8 @@
                         <a href="{{asset($magazine_issue->file)}}" download="{{$magazine_issue->file}}" >
                             <i class="fas fa-download text-success float-right p-1 my-1 mr-3"  title="Download File"></i>
                         </a>
+
+
                      
                       @else
 
@@ -95,6 +101,7 @@
                             <i class="fas fa-download text-success float-right p-1 my-1 mr-3"  title="Download File"></i>
                         </a>
 
+
                       @endif
 
 
@@ -107,6 +114,8 @@
 
         @endforeach
        </div>
+
+
 
     </section>
 @endsection

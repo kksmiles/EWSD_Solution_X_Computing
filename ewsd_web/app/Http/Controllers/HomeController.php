@@ -23,12 +23,13 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+       public function index()
     {
         if(Gate::allows('isMarketingCoordinator')) {
         $magazineIssueCount = \App\MagazineIssue::where('staff_id',\Auth::user()->id)
                                 ->count();
         $facultyId      =   \App\UserFaculty::where('user_id',\Auth::user()->id)->select('faculty_id')->first();
+
         if(is_null($facultyId)){
             return view('home');
         }
@@ -51,8 +52,7 @@ class HomeController extends Controller
                                     ->where('contributions.is_published','!=','1')
                                     ->where('faculties.id',$facultyId->faculty_id )
                                     ->count();
-        
-      
+
         $datas = [
             'magazineIssueCount' => $magazineIssueCount,
             'studentCount' => $studentCount,
@@ -62,6 +62,10 @@ class HomeController extends Controller
         ];
             return view('home',compact('datas'));
         }
+
+        elseif (Gate::allows('isAdmin')) {
+     
         return view('home');
+        }
     }
 }
