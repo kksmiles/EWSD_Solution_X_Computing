@@ -14,7 +14,7 @@ class FacultyController extends Controller
         $faculties = Faculty::all();
         if(Gate::allows('isStudent')){
             $faculties = Auth::user()->faculties;
-            return view('faculty.index',compact('faculties'));
+            return view('student.faculty.index',compact('faculties'));
         } else if (Gate::allows('isMarketingCoordinator')) {
             $faculty = Auth::user()->faculties->first();
             return redirect()->route('coordinator.faculty.show',($faculty->id));

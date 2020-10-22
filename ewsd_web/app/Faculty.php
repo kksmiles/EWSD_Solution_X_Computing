@@ -36,6 +36,7 @@ class Faculty extends Model
         }
 
         return $short_name;
+    }
 
 
 	}

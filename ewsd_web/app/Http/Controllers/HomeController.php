@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use Auth;
 use Illuminate\Support\Facades\Gate;
 use DB;
 
@@ -26,6 +28,7 @@ class HomeController extends Controller
        public function index()
     {
         if(Gate::allows('isMarketingCoordinator')) {
+
         $magazineIssueCount = \App\MagazineIssue::where('staff_id',\Auth::user()->id)
                                 ->count();
         $facultyId      =   \App\UserFaculty::where('user_id',\Auth::user()->id)->select('faculty_id')->first();
@@ -61,6 +64,29 @@ class HomeController extends Controller
             'contriPendindRejectCount' => $contributionsPendingReject
         ];
             return view('home',compact('datas'));
+        }
+           else if(Gate::allows('isStudent')) {
+            $facultiesCount = Auth::user()->faculties->count();
+            $contributionsCount = Auth::user()->contributions->count();
+            $all_magazine_issues = Auth::user()->student_magazine_issues();
+            $publishedContributionsCount = Auth::user()->contributions->where('is_published', 1)->count();
+            $magazine_issues = array();
+            foreach($all_magazine_issues as $magazine_issue)
+            {
+                if($magazine_issue->academic_year->isCurrentAcademicYear())
+                {
+                    array_push($magazine_issues, $magazine_issue);
+                }
+            }
+            $magazineIssueCount = count($magazine_issues);
+                
+            $datas = [
+                'facultiesCount' => $facultiesCount,
+                'magazineIssuesCount' => $facultiesCount,
+                'contributionsCount' => $contributionsCount,
+                'publishedContributionsCount' => $publishedContributionsCount
+            ];
+            return view('home',compact('datas'));    
         }
 
         elseif (Gate::allows('isAdmin')) {

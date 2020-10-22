@@ -66,8 +66,6 @@ Route::resource('/user_roles','UserRolesController')->middleware('can:isAdmin');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
 
 //new routes
 
