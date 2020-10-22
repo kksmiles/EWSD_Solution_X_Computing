@@ -37,12 +37,12 @@
                     <td>{{$contribution->magazineIssue->title}}</td>
                       <td>
                         <a href="{{route('coordinator.contributions.show',$contribution->id)}}">
-                            <button>View Contribution</button>
+                            <button class="btn btn-primary">View Contribution</button>
                         </a>
                       </td>
                       <td>
                         <a href="{{asset('storage/contributions/'.$contribution->file)}}" download="{{$contribution->file}}">
-                          <button>Download Files</button>
+                          <button class="btn btn-success">Download Files</button>
                         </a>
                       </td>
                     </tr>

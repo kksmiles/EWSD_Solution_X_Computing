@@ -13,7 +13,7 @@
      {{$faculties[$f_id-1]->name}}
     </h5>
 
-    <div class="card border-left-primary p-2">
+    <div class="card border-left-primary p-2  mb-5">
       <!-- filter row -->
       @if(Gate::allows('isMarketingManager') || Gate::allows('isAdmin'))
       <div class="row col-12 p-1">
