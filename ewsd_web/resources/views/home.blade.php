@@ -2,6 +2,7 @@
 
 @section('content')
     @can('isMarketingCoordinator')
+        @if(isset($datas))
         <div class="container-fluid">
         <div class="row">
             <!-- Earnings (Monthly) Card Example -->
@@ -82,5 +83,6 @@
             </div>
           </div>
         </div>
+        @endif
     @endcan
 @endsection
