@@ -7,7 +7,7 @@
             <img src="{{ URL::asset('https://images.pexels.com/photos/4049870/pexels-photo-4049870.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')}}" class="img-fluid border-0">
         </div>
         <div class="col-md-6 col-12 bg-light">
-            <div class="card  bg-transparent text-dark border-0">
+            <div class="card bg-transparent text-dark border-0">
 
                 <div class="card-body">
 

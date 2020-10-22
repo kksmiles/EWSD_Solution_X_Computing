@@ -10,12 +10,22 @@
         </div>
 
         <div class="card-footer text-right">
-          <a class="btn btn-sm btn-primary" href="{{route('faculty.users.show',$faculty->id)}}">
+          @can('isMarketingCoordinator')
+          <a class="btn btn-sm btn-primary" href="{{route('coordinator.faculty.users.show',$faculty->id)}}">
             <i class="fas fa-users"></i> Check Students</a>
-          <a class="btn btn-sm btn-primary" href="{{ route('magazine-issues.index') }}">
+          <a class="btn btn-sm btn-primary" href="{{ route('coordinator.magazine-issues.index') }}">
             <i class="fas fa-file"></i> Check Issues </a>
-          <a class="btn btn-sm btn-primary" href="{{ route('faculty.index') }}">
+          <a class="btn btn-sm btn-primary" href="{{ route('coordinator.contributions.index') }}">
             <i class="fa fa-file-alt"></i> Check Contributions </a>
+            @endcan
+            @can('isAdmin')
+              <a class="btn btn-sm btn-primary" href="{{route('faculty.users.show',$faculty->id)}}">
+              <i class="fas fa-users"></i> Check Students</a>
+              <a class="btn btn-sm btn-primary" href="{{ route('magazine-issues.index') }}">
+                <i class="fas fa-file"></i> Check Issues </a>
+              <a class="btn btn-sm btn-primary" href="{{ route('faculty.index') }}">
+              <i class="fa fa-file-alt"></i> Check Contributions </a>
+            @endcan
         </div>
       </div>
     </section>

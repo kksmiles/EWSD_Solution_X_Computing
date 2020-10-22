@@ -18,7 +18,7 @@ class ContributionController extends Controller
         if(!isset($contributions)) {
             return redirect()->route('contribution.upload')->with('success', 'Your Contributions does not exist. Please upload now'); 
         }
-        session()->flush();
+        session()->forget('header');
         return view('student.contribution.index', compact('contributions'));
     }
 

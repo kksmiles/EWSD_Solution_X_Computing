@@ -51,17 +51,17 @@
           <td>{{$contribution->created_at}}</td>
           <td>
             <a href="{{ $contribution->file }}">
-              <button class="btn btn-success">Download Files</button>
+              <button class="btn btn-outline-success btn-sm">Download Files</button>
             </a>
             </td>
             <td>
                 <a href="{{route('contribution.student.edit',$contribution->id)}}">
-                  <button class="btn btn-primary">Update Contribution</button>
+                  <button class="btn btn-outline-primary btn-sm">Update Contribution</button>
                 </a>
             </td>
             <td>
               <a href="{{route('contribution.student.show',$contribution->id)}}">
-                <button class="btn btn-info"> View Contribution</button>
+                <button class="btn btn-outline-info btn-sm"> View Contribution</button>
               </a>
             </td>
           </tr>
