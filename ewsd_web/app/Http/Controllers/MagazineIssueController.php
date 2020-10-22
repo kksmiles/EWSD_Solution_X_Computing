@@ -196,7 +196,8 @@ class MagazineIssueController extends Controller
 
     public function getIssuesInFaculty($id) {
        
-       if (Gate::allows('isStudent')) {
+        if (Gate::allows('isStudent')) {
+            $faculty = Faculty::find($id);
             $all_magazine_issues = Faculty::find($id)->magazine_issues;
             //Show only magazine issues from active academic year
             $magazine_issues = new Collection();
@@ -208,10 +209,11 @@ class MagazineIssueController extends Controller
                 }
             }
             if(count($magazine_issues)>0 && Gate::authorize('inStudentFaculty',$magazine_issues[0])) {
+                session()->flash('header', "of $faculty->name");
                 return view('student.magazine-issue.index', compact('magazine_issues'));
             } else {
-               return view('student.magazine-issue.empty');
-           }
+                return view('student.magazine-issue.empty');
+            }
         } 
         
     }
@@ -245,6 +247,7 @@ class MagazineIssueController extends Controller
                 $magazine_issues->push($magazine_issue);
             }
         }
+        session()->flush();
         return view('student.magazine-issue.index',compact('magazine_issues'));
     }
 
@@ -255,6 +258,7 @@ class MagazineIssueController extends Controller
             $contribution->facultyName = $contribution->faculty()->name;
             $contribution->academicYear = $contribution->magazineIssue->academic_year->title;
         }
+        session()->flash('header', "of $magazine_issue->title");
         return view('student.contribution.index',compact('contributions'));
     }
 }

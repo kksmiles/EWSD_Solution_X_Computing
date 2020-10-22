@@ -1,22 +1,9 @@
 @extends('template')
 @section('content')
     <section class='container'>
-        {{-- <h4>{{$user_faculties[0]->name}}</h4> --}}
-        {{-- <form class="form-inline" action="{{route('user_faculty.select')}}">
-          <div class="form-group mb-2">
-            <label for="faculty_name">Select Faculty : </label>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <select class="form-control" name="faculty_id">
-              @foreach ($user_faculties as $faculty)
-              <option value="{{$faculty->id}}">{{$faculty->name}}</option>
-              @endforeach     
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary mb-2">Confirm</button>
-        </form> --}}
-       
-
+        <h5 class="bg-white d-inline-block py-2 font-weight-bold rounded-lg text-primary">
+          Magazine Issues {{ Session::get('header') }}
+        </h5>
        <div class="row">
          
         @foreach($magazine_issues as $magazine_issue)

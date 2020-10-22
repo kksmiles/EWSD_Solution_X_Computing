@@ -41,14 +41,14 @@ class Contributions extends Model
         $day_diff = $submitted_time->diffInDays($now);
 
         if($now > $modification_closure_date) {
-            session(['closed' => 'It is now past closure date']);
+            session()->flash('closed', 'It is now past closure date');
             return false; // Closed contribution if current time is later than closure date
         } else if ($this->is_published == 2) {
-            session(['closed' => "You've been rejected"]);
+            session()->flash('closed', "You've been rejected");
             return false;
         } else if ($day_diff >= 14) {
             if ($this->comments->isEmpty()) {
-                session(['closed' => "You've been automatically rejected"]);
+                session()->flash('closed', "You've been automatically rejected");
                 return false; // Closed Contribution if comments is empty after 14 days.
             } else {
                 return true; // Open contribution if there is comment after 14 days.

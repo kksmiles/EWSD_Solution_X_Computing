@@ -3,12 +3,10 @@
 
 <section class="container">
         
-       <div class="p-2">
-            <a href="{{route('contribution.student.all')}}" class="btn btn-outline-primary">
-                Show My Contributions
-            </a>
-       </div> 
 
+    <h5 class="bg-white d-inline-block py-2 font-weight-bold rounded-lg text-primary">
+        Uploading new contribution
+    </h5>
     <div class="card border-left-primary p-3">
         
         @if ($errors->any())
@@ -71,6 +69,11 @@
             <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Upload Contributions</button>
         </form>
     </div>
+    <div class="p-2">
+        <a href="{{route('contribution.student.all')}}" class="btn btn-outline-primary">
+            Show My Contributions
+        </a>
+    </div> 
 </section> 
 
 @endsection

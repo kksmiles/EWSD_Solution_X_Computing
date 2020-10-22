@@ -6,6 +6,9 @@
 @endsection
 @section('content')
 <section class="container">
+  <h5 class="bg-white d-inline-block py-2 font-weight-bold rounded-lg text-primary">
+    Your Contributions {{ Session::get('header') }}
+  </h5>
   @if ($message = Session::get('success'))
   <div style="margin:0 auto; text-align:center; background:green; color:#fff;">
           <strong>{{ $message }}</strong>
