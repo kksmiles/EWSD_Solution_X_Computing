@@ -2,9 +2,24 @@
 
 @section('content')
 <section class='container'>
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+            <div class="alert alert-danger alert-dismissible fade show m-2" role="alert">
+                <strong>{{ $error }}</strong> 
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endforeach
+    @endif
 
     <div class="card border-left-primary rounded-lg shadow p-3 rounded-lg m-2">
-        <h5 class="font-weight-bold p-2 text-dark">Magazine Issues</h5>
+        <h5 class="font-weight-bold p-2 text-dark">
+        Create Magazine Issues For Your Faculty
+        <a href="{{ route('magazine-issues.index')}}" class="btn btn-primary button float-md-right">
+                Back
+            </a>
+        </h5>
         <form action="{{ route('magazine-issues.store') }}" method="POST" enctype="multipart/form-data">
          @csrf
           <div class="row col-12">
@@ -12,6 +27,7 @@
               <div class="form-group">
                 <label for="" class='form-check-label font-weight-normal'> Associated Faculty : </label>
                 <select name="faculty_id" class="form-control border-dark rounded-lg">
+             
                     @foreach($faculties as $faculty)
                         <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
                     @endforeach
@@ -73,16 +89,6 @@
         </form>
       </div>
       
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <div class="alert alert-danger alert-dismissible fade show m-2" role="alert">
-                <strong>{{ $error }}</strong> 
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endforeach
-    @endif
 
 </section>
 @endsection

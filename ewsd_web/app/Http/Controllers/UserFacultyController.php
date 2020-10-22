@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\UserFaculty;
 use App\User;
 use App\Faculty;
-
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
 class UserFacultyController extends Controller
@@ -63,6 +63,12 @@ class UserFacultyController extends Controller
 
     public function showFacultyUsers($f_id = 1) 
     {       
+        if (Gate::allows('isMarketingCoordinator')) {
+            $facultyCheck = \Auth::user()->faculties->first();
+            if($f_id != $facultyCheck->id ){
+                return redirect()->route('coordinator.dashboard');
+            }
+        }
         $user_faculties = UserFaculty::all();
         $faculties = Faculty::all();
         $users_in_faculty = UserFaculty::where('faculty_id',$f_id)->get();

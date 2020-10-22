@@ -29,6 +29,11 @@ class HomeController extends Controller
         $magazineIssueCount = \App\MagazineIssue::where('staff_id',\Auth::user()->id)
                                 ->count();
         $facultyId      =   \App\UserFaculty::where('user_id',\Auth::user()->id)->select('faculty_id')->first();
+
+        if(is_null($facultyId)){
+            return view('home');
+        }
+         
         $studentCount   =   \DB::table('faculties as f')
                             ->join('user_faculty','user_faculty.faculty_id','=','f.id')
                             ->join('users','users.id','=','user_faculty.user_id')
@@ -47,7 +52,7 @@ class HomeController extends Controller
                                     ->where('contributions.is_published','!=','1')
                                     ->where('faculties.id',$facultyId->faculty_id )
                                     ->count();
-            
+
         $datas = [
             'magazineIssueCount' => $magazineIssueCount,
             'studentCount' => $studentCount,
@@ -57,8 +62,9 @@ class HomeController extends Controller
         ];
             return view('home',compact('datas'));
         }
+
         elseif (Gate::allows('isAdmin')) {
-            
+     
         return view('home');
         }
     }

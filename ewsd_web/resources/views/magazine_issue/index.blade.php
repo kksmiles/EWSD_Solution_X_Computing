@@ -1,20 +1,22 @@
 @extends('template')
 @section('content')
     <section class='container'>
-        {{-- <h4>{{$user_faculties[0]->name}}</h4> --}}
-        {{-- <form class="form-inline" action="{{route('user_faculty.select')}}">
-          <div class="form-group mb-2">
-            <label for="faculty_name">Select Faculty : </label>
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <select class="form-control" name="faculty_id">
-              @foreach ($user_faculties as $faculty)
-              <option value="{{$faculty->id}}">{{$faculty->name}}</option>
-              @endforeach     
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary mb-2">Confirm</button>
-        </form> --}}
+
+        @if(Gate::allows('isMarketingCoordinator'))
+        <h5 class="font-weight-bold p-2 text-dark">
+            Your Magazines Issues
+        <a href="{{ route('coordinator.magazine-issues.create') }}" class='btn btn-primary button float-md-right'>Create</a>
+        </h5>
+        @endif
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success alert-dismissible fade show m-2" role="alert">
+                <strong>{{ $message }}</strong> 
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif    
+   
        
 
        <div class="row">
@@ -63,8 +65,11 @@
                                 <i class="fa fa-trash-alt"></i>
                               </button>   
                           </form>
+                        <a href="{{asset($magazine_issue->file)}}" download="{{$magazine_issue->file}}" >
+                            <i class="fas fa-download text-success float-right p-1 my-1 mr-3"  title="Download File"></i>
+                        </a>
 
-                          <i class="fas fa-download text-success float-right p-1 my-1 mr-3" title="Download File"></i>
+
                      
                       @else
 
@@ -91,12 +96,13 @@
                             </button>   
                         </form>
 
-                        <i class="fas fa-download text-success float-right p-1 my-1 mr-3" title="Download File"></i>
+                      
+                        <a href="{{asset($magazine_issue->file)}}" download="{{$magazine_issue->file}}" >
+                            <i class="fas fa-download text-success float-right p-1 my-1 mr-3"  title="Download File"></i>
+                        </a>
 
 
                       @endif
-
-
 
 
                   </div>
@@ -111,13 +117,5 @@
 
 
 
-        @if(Gate::allows('isMarketingCoordinator'))
-        <br>
-            <a href="{{ route('coordinator.magazine-issues.create') }}" class='btn btn-primary'>Create</a>
-        <br>
-        @endif
-        @if ($message = Session::get('success'))
-            <strong>{{ $message }}</strong>
-        @endif    
     </section>
 @endsection
