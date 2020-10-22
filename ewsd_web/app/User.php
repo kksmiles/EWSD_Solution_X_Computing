@@ -45,7 +45,17 @@ class User extends Authenticatable
     public function role() {
         return $this->belongsTo('App\UserRoles');
     }
-  
+    public function student_magazine_issues() {
+        $magazine_issues = array();
+        foreach($this->faculties as $faculty)
+        {
+            foreach($faculty->magazine_issues as $magazine_issue)
+            {
+                array_push($magazine_issues, $magazine_issue);
+            }
+        }
+        return $magazine_issues;
+    }
     public function magazine_issues() {
         return $this->hasMany('App\MagazineIssue', 'staff_id', 'id');
     }
@@ -57,5 +67,9 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany('App\Comment', 'user_id', 'id');
+    }
+
+    public function getImageURL() {
+        return $this->image ? $this->image : '/img/default-profile.svg';
     }
 }

@@ -6,6 +6,7 @@ use App\MagazineIssue;
 use App\AcademicYear;
 use App\User;
 use App\Faculty;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Gate;
@@ -104,7 +105,7 @@ class MagazineIssueController extends Controller
         if(Gate::allows('isMarketingCoordinator') && Gate::authorize('view',$magazine_issue)){
             return view('magazine_issue.show', compact('magazine_issue'));
         } elseif (Gate::allows('isStudent') && Gate::authorize('inStudentFaculty',$magazine_issue)){
-            return view('magazine_issue.show', compact('magazine_issue'));
+            return view('student.magazine-issue.show', compact('magazine_issue'));
         }
     }
 
@@ -196,9 +197,20 @@ class MagazineIssueController extends Controller
     public function getIssuesInFaculty($id) {
        
        if (Gate::allows('isStudent')) {
-            $magazine_issues = Faculty::find($id)->magazine_issues;
-           if(count($magazine_issues)>0 && Gate::authorize('inStudentFaculty',$magazine_issues[0])) {
-            return view('magazine_issue.index', compact('magazine_issues'));
+            $all_magazine_issues = Faculty::find($id)->magazine_issues;
+            //Show only magazine issues from active academic year
+            $magazine_issues = new Collection();
+            foreach($all_magazine_issues as $magazine_issue)
+            {
+                if($magazine_issue->academic_year->isCurrentAcademicYear())
+                {
+                    $magazine_issues->push($magazine_issue);
+                }
+            }
+            if(count($magazine_issues)>0 && Gate::authorize('inStudentFaculty',$magazine_issues[0])) {
+                return view('student.magazine-issue.index', compact('magazine_issues'));
+            } else {
+               return view('student.magazine-issue.empty');
            }
         } 
         
@@ -210,20 +222,30 @@ class MagazineIssueController extends Controller
             foreach($faculties as $faculty) {
                 if(count($faculty->magazine_issues) > 0) {
                     foreach($faculty->magazine_issues as $magazine_issue) {
-                        $magazine_issues [] = $magazine_issue;
+                        $all_magazine_issues [] = $magazine_issue;
                     }
                 }
             }
-        }else{
-        $magazine_issues = [];
-        foreach($faculties as $faculty) {
-            if(count($faculty->magazine_issues) > 0) {
-                foreach($faculty->magazine_issues as $magazine_issue) {
-                    $magazine_issues [] = $magazine_issue;
+        } else {
+            $magazine_issues = [];
+            foreach($faculties as $faculty) {
+                if(count($faculty->magazine_issues) > 0) {
+                    foreach($faculty->magazine_issues as $magazine_issue) {
+                        $all_magazine_issues [] = $magazine_issue;
+                    }
                 }
             }
         }
-        return view('magazine_issue.index',compact('magazine_issues'));
+        //Show only magazine issues from active academic year
+        $magazine_issues = new Collection();
+        foreach($all_magazine_issues as $magazine_issue)
+        {
+            if($magazine_issue->academic_year->isCurrentAcademicYear())
+            {
+                $magazine_issues->push($magazine_issue);
+            }
+        }
+        return view('student.magazine-issue.index',compact('magazine_issues'));
     }
 
     public function getStudentContributionsOfIssue(MagazineIssue $magazine_issue) {
@@ -233,6 +255,6 @@ class MagazineIssueController extends Controller
             $contribution->facultyName = $contribution->faculty()->name;
             $contribution->academicYear = $contribution->magazineIssue->academic_year->title;
         }
-        return view('contributions.student.index',compact('contributions'));
+        return view('student.contribution.index',compact('contributions'));
     }
 }

@@ -202,7 +202,7 @@
         
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->username }}</span>
         
-                <img class="img rounded-circle" src="{{ Auth::user()->image }}" width="40px" height="40px">
+                <img class="img rounded-circle" src="{{ Auth::user()->getImageURL() }}" width="40px" height="40px">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

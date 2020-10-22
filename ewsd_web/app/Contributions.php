@@ -41,8 +41,11 @@ class Contributions extends Model
         $day_diff = $submitted_time->diffInDays($now);
 
         if($now > $modification_closure_date) {
-            session(['closed' => 'It is now past modification closure date']);
+            session(['closed' => 'It is now past closure date']);
             return false; // Closed contribution if current time is later than closure date
+        } else if ($this->is_published == 2) {
+            session(['closed' => "You've been rejected"]);
+            return false;
         } else if ($day_diff >= 14) {
             if ($this->comments->isEmpty()) {
                 session(['closed' => "You've been automatically rejected"]);
@@ -62,7 +65,6 @@ class Contributions extends Model
             if ($user->role_id == 3) {
                 return true; // Allow coordinator to comment
             } else if ($this->comments->isEmpty()) {
-                session(['comment_not_allowed' => "Please wait for coordinator response"]);
                 return false; // Doesn't allow students to comment if there hasn't been any comment from coordinator.
             } else {
                 return true; // Allow students to comment if there is a commetn from coordinator.
@@ -71,4 +73,4 @@ class Contributions extends Model
             return false; // Doesn't allow comment if the contribution is closed.
         }
     }
-    }
+}
