@@ -100,6 +100,7 @@ Route::group(['prefix' => 'admin','middleware'=>'can:isAdmin'], function(){
     //academic year routes for admin
     Route::resource('/academic-years','AcademicYearController');
     
+    
 });
 //! ADMIN ROUTES !//
 
@@ -125,6 +126,12 @@ Route::group(['prefix' => 'manager','middleware'=>'can:isMarketingManager'],func
         Route::get('/{id}','MagazineIssueController@show')->name('manager.magazine-issues.show');
     });
     Route::get('/selected-contributions','ContributionController@indexSelectedContributions')->name('manager.selected-contributions.index');
+    
+    Route::group([ 'prefix' => 'report' ], function(){
+        Route::get('/charts/{year?}', 'ReportController@index')->name('charts.contribute');
+        Route::any('/contributions','ReportController@contributions')->name('report.contribute');
+        Route::any('/exception-report','ReportController@exceptionReport')->name('report.exception');
+    });
 });
 //!ADMIN ROUTES !//
 

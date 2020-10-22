@@ -220,12 +220,12 @@ class MagazineIssueController extends Controller
             if(count($faculty->magazine_issues) > 0) {
                 foreach($faculty->magazine_issues as $magazine_issue) {
                     $magazine_issues [] = $magazine_issue;
+                    }
                 }
             }
-        }
         return view('magazine_issue.index',compact('magazine_issues'));
-    }
-
+        }
+}
     public function getStudentContributionsOfIssue(MagazineIssue $magazine_issue) {
         $contributions = $magazine_issue->contributions->where('student_id',Auth::id());
         foreach($contributions as $contribution) {
