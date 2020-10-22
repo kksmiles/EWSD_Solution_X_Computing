@@ -17,6 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/welcome', function () {
+    return view('welcome');
+});
+
+
+
 // ! Chart
 // This has to be covered => 'middleware'=>'can:isMarketingManager'
 Route::group([ 'prefix' => 'report' ], function(){

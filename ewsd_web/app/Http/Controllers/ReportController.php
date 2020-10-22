@@ -210,6 +210,7 @@ class ReportController extends Controller
 
     // @ call back function for require query
     public function getContributionReportQuery($status,$acedemicYear,$faculty,$type){
+        
         $data =  DB::table('contributions')
                 ->join('magazine_issues', 'magazine_issues.id', '=', 'contributions.issue_id')
                 ->join('faculties', 'faculties.id', '=', 'magazine_issues.faculty_id')
@@ -224,9 +225,12 @@ class ReportController extends Controller
                     'academic_years.title as academic_year_title',
                 );
 
-        if($type != 'post') {
+        if($type != 'post') 
+        {
             $query = $data->get();
-        } else {
+        }
+        else 
+        {
             if($status == 'all' && $acedemicYear != 'all' && $faculty != 'all'){
                 $query = $data->where('academic_years.id',$acedemicYear)->where('faculties.id',$faculty)->get();
             }
