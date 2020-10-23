@@ -92,6 +92,8 @@ class HomeController extends Controller
         elseif (Gate::allows('isAdmin')) {
      
         return view('home');
+        } elseif (Gate::allows('isManager')) {
+            return \redirect()->route('manager.dashboard');
         }
     }
 }

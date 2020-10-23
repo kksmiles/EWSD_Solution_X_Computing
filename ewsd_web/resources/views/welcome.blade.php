@@ -31,7 +31,14 @@
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Awarded Contributions</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#team">Team</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact Us</a></li>
+                    @if (Auth::user())
+                        <form action="{{route('logout')}}" method="POST">
+                        @csrf
+                            <li class="nav-item"><input type ="submit" value="LOGOUT" class="nav-link js-scroll-trigger"/></li>
+                        </form>
+                    @else 
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{ route('login')}}">Login</a></li>
+                    @endif
                     </ul>
                 </div>
             </div>
@@ -41,7 +48,16 @@
             <div class="container">
                 <div class="masthead-subheading">Welcome To Our School</div>
                 <div class="masthead-heading text-uppercase">You can view Student's Magazines</div>
+            @if (Auth::user())
+                <form action="{{route('logout')}}" method="POST">
+                @csrf
+                    <button type="submit" class="btn btn-primary btn-xl text-uppercase js-scroll-trigger">
+                        Log Out
+                    </button>
+                </form>
+            @else 
                 <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="{{ route('login')}}">Log In</a>
+            @endif
             </div>
         </header>
 
