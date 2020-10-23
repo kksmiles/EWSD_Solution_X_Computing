@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Gate;
 use DB;
+use App\User;
+use App\Faculty;
 
 class HomeController extends Controller
 {
@@ -90,10 +92,25 @@ class HomeController extends Controller
         }
 
         elseif (Gate::allows('isAdmin')) {
-     
-        return view('home');
+            $students = User::where('role_id',4)->count();
+            $cooridinators = User::where('role_id',3)->count();
+            $managers = User::where('role_id',2)->count();
+            $faculties = Faculty::all()->count();
+
+            $new_users = User::latest()->take(5)->get();
+            $new_faculties = User::latest()->take(5)->get();
+            
+
+            $datas = [ 'students' => $students,
+                        'faculties' => $faculties,
+                        'cooridinators' => $cooridinators,
+                        'managers' => $managers,
+                     ];
+
+            return view('home',compact('datas','new_users'));
         } elseif (Gate::allows('isManager')) {
-            return \redirect()->route('manager.dashboard');
+            return redirect()->route('manager.dashboard');
         }
+        return view('welcome');
     }
 }

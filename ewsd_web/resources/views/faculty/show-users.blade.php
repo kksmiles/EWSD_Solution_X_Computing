@@ -9,6 +9,7 @@
         </button>
   </div>
   @endif
+  
   @can('isAdmin')
   <div class="container p-3">
     <div class="justify-content-between row px-3 py-2">
