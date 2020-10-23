@@ -14,9 +14,11 @@
           Contributions of Your Faculty's students
       </h5>
     @elsecan('isMarketingManager')
+      @if(!($coordinatorContributions))
       <h5  class="bg-white d-inline-block py-2 font-weight-bold rounded-lg text-primary">
           Contributions of {{$coordinatorContributions[0]->faculty()->name}}
       </h5>
+      @endif
     @elsecan('isGuest')
     <h5 class="bg-white d-inline-block py-2 font-weight-bold rounded-lg text-primary">                
       Published Contributions of Your Faculty's students
