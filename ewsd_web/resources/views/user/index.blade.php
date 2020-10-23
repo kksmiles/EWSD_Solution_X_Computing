@@ -5,7 +5,7 @@
 
 <div class='card container shadow border-left-primary'>
     <h4 class="my-3">User List</h4>
-        <table class="table table-responsive d-md-table rounded-lg ">
+        <table class="table table-responsive d-md-table rounded-lg " id="table-resize-collapse"> 
             <thead class=" text-white font-weight-light bg-dark-primary">
                 <tr>
                     <th scope='col'>NO</th>
@@ -20,7 +20,7 @@
             <tbody >
                 
                 @foreach($users as $user)
-                    <tr >
+                    <tr>
                         <td> {{$user->id}} </td>
                         <td class="text-dark font-weight-bold">{{$user->username}}</td>
                         <td> {{$user->fullname}} </td>

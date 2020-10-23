@@ -27,7 +27,7 @@ class MagazineIssueController extends Controller
             $magazine_issues = Auth::user()->magazine_issues;
             return view('magazine_issue.index', compact('magazine_issues'));
 
-        } elseif(Gate::allows('isSupervisor')) {
+        } elseif(Gate::allows('isMarketingManager')) {
 
             $faculties = Faculty::all();
             $magazine_issues = MagazineIssue::all();
@@ -104,6 +104,8 @@ class MagazineIssueController extends Controller
         if(Gate::allows('isMarketingCoordinator') && Gate::authorize('view',$magazine_issue)){
             return view('magazine_issue.show', compact('magazine_issue'));
         } elseif (Gate::allows('isStudent') && Gate::authorize('inStudentFaculty',$magazine_issue)){
+            return view('magazine_issue.show', compact('magazine_issue'));
+        } elseif(Gate::allows('isMarketingManager') || Gate::allows('isGuest')){
             return view('magazine_issue.show', compact('magazine_issue'));
         }
     }
@@ -200,10 +202,16 @@ class MagazineIssueController extends Controller
            if(count($magazine_issues)>0 && Gate::authorize('inStudentFaculty',$magazine_issues[0])) {
             return view('magazine_issue.index', compact('magazine_issues'));
            }
-        } 
+        } else if (Gate::allows('isMarketingManager')) {
+            $magazine_issues = Faculty::find($id)->magazine_issues;
+            return view('magazine_issue.index', compact('magazine_issues'));
+        }
         
     }
-
+    public function guestIssues() {
+        $magazine_issues = Auth::user()->faculties[0]->magazine_issues;
+        return view('magazine_issue.index', compact('magazine_issues'));
+    }
     public function getStudentIssues() {
         $faculties = Auth::user()->faculties;
         if(count($faculties) > 0){
@@ -225,7 +233,7 @@ class MagazineIssueController extends Controller
             }
         return view('magazine_issue.index',compact('magazine_issues'));
         }
-}
+    }
     public function getStudentContributionsOfIssue(MagazineIssue $magazine_issue) {
         $contributions = $magazine_issue->contributions->where('student_id',Auth::id());
         foreach($contributions as $contribution) {

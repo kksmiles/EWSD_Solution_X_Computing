@@ -54,9 +54,5 @@ class AuthServiceProvider extends ServiceProvider
             return $user->role_id == 5;
         });
 
-        //Admin or MarketingManager or Marketing Coordinator 
-        Gate::define('isSupervisor',function ($user) {
-            return ($user->role_id == 1 || 2 );
-        });
     }
 }

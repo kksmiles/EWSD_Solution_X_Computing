@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\UserFaculty;
 use App\User;
 use App\Faculty;
-
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
 class UserFacultyController extends Controller
@@ -88,6 +88,9 @@ class UserFacultyController extends Controller
         $f_id = $request->faculty_id;
         if(!$f_id) {
             $f_id = 1;
+        }
+        if(Gate::allows('isMarketingManager')) {
+            return redirect()->route('manager.faculty.users.show',$f_id);
         }
         return redirect()->route('faculty.users.show',$f_id);
     }

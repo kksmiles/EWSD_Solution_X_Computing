@@ -3,31 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\Contributions;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class ContributionController extends Controller
 {
     // ! Student  Contribution
     // show all contributions of auth student
+    
     public function studentAllContribution(){
         $contributions = Auth::user()->contributions;
         if(!isset($contributions)) {
             return redirect()->route('contribution.upload')->with('success', 'Your Contributions does not exist. Please upload now'); 
         }
-        foreach($contributions as $contribution) {
-            $contribution->magazineIssueTitle = $contribution->magazineIssue->title;
-            $contribution->facultyName = $contribution->faculty()->name;
-            $contribution->academicYear = $contribution->magazineIssue->academic_year->title;
-        }
-        return view('contributions.student.index',compact('contributions'));
+        session()->forget('header');
+        return view('student.contribution.index', compact('contributions'));
     }
 
     public function upload(){
         $ufModel = new \App\UserFaculty;
         $availableMagazineIssuesWithFaculty = $ufModel->getMagazines();
-        return view('contributions.student.upload',compact('availableMagazineIssuesWithFaculty'));
+        return view('student.contribution.upload',compact('availableMagazineIssuesWithFaculty'));
     }
     // users -> user_faculty => faculty // magzines_issue_faculty -> select('magazine_issue')
 
@@ -37,23 +37,23 @@ class ContributionController extends Controller
             'issueId' => 'required',
             'title' => 'required',
             'description' => 'required',
-            'file' => ['required', 'mimes:jpeg,png,gif,pdf,doc,ppt,zip'],
+            'file' => ['mimes:jpeg,png,gif,pdf,doc,ppt,zip'],
         ]);
-        if($request->hasFile('file')){
-            $file = $request['file'];
-            $fileName =$file->getClientOriginalName();
-            $fileExtension = $file->getClientOriginalExtension();
-            $upload_path = public_path().'/storage/contributions/';
-            $file->move($upload_path,$fileName);
-            // $file->storeAs('public/contributions/',$fileName);
-        }
         $newContribution = new Contributions;
+        $current_timestamp = Carbon::now()->timestamp;
+        if($request->hasFile('file')){
+            $file_name = $current_timestamp . "_" . $request->file->getClientOriginalName();
+            $extension = $request->file->extension();
+            $request->file->storeAs('/public/contribution-files/', $file_name. "." .$extension);
+            $file_url = Storage::url("contribution-files/" .$file_name. "." .$extension);
+            $newContribution->file = $file_url;
+        }
+        
         $newContribution->student_id = \Auth::user()->id;
         $newContribution->issue_id = $request['issueId'];
         $newContribution->title = $request['title'];
         $newContribution->description = $request['description'];
         $newContribution->is_published = '0';
-        $newContribution->file = $fileName;
         $newContribution->save();
 
         // send mail to respective contributor
@@ -81,27 +81,26 @@ class ContributionController extends Controller
 
     public function update(Request $request){
         $request->validate([
-            'issueId' => 'required',
             'title' => 'required',
             'description' => 'required',
-            'file' => ['required', 'mimes:jpeg,png,gif,pdf,doc,ppt,zip'],
+            'file' => ['mimes:jpeg,png,gif,pdf,doc,ppt,zip'],
         ]);
-        if($request->hasFile('file')){
-            $file = $request['file'];
-            $fileName =$file->getClientOriginalName();
-            $fileExtension = $file->getClientOriginalExtension();
-            $file->storeAs('public/contributions/',$fileName);
-        }
         $updateContribution = \App\Contributions::find($request->id);
-        $updateContribution->issue_id = $request['issueId'];
+        $current_timestamp = Carbon::now()->timestamp;
+        if($request->hasFile('file')){
+            $file_name = $current_timestamp . "_" . $request->file->getClientOriginalName();
+            $extension = $request->file->extension();
+            $request->file->storeAs('/public/contribution-files/', $file_name. "." .$extension);
+            $file_url = Storage::url("contribution-files/" .$file_name. "." .$extension);
+            $updateContribution->file = $file_url;
+        }
         $updateContribution->title = $request['title'];
         $updateContribution->description = $request['description'];
         $updateContribution->is_published = '0';
-        $updateContribution->file = $fileName;
         $updateContribution->save();
 
         // send mail to respective contributor
-        $contributor = \App\MagazineIssue::findOrFail($request['issueId'])->staff()->first();
+        $contributor = \App\MagazineIssue::findOrFail($updateContribution->issue_id)->staff()->first();
         $contributorName = $contributor->fullname;
         $contributorMail = $contributor->email;
         $mailData = [
@@ -117,10 +116,10 @@ class ContributionController extends Controller
         $sendMailToContributor = $this->sendMailToContributor($mailData);
         $getResult = $sendMailToContributor->getOriginalContent();
         if($getResult["message"] != "success"){
-            return redirect()->route('contribution.student.edit',$request->id)->with('fail', 'Mail Failed, Try again!');
+            return redirect()->route('contribution.student.all',$request->id)->with('fail', 'Mail Failed, Try again!');
         }
 
-        return redirect()->route('contribution.student.edit',$request->id)->with('success', 'Student Contribution uploaded successfully!');
+        return redirect()->route('contribution.student.all',$request->id)->with('success', 'Student Contribution uploaded successfully!');
     }
 
     // ! Send Mail To Contributor 
@@ -148,35 +147,36 @@ class ContributionController extends Controller
 
     // @ student edit
     public function studentContributionEdit($id){
-        $contributions = \App\Contributions::findOrfail($id);
+        $contribution = \App\Contributions::findOrfail($id);
         $ufModel = new \App\UserFaculty;
         $availableMagazineIssuesWithFaculty = $ufModel->getMagazines();
-        return view('contributions.student.edit',compact('contributions','availableMagazineIssuesWithFaculty'));
+        return view('student.contribution.edit',compact('contribution','availableMagazineIssuesWithFaculty'));
     }
     // Show contribution Details
     public function show(Contributions $contribution) 
     {
         if(Gate::allows('isStudent')) {
             $this->authorize('view',$contribution);
-            return view('contributions.show', compact('contribution'));
+            return view('student.contribution.show', compact('contribution'));
         } else if(Gate::allows('isMarketingCoordinator')) {
             $this->authorize('viewAsCoordinator',$contribution);
             return view('contributions.show', compact('contribution'));
-        }
+        } else if (Gate::allows('isMarketingManager')||Gate::allows('isGuest')) {
+            return view('contributions.show',compact('contribution'));
+        } 
     }
     public function facultyIndexSelectedContributions()
     {
-        $faculties = Auth::user()->faculties;
-        
-        $selected_contributions = new Collection();
-        foreach($faculties as $faculty)
-        {
-            foreach($faculty->magazine_issues as $magazine_issue)
-            {
-                $selected_contributions->push($magazine_issue->contributions->where('is_published', 1));
+        $magazine_issues = Auth::user()->faculties->first->magazine_issues->get();
+        foreach($magazine_issues as $magazine_issue)
+        {   
+            foreach($magazine_issue->contributions as $contribution) {
+                if($contribution->is_published == 1){
+                    $coordinatorContributions[] = $contribution;
+                }
             }
         }
-        return $selected_contributions;
+        return view('contributions.coordinator.index',compact('coordinatorContributions'));
     }
     // This is for marketing coordinator specific magazine issues -> contributions
     public function coordinatorIndexSelectedContributions()
@@ -193,8 +193,8 @@ class ContributionController extends Controller
     //  This is to index all the selected contributions for guest.
     public function indexSelectedContributions()
     {
-        $selected_contributions = Contributions::all()->where('is_published', 1);
-        return $selected_contributions;
+        $coordinatorContributions = Contributions::all()->where('is_published', 1);
+        return view('contributions.coordinator.index',compact('coordinatorContributions'));
     }
 
 
