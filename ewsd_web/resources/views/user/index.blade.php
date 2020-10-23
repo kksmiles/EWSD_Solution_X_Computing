@@ -7,7 +7,7 @@
     <h4 class="my-3">User List</h4>
         <table class="table table-responsive d-md-table rounded-lg " id="table-resize-collapse"> 
             <thead class=" text-white font-weight-light bg-dark-primary">
-                <tr>
+                <tr class="d-sm-none">
                     <th scope='col'>NO</th>
                     <th scope='col'>Username</th>
                     <th scope='col'>Full Name</th>
@@ -20,7 +20,7 @@
             <tbody >
                 
                 @foreach($users as $user)
-                    <tr>
+                    <tr class="col-12">
                         <td> {{$user->id}} </td>
                         <td class="text-dark font-weight-bold">{{$user->username}}</td>
                         <td> {{$user->fullname}} </td>

@@ -15,11 +15,11 @@
             <div class="col-md-8">
                 <div class="card border-left-primary shadow">
                     <div class="card-header">Edit User</div>
-
+                    
                     <div class="card-body">
 
                     <div class="col-3 offset-md-5 offset-3 p-3">
-                        <img src="{{ $user->image }}" class="img profile rounded-circle">
+                        <img src="{{ $user->image }}" class="img profile rounded-circle" onerror="this.src='https://png.pngitem.com/pimgs/s/35-350426_profile-icon-png-default-profile-picture-png-transparent.png'">
                     </div>
                         <form method="POST" action="{{ route('users.update',$user->id) }}" enctype="multipart/form-data">
                             @csrf

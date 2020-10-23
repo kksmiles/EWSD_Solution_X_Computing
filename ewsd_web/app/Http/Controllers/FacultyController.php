@@ -14,7 +14,7 @@ class FacultyController extends Controller
         $faculties = Faculty::all();
         if(Gate::allows('isStudent')){
             $faculties = Auth::user()->faculties;
-            return view('faculty.index',compact('faculties'));
+            return view('student.faculty.index',compact('faculties'));
         } else if (Gate::allows('isMarketingCoordinator')) {
             $faculty = Auth::user()->faculties->first();
             return redirect()->route('coordinator.faculty.show',($faculty->id));
@@ -27,7 +27,20 @@ class FacultyController extends Controller
         return view('faculty.add');
     }
     public function show(Faculty $faculty){
-        return view('faculty.show',compact('faculty'));
+        $facultyCheck = Auth::user()->faculties->first();
+        if (Gate::allows('isMarketingCoordinator')) {
+            if($faculty->id != $facultyCheck->id ){
+                return redirect()->route('coordinator.dashboard');
+            }
+
+        }
+        else if (Gate::allows('isAdmin')) {
+            return view('faculty.show',compact('faculty'));
+            
+        }
+
+            return view('faculty.show',compact('faculty'));
+
     }
     // Save
     public function save(Request $request){
@@ -39,7 +52,7 @@ class FacultyController extends Controller
         $faculty->name = $request->name;
         $faculty->description = $request->desc;
         $faculty->save();
-        return redirect()->route('faculty')->with('success','Faculty created successfully!');
+        return redirect()->route('faculty.index')->with('success','Faculty created successfully!');
     }
 
     // Edit Form
@@ -57,14 +70,14 @@ class FacultyController extends Controller
         $faculty->name = $request->name;
         $faculty->description = $request->desc;
         $faculty->save();
-        return redirect()->route('faculty')->with('success','Faculty updated successfully!');
+        return redirect()->route('faculty.index')->with('success','Faculty updated successfully!');
     }
 
     // Delete Form
     public function delete($id){
         $faculty = Faculty::findOrfail($id);
         $faculty->delete();
-        return redirect()->route('faculty')->with('success','Faculty deleted successfully!');
+        return redirect()->route('faculty.index')->with('success','Faculty deleted successfully!');
     }
 
    

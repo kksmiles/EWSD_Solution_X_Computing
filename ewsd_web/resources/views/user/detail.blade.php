@@ -15,7 +15,7 @@
     <div class="card border-left-primary">
     
         <div class='card-header'>
-            <img src="{{ asset($user->image) }}" alt="" class="img-thumbnail rounded-circle profile offset-md-5 offset-3">
+            <img src="{{ $user->getImageURL() }}" alt="" class="img-thumbnail rounded-circle profile offset-md-5 offset-3">
         </div>
 
 

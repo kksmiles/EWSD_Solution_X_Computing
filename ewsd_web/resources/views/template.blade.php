@@ -7,7 +7,7 @@
   <meta name="author" content="">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>SB Admin 2 - Dashboard</title>
+  <title>Collage</title>
 
   <!-- <link href="{{ asset('css/app.css')}}" rel="stylesheet"> -->
   <link href="{{ asset('css/sb-admin-2.css')}}" rel="stylesheet">
@@ -26,7 +26,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
         <div class="sidebar-brand-icon">
           <i class="fas fa-school"></i>
         </div>
@@ -38,7 +38,14 @@
 
       <!-- Nav Item - Dashboard -->
 
-      @if(Auth::user()->role_id == 1)
+      @if(Auth::user()->role_id==1)
+
+       <li class="nav-item active">
+          <a class="nav-link" href="{{route('admin.home')}}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+        </li> 
+
         <li class="nav-item active">
           <a class="nav-link" href="{{route('users.index')}}">
             <i class="fas fa-fw fa-users"></i>
@@ -233,7 +240,8 @@
         
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->username }}</span>
         
-                <img class="img rounded-circle" src="{{ Auth::user()->image }}" width="40px" height="40px">
+                <img class="img rounded-circle" src="{{ Auth::user()->getImageURL() }}" width="40px" height="40px">
+
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -279,7 +287,6 @@
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
           <a class="btn btn-primary" href="{{ route('logout') }}"

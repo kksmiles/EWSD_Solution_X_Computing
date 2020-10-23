@@ -22,8 +22,6 @@
       Published Contributions of Your Faculty's students
     </h5>
     @endcan
-    
-
     <div class="card border-left-primary p-2">
       <!-- filter row -->
       @if(isset($coordinatorContributions))
@@ -83,6 +81,7 @@
                           <button class="btn btn-success">Download Files</button>
                         </a>
                       </td>
+
                     @elsecan('isGuest')
                     <td>
                       <a href="{{route('guest.selected-contributions.show',$contribution->id)}}">
@@ -105,5 +104,5 @@
     </div>
 
 </section>
-
 @endsection
+

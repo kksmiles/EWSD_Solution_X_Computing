@@ -63,6 +63,12 @@ class UserFacultyController extends Controller
 
     public function showFacultyUsers($f_id = 1) 
     {       
+        if (Gate::allows('isMarketingCoordinator')) {
+            $facultyCheck = \Auth::user()->faculties->first();
+            if($f_id != $facultyCheck->id ){
+                return redirect()->route('coordinator.dashboard');
+            }
+        }
         $user_faculties = UserFaculty::all();
         $faculties = Faculty::all();
         $users_in_faculty = UserFaculty::where('faculty_id',$f_id)->get();

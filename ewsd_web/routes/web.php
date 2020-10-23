@@ -17,6 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/welcome', function () {
+    return view('welcome');
+});
+
+
+
 // ! Chart
 // This has to be covered => 'middleware'=>'can:isMarketingManager'
 Route::group([ 'prefix' => 'report' ], function(){
@@ -59,8 +65,6 @@ Route::group(['prefix'=>'admin/magazine-issues','middleware'=>'can:isSupervisor'
 Route::resource('/user_roles','UserRolesController')->middleware('can:isAdmin');
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 
 //new routes

@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class MagazineIssue extends Model
 {
@@ -23,5 +25,8 @@ class MagazineIssue extends Model
     }
     public function contributions() {
         return $this->hasMany('App\Contributions', 'issue_id', 'id');
+    }
+    public function getImageURL() {
+        return $this->image ? $this->image : '/img/default-picture.svg';
     }
 }
