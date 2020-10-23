@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container py-5">
-    <div class="row shadow col-md-10 col-12 ml-md-5 pl-md-5 ml-1 justify-content-center p-0">
+    <div class="row shadow col-md-8 col-12 offset-2 justify-content-center p-0">
         <div class="col-md-6 d-none d-md-block p-0">
             <img src="{{ URL::asset('https://images.pexels.com/photos/4049870/pexels-photo-4049870.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')}}" class="img-fluid border-0">
         </div>
