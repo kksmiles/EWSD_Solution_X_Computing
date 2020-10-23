@@ -88,8 +88,13 @@
     </tr>
     @elseif(Gate::allows('isMarketingManager'))
     <tr>
-    <td>Check This issue's Contributions</td>
-    <td><a href="{{ route('manager.magazine-issues.contributions', $magazine_issue->id) }}">Check Contributions </a></td>
+        <td>Check This issue's Contributions</td>
+        <td><a href="{{ route('manager.magazine-issues.contributions.index', $magazine_issue->id) }}">Check Contributions </a></td>
+    </tr>
+    @elseif(Gate::allows('isGuest'))
+    <tr>
+        <td>Check This issue's Contributions</td>
+        <td><a href="{{ route('guest.magazine-issues.contributions.index', $magazine_issue->id) }}">Check Contributions </a></td>
     </tr>
     @endif
 </table>

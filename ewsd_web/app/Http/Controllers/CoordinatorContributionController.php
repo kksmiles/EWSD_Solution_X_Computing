@@ -5,12 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\MagazineIssue;
 use App\Contributions;
+use App\Faculty;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 
 class CoordinatorContributionController extends Controller
 {
     public function index(){
         $contributions = Contributions::all();
+        if(Gate::allows('isMarketingManager')){
+            $coordinatorContributions = $contributions;
+            return view('contributions.coordinator.index',compact('coordinatorContributions'));
+        }
         foreach($contributions as $contribution) {
             if($contribution->magazineIssue->faculty->id == Auth::user()->faculties->first()->id)
             $coordinatorContributions[] = $contribution;
@@ -18,16 +24,21 @@ class CoordinatorContributionController extends Controller
         if(isset($coordinatorContributions)) {
             return view('contributions.coordinator.index',compact('coordinatorContributions'));
         }
-        return view('contributions.coordinator.index');
+        return view('contributions.coordinator.index',compact('coordinatorContributions'));
+    }
+    public function showContributionsInFaculty(Faculty $faculty) {
+        
+        $coordinatorContributions = $faculty->contributions;
+        return view('contributions.coordinator.index',compact('coordinatorContributions'));
     }
 
     public function show($id) {
         $issues = Auth::user()->magazine_issues;
-        $getContributions =  Contributions::where('issue_id',$id)->get();
-        if(count($getContributions) > 0){
-            return view('contributions.coordinator.show',compact('getContributions','issues','id'));
+        $coordinatorContributions =  Contributions::where('issue_id',$id)->get();
+        if(count($coordinatorContributions) > 0){
+            return view('contributions.coordinator.index',compact('coordinatorContributions','issues','id'));
         }
-        return view('contributions.coordinator.show');
+        return view('contributions.coordinator.index');
     }
 
     // @ publish contribution

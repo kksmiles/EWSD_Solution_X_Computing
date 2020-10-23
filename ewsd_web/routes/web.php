@@ -104,19 +104,28 @@ Route::group(['prefix' => 'admin','middleware'=>'can:isAdmin'], function(){
     //academic year routes for admin
     Route::resource('/academic-years','AcademicYearController');
     
+    
 });
 //! ADMIN ROUTES !//
 
 Route::group(['prefix' => 'manager','middleware'=>'can:isMarketingManager'],function(){
-    Route::get('/','HomeController@index')->name('manager.home');
-    Route::get('/dashboard','HomeController@index')->name('manager.dashboard');
+    Route::get('/','ReportController@index')->name('manager.home');
+    Route::get('/dashboard','ReportController@index')->name('manager.dashboard');
     
     Route::group(['prefix'=>'faculty'],function(){
         Route::get('/','FacultyController@index')->name('manager.faculty.index');
         Route::get('/{faculty}','FacultyController@show')->name('manager.faculty.show');
         Route::get('/{faculty}/users','UserFacultyController@showFacultyUsers')->name('manager.faculty.users.show');
         Route::get('/{faculty}/magazine-issues','MagazineIssueController@getIssuesInFaculty')->name('manager.faculty.issues.index');
-        Route::get('/{faculty}/contributions','ContributionController@index')->name('manager.faculty.contributions.index');
+        Route::get('/{faculty}/contributions','CoordinatorContributionController@showContributionsInFaculty')->name('manager.faculty.contributions.index');
+        Route::post('/users/url','UserFacultyController@userFaucltyRouteHelper')->name('manager.faculty.url');
+
+    });
+
+    Route::group(['prefix'=>'contributions'],function(){
+        
+        Route::get('/','CoordinatorContributionController@index')->name('manager.contributions.index');
+        Route::get('/{contribution}','ContributionController@show')->name('manager.contributions.show');
     });
 
     Route::group(['prefix'=>'users'],function(){
@@ -126,9 +135,16 @@ Route::group(['prefix' => 'manager','middleware'=>'can:isMarketingManager'],func
 
     Route::group(['prefix'=> 'magazine-issues'],function(){
         Route::get('/','MagazineIssueController@index')->name('manager.magazine-issues.index');
-        Route::get('/{id}','MagazineIssueController@show')->name('manager.magazine-issues.show');
+        Route::get('/{magazine_issue}','MagazineIssueController@show')->name('manager.magazine-issues.show');
+        Route::get('/{magazine_issue}/contributions','CoordinatorContributionController@show')->name('manager.magazine-issues.contributions.index');
     });
     Route::get('/selected-contributions','ContributionController@indexSelectedContributions')->name('manager.selected-contributions.index');
+    
+    Route::group([ 'prefix' => 'report' ], function(){
+        Route::get('/charts/{year?}', 'ReportController@index')->name('manager.charts.contribute');
+        Route::any('/contributions','ReportController@contributions')->name('manager.report.contribute');
+        Route::any('/exception-report','ReportController@exceptionReport')->name('manager.report.exception');
+    });
 });
 //!ADMIN ROUTES !//
 
@@ -172,7 +188,7 @@ Route::group(['prefix' => 'coordinator','middleware'=>'can:isMarketingCoordinato
         Route::delete('/comments/{comment}', 'CommentController@destroy')->name('comment.delete');
     });
 
-    Route::get('/selected-contributions','ContributionController@indexSelectedContributions')->name('manager.selected-contributions.index');
+    Route::get('/selected-contributions','ContributionController@indexSelectedContributions')->name('coordinator.selected-contributions.index');
 
 
 });
@@ -211,9 +227,17 @@ Route::group(['prefix' => 'student','middleware' => 'can:isStudent'],function(){
 });
 // ! STUDENT ROUTES !//
 
-// Route::group(['prefix' => 'guest'],['middleware' => 'can:isGuest'],function(){
-
-// });
+Route::group(['prefix' => 'guest','middleware' => 'can:isGuest'],function(){
+    Route::group(['prefix'=>'magazine-issues'],function(){
+        Route::get('/','MagazineIssueController@guestIssues')->name('guest.magazine-issues.index');
+        Route::get('/{magazine_issue}','MagazineIssueController@show')->name('guest.magazine-issues.show');
+        Route::get('/{magazine_issues}/contribution','CoordinatorContributionController@show')->name('guest.magazine-issues.contributions.index');
+    });
+    Route::group(['prefix'=>'selected-contributions'],function(){
+        Route::get('/','ContributionController@facultyIndexSelectedContributions')->name('guest.selected-contributions.index');
+        Route::get('/{contribution}','ContributionController@show')->name('guest.selected-contributions.show');
+    });
+});
 //Comment Routes
 
 Route::get('/contributions/{contribution}', 'ContributionController@show')->name('contribution.show');
@@ -221,13 +245,3 @@ Route::post('/contributions/{contribution_id}/comments', 'CommentController@stor
 Route::patch('/comments/{comment}', 'CommentController@update')->name('comment.update');
 Route::delete('/comments/{comment}', 'CommentController@destroy')->name('comment.delete');
 
-// Route::group([ 'prefix' => 'contributions' ], function(){
-//     // @ Student Contributions
-//    // @ Marketing Coordinatior Contributions Access
-//     Route::group([ 'middleware' => 'can:isMarketingCoordinator' ], function(){
-//         Route::get('/coordinator','CoordinatorContributionController@index')->name('contribution.coordinator.index');
-//         Route::get('/coordinator/{id}','CoordinatorContributionController@show')->name('contribution.coordinator.show');
-//         Route::post('/coordinator/{con_id}/publish','CoordinatorContributionController@publishContribution')->name('contribution.coordinator.publish');
-//         Route::post('/coordinator/{con_id}/reject','CoordinatorContributionController@rejectContribution')->name('contribution.coordinator.reject');
-//     });
-// });

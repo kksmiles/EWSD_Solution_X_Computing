@@ -139,19 +139,50 @@
                 </a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" href="{{ route('manager.users.index') }}">
-                  <i class="fas fa-fw fa-users"></i>
-                  <span>Users</span>
-                </a>
-              <li>
-              <li class="nav-item active">
                 <a class="nav-link" href="{{ route('manager.magazine-issues.index') }}">
                   <i class="fas fa-fw fa-users"></i>
                   <span>Magazine Issues</span>
                 </a>
               </li>
-             
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ route('manager.contributions.index') }}">
+                  <i class="fas fa-fw fa-users"></i>
+                  <span>Contributions</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ route('manager.selected-contributions.index') }}">
+                <i class="fas fa-fw fa-users"></i>
+                <span>Selected Contributions</span>
+              </a>
+          </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ route('manager.report.contribute') }}">
+                <i class="fas fa-fw fa-users"></i>
+                <span>Reports</span>
+              </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ route('manager.report.exception') }}">
+              <i class="fas fa-fw fa-users"></i>
+              <span>Reports without comments</span>
+            </a>
+        </li>
            @endif
+        @if (Gate::allows('isGuest'))
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ route('guest.magazine-issues.index') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Magazine Issues</span>
+          </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ route('guest.selected-contributions.index') }}">
+          <i class="fas fa-fw fa-users"></i>
+          <span>Selected Contributions</span>
+        </a>
+    </li> 
+        @endif
  
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
@@ -275,7 +306,7 @@
   <script src="{{ asset('js/app.js')}}"></script>
   <script src="{{ asset('js/jquery.min.js')}}"></script>
   <script src="{{ asset('js/sb-admin-2.min.js')}}"></script>
-
+  <script src="{{ asset('js/table-resize-collapse.js')}}"></script>
   @yield('script')
 
 

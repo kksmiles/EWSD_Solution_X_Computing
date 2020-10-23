@@ -1,5 +1,4 @@
 @extends('template')
-
 @section('css')
 
 @endsection

@@ -21,10 +21,13 @@
             @can('isAdmin')
               <a class="btn btn-sm btn-primary" href="{{route('faculty.users.show',$faculty->id)}}">
               <i class="fas fa-users"></i> Check Students</a>
-              <a class="btn btn-sm btn-primary" href="{{ route('magazine-issues.index') }}">
+            @elsecan('isMarketingManager')
+            <a class="btn btn-sm btn-primary" href="{{route('manager.faculty.users.show',$faculty->id)}}">
+                <i class="fas fa-users"></i> Check Students</a>
+            <a class="btn btn-sm btn-primary" href="{{ route('manager.faculty.issues.index',$faculty->id) }}">
                 <i class="fas fa-file"></i> Check Issues </a>
-              <a class="btn btn-sm btn-primary" href="{{ route('faculty.index') }}">
-              <i class="fa fa-file-alt"></i> Check Contributions </a>
+            <a class="btn btn-sm btn-primary" href="{{ route('manager.faculty.contributions.index',$faculty->id) }}">
+                <i class="fa fa-file-alt"></i> Check Contributions </a>
             @endcan
         </div>
       </div>

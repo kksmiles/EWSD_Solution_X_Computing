@@ -15,21 +15,30 @@
       <h4 class="font-weight-bold text-primary d-inline-block">{{$faculties[$f_id-1]->name}}</h4>
       <a href="{{ route('faculty.show',$f_id) }}" class="btn btn-sm btn-warning">Back</a>
     </div>
-    @endcan
-    @can('isMarketingCoordinator')
-    <div class="container p-3">
+  @elsecan('isMarketingManager')
+  <div class="container p-3">
     <div class="justify-content-between row px-3 py-2">
-      <h4 class="font-weight-bold text-primary d-inline-block">{{$faculties[$f_id-1]->name}}</h4>
-      <a href="{{ route('coordinator.faculty.index') }}" class="btn btn-sm btn-warning">Back</a>
+      <h4 class="font-weight-bold text-primary d-inline-block" >{{$faculties[$f_id-1]->name}}</h4>
+      <a href="{{ route('manager.faculty.index') }}" class="btn btn-sm btn-warning">Back</a>
     </div>
-    @endcan
-
-    <div class="card p-3 border-left-primary">
+  @endcan
+  @can('isMarketingCoordinator')
+    <div class="container p-3">
+      <div class="justify-content-between row px-3 py-2">
+        <h4 class="font-weight-bold text-primary d-inline-block" >{{$faculties[$f_id-1]->name}}</h4>
+        <a href="{{ route('coordinator.faculty.index') }}" class="btn btn-sm btn-warning">Back</a>
+      </div>
+  @endcan
+  
+    <div class="container card p-3 border-left-primary">
       @if(Gate::allows('isMarketingManager') || Gate::allows('isAdmin'))
-      <div class="row pt-2">
+      <div class="row pt-2 keep-resize">
         <div class="col-6">
-          
+          @can('isMarketingManager')
+          <form class="form-inline p-0" action="{{route('manager.faculty.url')}}" method="POST">
+          @elsecan('isAdmin')
           <form class="form-inline p-0" action="{{route('faculty.url')}}" method="POST">
+          @endcan
             @csrf
             <div class="form-group">
               <label for="faculty_name">Select Faculty : </label>
@@ -45,19 +54,17 @@
                 @endforeach     
               </select>
             </div>
-            {{-- <button type="submit" class="btn btn-primary mb-2">Confirm</button> --}}
-          </form>
-          
+          </form>          
         </div>
         <div class="col-6 text-right">
-            
-            <a class="btn btn-primary btn-sm" href="{{route('faculty.users.add',$f_id)}}">
-              <i class="fas fa-plus fa-sm"></i> Add Users to Faculty</a>
-        
+        @can('isAdmin')
+          <a class="btn btn-primary btn-sm" href="{{route('faculty.users.add',$f_id)}}">
+            <i class="fas fa-plus fa-sm"></i> Add Users to Faculty</a>
+        @endcan
         </div>
       </div>
       @endif  
-      <table class="table table-responsive d-md-table">
+      <table class="table table-responsive d-md-table" id="table-resize-collapse">
           <thead class="bg-dark-primary text-white">
               <tr>
                   <th scope="col">Id.</th>
@@ -99,6 +106,5 @@
     </div>
 </section>
 <script>
-
 </script>
 @endsection
