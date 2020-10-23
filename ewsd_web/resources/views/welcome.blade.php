@@ -26,7 +26,7 @@
                     <i class="fas fa-bars ml-1"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav text-uppercase ml-auto">
+                    <ul class="navbar-nav text-uppercase pt-4 ml-auto">
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#services">About Us</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Awarded Contributions</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#team">Team</a></li>
@@ -55,7 +55,7 @@
                 <div class="row text-center">
                     
                 <div class="col-md-6">
-                    <img class="img-fluid" src="assets/img/portfolio/Uni.jpg" alt="" />    
+                    <img class="img-fluid" src="{{ url('https://images.pexels.com/photos/2881370/pexels-photo-2881370.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')}}" alt="" />    
                 </div>       
 
                     <div class="col-md-6">
@@ -86,7 +86,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/portfolio/01-thumbnail.png" alt="" />
+                                <img class="img-fluid" src="https://www.mockupworld.co/wp-content/uploads/dynamic/2020/10/free-booklet-book-mockup-psd-690x455-c-default.jpg" alt="" />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">About Laravel</div>
@@ -100,7 +100,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/portfolio/02-thumbnail.png" alt="" />
+                                <img class="img-fluid" src="https://www.mockupworld.co/wp-content/uploads/dynamic/2020/03/free-landscape-hardcover-book-mockup-psd-690x455-c-default.jpg" alt="" />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Use Bootstarp</div>
@@ -114,7 +114,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/portfolio/03-thumbnail.jpg" alt="" />
+                                <img class="img-fluid" src="https://www.mockupworld.co/wp-content/uploads/dynamic/2020/08/free-book-cover-mockup-psd-690x455-c-default.jpg" alt="" />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">More About PHP</div>
@@ -128,7 +128,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/portfolio/04-thumbnail.jpg" alt="" />
+                                <img class="img-fluid" src="https://www.mockupworld.co/wp-content/uploads/dynamic/2020/08/free-standing-hardcover-ebook-mockup-psd-690x455-c-default.jpg" alt="" />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Just use JavaScript</div>
@@ -142,7 +142,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/portfolio/05-thumbnail.jpg" alt="" />
+                                <img class="img-fluid" src="https://www.mockupworld.co/wp-content/uploads/dynamic/2020/05/free-small-ring-notebook-mockup-psd-690x455-c-default.jpg" alt="" />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">C# is Good</div>
@@ -156,7 +156,7 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="assets/img/portfolio/06-thumbnail.png" alt="" />
+                                <img class="img-fluid" src="https://www.mockupworld.co/wp-content/uploads/dynamic/2018/06/free-book-writing-mockup-psd-690x455-c-default.jpg" alt="" />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Java is not Coffee</div>
@@ -173,14 +173,14 @@
             <div class="container">
                 <div class="text-center">
                     <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h3 class="section-subheading text-muted">If everyone is moving forward together, then success takes care of itself.</h3>
                 </div>
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="team-member">
-                            <img class="mx-auto rounded-circle" src="assets/img/team/1.jpg" alt="" />
-                            <h4>Jasmine</h4>
-                            <p class="text-muted">Programmer</p>
+                            <img class="mx-auto rounded-circle" src="{{ asset('img/THT.jpg')}}" alt="" />
+                            <h4>Thu Htet Htun</h4>
+                            <p class="text-muted">Web Developer</p>
                             <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
                             <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
                             <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
@@ -188,8 +188,8 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="team-member">
-                            <img class="mx-auto rounded-circle" src="assets/img/team/1.jpg" alt="" />
-                            <h4>Thomas</h4>
+                            <img class="mx-auto rounded-circle" src="{{ asset('img/HPM.jpg')}}" alt="" />
+                            <h4>Htet Phone Mo</h4>
                             <p class="text-muted">Web Designer</p>
                             <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
                             <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
@@ -198,9 +198,9 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="team-member">
-                            <img class="mx-auto rounded-circle" src="assets/img/team/1.jpg" alt="" />
-                            <h4>Kelvin</h4>
-                            <p class="text-muted">Infromation Architect</p>
+                            <img class="mx-auto rounded-circle" src="{{ asset('img/TM.jpg')}}" alt="" />
+                            <h4>Tun Min</h4>
+                            <p class="text-muted">Web Developer</p>
                             <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
                             <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
                             <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
@@ -312,7 +312,7 @@
         <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="close-modal" data-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                    <div class="close-modal" data-dismiss="modal"><img src="{{asset('img/close-icon.svg')}}" alt="Close modal" /></div>
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-8">
@@ -320,7 +320,7 @@
                                     <!-- Project Details Go Here-->
                                     <h2 class="text-uppercase">About Laravel</h2>
                                     <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/01-full.png" alt="" />
+                                    <img class="img-fluid d-block mx-auto" src="https://www.mockupworld.co/wp-content/uploads/dynamic/2020/10/free-booklet-book-mockup-psd-690x455-c-default.jpg" alt="" />
                                     <ul class="list-inline">
                                         <li>Academic Year: 2018</li>
                                         <li>Author: Jason</li>
@@ -342,7 +342,7 @@
         <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="close-modal" data-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                    <div class="close-modal" data-dismiss="modal"><img src="{{asset('img/close-icon.svg')}}" alt="Close modal" /></div>
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-8">
@@ -350,7 +350,7 @@
                                     <!-- Project Details Go Here-->
                                     <h2 class="text-uppercase">Use Bootstrap</h2>
                                     <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/02-full.png" alt="" />
+                                    <img class="img-fluid d-block mx-auto" src="https://www.mockupworld.co/wp-content/uploads/dynamic/2020/03/free-landscape-hardcover-book-mockup-psd-690x455-c-default.jpg" alt="" />
                                     <ul class="list-inline">
                                         <li>Academic Year: 2017</li>
                                         <li>Author: Maria</li>
@@ -372,7 +372,7 @@
         <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="close-modal" data-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                    <div class="close-modal" data-dismiss="modal"><img src="{{asset('img/close-icon.svg')}}" alt="Close modal" /></div>
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-8">
@@ -380,7 +380,7 @@
                                     <!-- Project Details Go Here-->
                                     <h2 class="text-uppercase">More About PHP</h2>
                                     <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/03-full.jpg" alt="" />
+                                    <img class="img-fluid d-block mx-auto" src="https://www.mockupworld.co/wp-content/uploads/dynamic/2020/08/free-book-cover-mockup-psd-690x455-c-default.jpg" alt="" />
                                     <ul class="list-inline">
                                         <li>Academic Year: 2014</li>
                                         <li>Author: Rose</li>
@@ -402,7 +402,7 @@
         <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="close-modal" data-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                    <div class="close-modal" data-dismiss="modal"><img src="{{asset('img/close-icon.svg')}}" alt="Close modal" /></div>
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-8">
@@ -410,7 +410,7 @@
                                     <!-- Project Details Go Here-->
                                     <h2 class="text-uppercase">Just Use JavaScript</h2>
                                     <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/04-full.jpg" alt="" />
+                                    <img class="img-fluid d-block mx-auto" src="https://www.mockupworld.co/wp-content/uploads/dynamic/2020/08/free-standing-hardcover-ebook-mockup-psd-690x455-c-default.jpg" alt="" />
                                     <ul class="list-inline">
                                         <li>Academic Year: 2015</li>
                                         <li>Author: Micheal</li>
@@ -432,7 +432,7 @@
         <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="close-modal" data-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                    <div class="close-modal" data-dismiss="modal"><img src="{{asset('img/close-icon.svg')}}" alt="Close modal" /></div>
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-8">
@@ -440,7 +440,7 @@
                                     <!-- Project Details Go Here-->
                                     <h2 class="text-uppercase">C# is Good</h2>
                                     <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/05-full.jpg" alt="" />
+                                    <img class="img-fluid d-block mx-auto" src="https://www.mockupworld.co/wp-content/uploads/dynamic/2020/05/free-small-ring-notebook-mockup-psd-690x455-c-default.jpg" alt="" />
                                     <ul class="list-inline">
                                         <li>Academic Year: 2019</li>
                                         <li>Author: Murphy</li>
@@ -462,7 +462,7 @@
         <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="close-modal" data-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                    <div class="close-modal" data-dismiss="modal"><img src="{{asset('img/close-icon.svg')}}" alt="Close modal" /></div>
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-8">
@@ -470,7 +470,7 @@
                                     <!-- Project Details Go Here-->
                                     <h2 class="text-uppercase">Java is not Coffee</h2>
                                     <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/06-full.png" alt="" />
+                                    <img class="img-fluid d-block mx-auto" src="https://www.mockupworld.co/wp-content/uploads/dynamic/2018/06/free-book-writing-mockup-psd-690x455-c-default.jpg" alt="" />
                                     <ul class="list-inline">
                                         <li>Academic Year: 2017</li>
                                         <li>Author: Cooper</li>
@@ -493,10 +493,10 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
         <!-- Third party plugin JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="{{asset('js/scripts.js')}}"></script>
         <!-- Contact form JS-->
         <script src="assets/mail/jqBootstrapValidation.js"></script>
         <script src="assets/mail/contact_me.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
     </body>
 </html>
