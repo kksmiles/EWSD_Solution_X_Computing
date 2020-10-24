@@ -61,6 +61,7 @@
                 </div>
 
             </div>
+            @can('isAdmin')
             <div class="col-md-6 col-12">
                 <div class="row col-md-8 col-12 ml-1 ml-md-0 p-md-2">
                     <span class='col-12 p-1 font-weight-bold bg-primary text-white'>{{ $user->fullname }}'s Faculty List</span>
@@ -98,6 +99,7 @@
                     </ul>
                 </div>
                 <div>
+                    @endcan
 
                     <a href="{{ route('users.index') }}" class='btn btn-light'><span class='fas fa-arrow-left '>&nbsp;Back to home</span></a>
 

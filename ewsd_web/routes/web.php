@@ -75,7 +75,7 @@ Route::group(['prefix' => 'admin','middleware'=>'can:isAdmin'], function(){
     //dashboard route for admin
     Route::get('/', 'HomeController@index')->name('admin.home');
     Route::get('/dashboard','HomeController@index')->name('admin.dashboard');
-
+    Route::get('/register',function(){return view('auth.register');})->name('user.register');
     //user account routes for admin
     Route::resource('users','UserController'); 
         //do not put resource users in prefix users groups. can cause bugs. illuminate route request errors.
@@ -197,7 +197,6 @@ Route::group(['prefix' => 'coordinator','middleware'=>'can:isMarketingCoordinato
 // ! STUDENT ROUTES !//
 Route::group(['prefix' => 'student','middleware' => 'can:isStudent'],function(){
     Route::get('/dashboard','HomeController@index')->name('student.dashboard');
-    
     //! Student Faculties 
     Route::group(['prefix'=>'faculty'],function(){
         Route::get('/','FacultyController@index')->name('student.faculty');

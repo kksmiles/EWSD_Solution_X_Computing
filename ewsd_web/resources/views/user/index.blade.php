@@ -4,8 +4,12 @@
 <section class="container-fluid">
 
 <div class='card container shadow border-left-primary'>
-    <h4 class="my-3">User List</h4>
-        <table class="table table-responsive d-md-table rounded-lg " id="table-resize-collapse"> 
+
+    <div class="row p-3 justify-content-between">
+        <h4 class="">User List</h4>
+        <a class="btn btn-sm btn-primary" href="{{route('user.register')}}"><i class="fas fa-plus"></i> Add User</a>
+    </div>
+        <table class="table table-responsive d-md-table rounded-lg ">
             <thead class=" text-white font-weight-light bg-dark-primary">
                 <tr class="d-sm-none">
                     <th scope='col'>NO</th>
