@@ -108,8 +108,9 @@ class HomeController extends Controller
                      ];
 
             return view('home',compact('datas','new_users'));
+        } elseif (Gate::allows('isManager')) {
+            return redirect()->route('manager.dashboard');
         }
-
         return view('welcome');
     }
 }

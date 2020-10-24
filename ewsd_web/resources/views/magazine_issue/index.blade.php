@@ -69,11 +69,26 @@
                             <i class="fas fa-download text-success float-right p-1 my-1 mr-3"  title="Download File"></i>
                         </a>
 
-
-                     
-                      @else
-
-
+                      @elseif(Gate::allows('isMarketingManager')) 
+                        <h5 class="card-title">
+                            <a class="card-link font-weight-bold" href="{{ route('manager.magazine-issues.show', $magazine_issue->id) }}">
+                                {{ $magazine_issue->title }}
+                            </a>
+                        </h5>
+                            <!-- Text -->
+                        <p class="card-text text-justify d-block h-25"> {{ Str::limit($magazine_issue->description,80,"...") }}</p>
+                        <a href="{{asset($magazine_issue->file)}}" download="{{$magazine_issue->file}}" >
+                            <i class="fas fa-download text-success float-right p-1 my-1 mr-3"  title="Download File"></i>
+                        </a>
+                      @elseif(Gate::allows('isGuest'))
+                        <h5 class="card-title">
+                          <a class="card-link font-weight-bold" href="{{ route('guest.magazine-issues.show', $magazine_issue->id) }}">
+                              {{ $magazine_issue->title }}
+                          </a>
+                          </h5>
+                              <!-- Text -->
+                          <p class="card-text text-justify d-block h-25"> {{ Str::limit($magazine_issue->description,80,"...") }}</p>
+                      @else 
                         <h5 class="card-title">
                           <a class="card-link font-weight-bold" href="{{ route('magazine-issues.show', $magazine_issue->id) }}">
                               {{ $magazine_issue->title }}

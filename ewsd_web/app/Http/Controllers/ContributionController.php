@@ -8,11 +8,14 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\Contributions;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
+
 
 class ContributionController extends Controller
 {
     // ! Student  Contribution
     // show all contributions of auth student
+    
     public function studentAllContribution(){
         $contributions = Auth::user()->contributions;
         if(!isset($contributions)) {
@@ -159,21 +162,22 @@ class ContributionController extends Controller
         } else if(Gate::allows('isMarketingCoordinator')) {
             $this->authorize('viewAsCoordinator',$contribution);
             return view('contributions.show', compact('contribution'));
-        }
+        } else if (Gate::allows('isMarketingManager')||Gate::allows('isGuest')) {
+            return view('contributions.show',compact('contribution'));
+        } 
     }
     public function facultyIndexSelectedContributions()
     {
-        $faculties = Auth::user()->faculties;
-        
-        $selected_contributions = new Collection();
-        foreach($faculties as $faculty)
-        {
-            foreach($faculty->magazine_issues as $magazine_issue)
-            {
-                $selected_contributions->push($magazine_issue->contributions->where('is_published', 1));
+        $magazine_issues = Auth::user()->faculties->first->magazine_issues->get();
+        foreach($magazine_issues as $magazine_issue)
+        {   
+            foreach($magazine_issue->contributions as $contribution) {
+                if($contribution->is_published == 1){
+                    $coordinatorContributions[] = $contribution;
+                }
             }
         }
-        return $selected_contributions;
+        return view('contributions.coordinator.index',compact('coordinatorContributions'));
     }
     // This is for marketing coordinator specific magazine issues -> contributions
     public function coordinatorIndexSelectedContributions()
@@ -190,8 +194,8 @@ class ContributionController extends Controller
     //  This is to index all the selected contributions for guest.
     public function indexSelectedContributions()
     {
-        $selected_contributions = Contributions::all()->where('is_published', 1);
-        return $selected_contributions;
+        $coordinatorContributions = Contributions::all()->where('is_published', 1);
+        return view('contributions.coordinator.index',compact('coordinatorContributions'));
     }
 
 

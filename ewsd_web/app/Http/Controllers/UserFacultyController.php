@@ -95,6 +95,9 @@ class UserFacultyController extends Controller
         if(!$f_id) {
             $f_id = 1;
         }
+        if(Gate::allows('isMarketingManager')) {
+            return redirect()->route('manager.faculty.users.show',$f_id);
+        }
         return redirect()->route('faculty.users.show',$f_id);
     }
 }

@@ -4,6 +4,7 @@
 <section class="container-fluid">
 
 <div class='card container shadow border-left-primary'>
+
     <div class="row p-3 justify-content-between">
         <h4 class="">User List</h4>
         <a class="btn btn-sm btn-primary" href="{{route('user.register')}}"><i class="fas fa-plus"></i> Add User</a>

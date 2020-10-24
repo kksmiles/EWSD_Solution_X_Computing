@@ -1,7 +1,6 @@
 @extends('template')
 @section('style')
 <style>
-
 </style>
 @endsection
 @section('content')
@@ -15,16 +14,18 @@
   </div>
   @endif
   <div class="card p-3 border-left-primary shadow">
-      <div class="card-header px-4 row bg-transparent border-0 justify-content-between">
-        <h5 class="text-primary font-weight-bold">Faculty List</h5>
-        <div class="">
-           <a href="{{route('faculty.add')}}" class="btn btn-sm btn-primary">
-            <i class="fas fa-plus fa-sm"></i> Add Faculty
-          </a>
-        </div>
-        
+    @can ('isMarketingManager')  
+    @elsecan('isAdmin')   
+    <div class="card-header px-4 row bg-transparent border-0 justify-content-between">
+      <h5 class="text-primary font-weight-bold">Faculty List</h5>
+      <div class="">
+         <a href="{{route('faculty.add')}}" class="btn btn-sm btn-primary">
+          <i class="fas fa-plus fa-sm"></i> Add Faculty
+        </a>
       </div>
-    <table class="table table-responsive">
+    </div>
+    @endcan      
+    <table class="table table-responsive" id="table-resize-collapse">
       <thead class="bg-dark-primary text-white">
         <tr>
           <td>No.</td>
@@ -42,6 +43,11 @@
               <td><p class="d-inline-block" >{{ Str::limit($faculty->description,50,"....") }}</p></td>
               <td>{{ $faculty->created_at->format('d.m.Y') }}</td>
               <td colspan="3">
+                  @if (Gate::allows('isMarketingManager'))
+                  <a href="{{route('manager.faculty.show',$faculty->id)}}" class="btn btn-block btn-sm btn-outline-info">
+                    View
+                  </a>
+                  @else
                   <a href="{{route('faculty.show',$faculty->id)}}" class="btn btn-block btn-sm btn-outline-info">
                     View
                   </a>
@@ -51,6 +57,7 @@
                   <a href="{{route('faculty.delete',$faculty->id)}}" class="btn btn-block btn-sm btn-outline-danger">
                      Delete
                   </a>
+                  @endif
               </td>
             </tr>
         @endforeach

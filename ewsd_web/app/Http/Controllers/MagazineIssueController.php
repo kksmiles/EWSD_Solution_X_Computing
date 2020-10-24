@@ -29,7 +29,7 @@ class MagazineIssueController extends Controller
             $magazine_issues = Auth::user()->magazine_issues;
             return view('magazine_issue.index', compact('magazine_issues'));
 
-        } elseif(Gate::allows('isSupervisor')) {
+        } elseif(Gate::allows('isMarketingManager')) {
 
             $faculties = Faculty::all();
             $magazine_issues = MagazineIssue::all();
@@ -112,7 +112,10 @@ class MagazineIssueController extends Controller
         if(Gate::allows('isMarketingCoordinator') && Gate::authorize('view',$magazine_issue)){
             return view('magazine_issue.show', compact('magazine_issue'));
         } elseif (Gate::allows('isStudent') && Gate::authorize('inStudentFaculty',$magazine_issue)){
-            return view('student.magazine-issue.show', compact('magazine_issue'));
+            return view('magazine_issue.show', compact('magazine_issue'));
+        } elseif(Gate::allows('isMarketingManager') || Gate::allows('isGuest')){
+            return view('magazine_issue.show', compact('magazine_issue'));
+
         }
     }
 
@@ -207,7 +210,7 @@ class MagazineIssueController extends Controller
     }
 
     public function getIssuesInFaculty($id) {
-       
+      
         if (Gate::allows('isStudent')) {
             $faculty = Faculty::find($id);
             $all_magazine_issues = Faculty::find($id)->magazine_issues;
@@ -226,10 +229,17 @@ class MagazineIssueController extends Controller
             } else {
                 return view('student.magazine-issue.empty');
             }
-        } 
+        } else if (Gate::allows('isMarketingManager')) {
+            $magazine_issues = Faculty::find($id)->magazine_issues;
+            return view('magazine_issue.index', compact('magazine_issues'));
+        }
+
         
     }
-
+    public function guestIssues() {
+        $magazine_issues = Auth::user()->faculties[0]->magazine_issues;
+        return view('magazine_issue.index', compact('magazine_issues'));
+    }
     public function getStudentIssues() {
         $faculties = Auth::user()->faculties;
         $all_magazine_issues = [];
