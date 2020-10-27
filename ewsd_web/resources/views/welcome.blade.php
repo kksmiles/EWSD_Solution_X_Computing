@@ -224,6 +224,16 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="team-member">
+                            <img class="mx-auto rounded-circle" src="{{ asset('img/KK.jpg')}}" alt="" />
+                            <h4>Kaung Khant</h4>
+                            <p class="text-muted">Web Developer</p>
+                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="team-member">
                             <img class="mx-auto rounded-circle" src="{{ asset('img/TSZH.jpg')}}" alt="" />
                             <h4>Thiri Shwe Zin TUn</h4>
                             <p class="text-muted">Web Designer</p>
@@ -234,19 +244,9 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="team-member">
-                            <img class="mx-auto rounded-circle" src="assets/img/team/2.jpg" alt="" />
-                            <h4>John Snow</h4>
-                            <p class="text-muted">Database Designer</p>
-                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="team-member">
-                            <img class="mx-auto rounded-circle" src="assets/img/team/3.jpg" alt="" />
-                            <h4>Mary</h4>
-                            <p class="text-muted">Lead Developer</p>
+                            <img class="mx-auto rounded-circle" src="{{ asset('img/PMK.jpg')}}" alt="" />
+                            <h4>Phone Myat Khine</h4>
+                            <p class="text-muted">Web Developer</p>
                             <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
                             <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
                             <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
