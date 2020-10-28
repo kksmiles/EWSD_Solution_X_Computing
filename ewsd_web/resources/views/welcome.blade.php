@@ -66,7 +66,7 @@
             <div class="container">
                 <div class="text-center">
                     <h2 class="section-heading text-uppercase">About Us</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h3 class="section-subheading text-muted">Web-based secure role-based system for collecting student contributions for annual university magazine.</h3>
                 </div>
                 <div class="row text-center">
                     
@@ -75,12 +75,12 @@
                 </div>       
 
                     <div class="col-md-6">
-                        <p>University of Greenwish allows Serval Students who want to study different majors such as Computing, Business, Engineering, Medicine and etc. 
-                            Our University is founded in the year of 1980 and now there have more than fifty thousand of students are attended in our university. The main
-                            campus is located in the London and different branches are opened at different countries.Many Outstanding Students are from the University of 
-                            Greenwish. Students who educated from Greenwidh Universities got the great job and great position at their respective field. Some if the students 
-                            are at a position of CEO and Director of their company. Some of the students are working as a teacher in our university and we give experience as 
-                            an in-term job to the students who want work experience.
+                        <p>University of Greenwich allows students to study different majors such as Computing, Business, Engineering, Medicine and so on. 
+                            Our University is founded in the year 1980 and currently prodviding educational services to more than fifty thousand students. The main
+                            campus is located in London and different branches are operating at different countries. University of 
+                            Greenwich gives out many outstanding students. Students educated from Greenwich University achieve success and earn great positions at their respective fields. Some students 
+                            are at the leadership positions of CEO and Director of their companies. Some of the students are working as teachers in our university and we also offer  
+                            internships to the students who want work experience.
 
                         </p>
                     </div>
@@ -93,7 +93,7 @@
             <div class="container">
                 <div class="text-center">
                     <h2 class="section-heading text-uppercase">Awarded Contribution</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h3 class="section-subheading text-muted">These are the previously awarded contributions.</h3>
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-sm-6 mb-4">
@@ -253,9 +253,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-lg-8 mx-auto text-center"><p class="large text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p></div>
-                </div>
+                </div> --}}
             </div>
         </section>
        
@@ -264,15 +264,14 @@
             <div class="container">
                 <div class="text-center">
                     <h2 class="section-heading text-uppercase">Contact Us</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h3 class="section-subheading text-muted">Contact us at the following address.</h3>
                 </div>
                 <form id="contactForm" name="sentMessage" novalidate="novalidate">
                     <div class="row align-items-stretch mb-5">
                         <div class="col-md-6">
                             <!--Google map-->
                                 <div id="map-container-google-1" class="z-depth-1-half map-container" style="height: 500px">
-                                    <iframe src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0"
-                                    style="border:0" allowfullscreen></iframe>
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d17713.221638774037!2d96.17935817142354!3d16.835832458449353!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c192dea6791c5f%3A0x46a200d62b79409b!2sKMD%20Institute!5e0!3m2!1sen!2smm!4v1603889775404!5m2!1sen!2smm" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
                                 </div>
                                 
                             <!--Google Maps-->
@@ -310,7 +309,7 @@
         <footer class="footer py-4">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col-lg-4 text-lg-left">Copyright © Your Website 2020</div>
+                    <div class="col-lg-4 text-lg-left">© Solution_X EWSD 2020</div>
                     <div class="col-lg-4 my-3 my-lg-0">
                         <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
