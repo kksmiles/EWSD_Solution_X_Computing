@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class CoordinatorContributionController extends Controller
 {
     public function index(){
+        $coordinatorContributions = [];
         $contributions = Contributions::all();
         if(Gate::allows('isMarketingManager')){
             $coordinatorContributions = $contributions;
