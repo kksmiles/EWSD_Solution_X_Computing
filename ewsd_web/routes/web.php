@@ -78,6 +78,7 @@ Route::group(['prefix' => 'admin','middleware'=>'can:isAdmin'], function(){
     Route::get('/register',function(){return view('auth.register');})->name('user.register');
     //user account routes for admin
     Route::resource('users','UserController'); 
+    Route::post('/user/register','Auth\RegisterController@create')->name('admin.register');
         //do not put resource users in prefix users groups. can cause bugs. illuminate route request errors.
     Route::prefix('users')->group(function(){
         Route::post('/assign/faculty','UserController@assignUserFaculty')->name('user_faculty.assign');
