@@ -82,7 +82,8 @@ class UserFacultyController extends Controller
         $faculty = Faculty::find($f_id);
         
         $users_in_faculty = UserFaculty::where('faculty_id',$f_id)->get();
-
+        $users_in = [];
+        
         foreach($users_in_faculty as $user_in_faculty)
         {
             $users_in[] = $user_in_faculty->user->id;
