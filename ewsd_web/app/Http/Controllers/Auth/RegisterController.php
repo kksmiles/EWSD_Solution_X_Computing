@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -39,7 +40,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+
     }
 
     /**
@@ -65,8 +66,15 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create(request $data)
     {
+        $data->validate([
+            'username' => ['required', 'string', 'max:255', 'unique:users,username'],
+            'fullname' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'image' => ['mimes:jpg,jpeg,png']
+        ]);
         if ($data['image']) 
         {
             $profile_image = $data['image'];
@@ -79,12 +87,14 @@ class RegisterController extends Controller
             $file_path = "";
         }
 
-        return User::create([
+        User::create([
             'username' => $data['username'],
             'fullname' => $data['fullname'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'image' => $file_path
         ]);
+
+        return redirect()->route('users.index');
     }
 }
