@@ -198,9 +198,9 @@ class ReportController extends Controller
             $facultyId = $request->faculty;
             $contributions = $this->getContributionReportQuery($status,$acedemicYear,$facultyId,'post');
         }else{
-            $status = '1';
-            $acedemicYear = '1';
-            $facultyId = '1';
+            $status = 'all';
+            $acedemicYear = 'all';
+            $facultyId = 'all';
             $contributions = $this->getContributionReportQuery($status,$acedemicYear,$facultyId,'get');
         }
         $academics_years = \App\AcademicYear::all();
@@ -273,29 +273,27 @@ class ReportController extends Controller
 
     // @ call back (exception report query)
     public function getExceptionQuery($acedemicYear,$type){
-        $data =  DB::table('contributions')
-                            ->join('comments', 'comments.contribution_id', '!=', 'contributions.id')
-                            ->join('magazine_issues', 'magazine_issues.id', '=', 'contributions.issue_id')
-                            ->join('academic_years', 'academic_years.id', '=', 'magazine_issues.academic_year_id')
-                            ->select(
-                                'contributions.id as contribution_id',
-                                'contributions.title as contribution_title',
-                                'contributions.is_published as contribution_status',
-                                'contributions.file as contribution_download_file',
-                                'magazine_issues.title as magazine_issues_title',
-                                'academic_years.title as academic_year_title',
-                            );
-
-        if($type != 'post') {
-            $query = $data->get();
-        } else {
-            if($acedemicYear == 'all'){
-                $query = $data->get();
-            }else{
-                $query = $data->where('academic_years.id',$acedemicYear)->get();
-            }
-        }
-        return $query;
+       $exceptionalQry = \DB::select(" 
+                                SELECT 
+                                cont.id AS contribution_id,
+                                cont.title AS contribution_title,
+                                cont.is_published AS contribution_status,
+                                cont.file AS contribution_download_file,
+                                MI.title AS magazine_issues_title,
+                                AY.title AS academic_year_title
+                                FROM ewsd.contributions cont
+                                INNER JOIN ewsd.magazine_issues as MI
+                                ON cont.issue_id = MI.id
+                                INNER JOIN ewsd.academic_years AS AY
+                                ON MI.academic_year_id = AY.id
+                                WHERE cont.id NOT IN (
+                                    SELECT 
+                                    CM.contribution_id
+                                    FROM comments CM
+                                )
+                                AND AY.id = '$acedemicYear'
+                        ");
+        return $exceptionalQry;
     }
 
 }

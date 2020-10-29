@@ -17,9 +17,6 @@
                     <div style="margin: 5px;">
                         Acedemic Years:
                         <select name="academic_year">
-                            <option value="all"  {{ $acedemicYear == 'all' ? "selected" : '' }}> 
-                                    All
-                            </option>
                             @foreach($academics_years as $key => $academics)
                                 <option value="{{$academics->id}}"  {{ $acedemicYear == $academics->id ? "selected" : '' }}> 
                                     {{$academics->title}}
@@ -37,13 +34,12 @@
               <tr>
                 <th scope="col">No.</th>
                 <th scope="col">Contribution</th>
-                <th scope="col">Issue</th>
-                <th scope="col">Academic Year</th>
                 <th scope="col">Status</th>
                 <th scope="col">Download File</th>
               </tr>
             </thead>
             <tbody>
+          
                 @foreach($contributions as $key => $contribution)
                     <tr>
                     <td>{{$key+1}}</td>

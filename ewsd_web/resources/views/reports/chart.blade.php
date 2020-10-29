@@ -105,7 +105,8 @@
     </h3>
     <div class="row">
         <div class="col-lg-6 col-12">            
-            <h5 class="d-inline-block py-2 font-weight-bold rounded-lg text-primary">Percentage of Male and Female Employee</h5>
+            <h5 class="d-inline-block py-2 font-weight-bold rounded-lg text-primary">Percentage of Published and Unpublished Contributions of year
+</h5>
             <div id="pie_chart">
             </div>
         </div>
