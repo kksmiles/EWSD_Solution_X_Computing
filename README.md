@@ -22,3 +22,8 @@ COMP 1640 - Enterprise Web Software Development
 Program live testing on Heroku Server : http://ewsd-solutionx.herokuapp.com/  
 Link for screencast : https://drive.google.com/file/d/1S6tLYMrKYeVMxIZQQoYxUUjmJq1SZDB6/view?usp=sharing  
 Link for presentation slide : https://drive.google.com/file/d/1D4VhoFIWc_IE7AY9O6TXB1spBE7ILPRM/view?usp=sharing  
+
+## Diagrams 
+## ER Diagram 
+![ER Diagram](https://github.com/phonemyatkhine/EWSD_Solution_X_Computing/blob/master/ER%20Diagram.jpg)
+![Use Case Diagram](https://github.com/phonemyatkhine/EWSD_Solution_X_Computing/blob/master/Use%20Case%20Diagram.jpg)
